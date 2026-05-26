@@ -8,6 +8,7 @@ import {
   Menu,
   Plus,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -127,6 +128,7 @@ export function AppLayout() {
               <div className="flex items-center gap-3">
                 <button
                   type="button"
+                  aria-label="Open notifications"
                   className="inline-flex size-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-950"
                 >
                   <Bell className="size-4" />
@@ -144,9 +146,15 @@ export function AppLayout() {
             </div>
           </div>
 
-          <div className="p-5 md:p-8">
+          <motion.div
+            key={String(currentTitle)}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            className="p-5 md:p-8"
+          >
             <Outlet />
-          </div>
+          </motion.div>
         </main>
       </div>
     </div>

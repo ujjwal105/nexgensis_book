@@ -1,4 +1,5 @@
-import { startTransition, useDeferredValue, useMemo, useState } from "react";
+import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, LoaderCircle, Plus } from "lucide-react";
 
 import { BookCard } from "@/components/books/book-card";
@@ -7,6 +8,8 @@ import { EmptyState } from "@/components/books/empty-state";
 import { SearchAndFilter } from "@/components/books/search-and-filter";
 import { SkeletonCard } from "@/components/books/skeleton-card";
 import { Button } from "@/components/ui/button";
+import { ErrorBanner } from "@/components/ui/error-banner";
+import { useToast } from "@/components/ui/toast-context";
 import {
   useBooks,
   useCreateBook,
@@ -14,16 +17,18 @@ import {
   useUpdateBook,
 } from "@/hooks/use-books";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { useLocalFilters } from "@/hooks/use-local-filters";
 import type { Book, BookDraft } from "@/types/book";
 
 const pageSize = 9;
 
 export function BooksPage() {
-  const [searchInput, setSearchInput] = useState("");
-  const [genre, setGenre] = useState("");
-  const [page, setPage] = useState(1);
+  const { genre, page, reset, search: searchFromParams, setGenre, setPage, setSearch } =
+    useLocalFilters();
+  const [searchInput, setSearchInput] = useState(searchFromParams);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const { toast } = useToast();
 
   const deferredSearch = useDeferredValue(searchInput);
   const search = useDebouncedValue(deferredSearch, 250);
@@ -32,13 +37,19 @@ export function BooksPage() {
     [genre, page, search],
   );
 
-  const { data, error, isError, isFetching, isLoading } = useBooks(filters);
+  const { data, error, isError, isFetching, isLoading, refetch } = useBooks(filters);
   const createBookMutation = useCreateBook();
   const updateBookMutation = useUpdateBook();
   const deleteBookMutation = useDeleteBook();
 
   const books = data?.data ?? [];
   const hasActiveFilters = Boolean(search.trim() || genre);
+
+  useEffect(() => {
+    if (search !== searchFromParams) {
+      setSearch(search);
+    }
+  }, [search, searchFromParams, setSearch]);
 
   const openCreateModal = () => {
     setSelectedBook(null);
@@ -58,32 +69,40 @@ export function BooksPage() {
   const handleSearchChange = (value: string) => {
     startTransition(() => {
       setSearchInput(value);
-      setPage(1);
     });
   };
 
   const handleGenreChange = (value: string) => {
     startTransition(() => {
       setGenre(value);
-      setPage(1);
     });
   };
 
   const handleClearFilters = () => {
     startTransition(() => {
       setSearchInput("");
-      setGenre("");
-      setPage(1);
+      reset();
     });
   };
 
   const handleSubmit = async (formData: BookDraft) => {
-    if (selectedBook) {
-      await updateBookMutation.mutateAsync({ id: selectedBook.id, bookData: formData });
-      return;
-    }
+    try {
+      if (selectedBook) {
+        await updateBookMutation.mutateAsync({ id: selectedBook.id, bookData: formData });
+        toast({ title: "Book updated!", variant: "success" });
+        return;
+      }
 
-    await createBookMutation.mutateAsync(formData);
+      await createBookMutation.mutateAsync(formData);
+      toast({ title: "Book added!", variant: "success" });
+    } catch (error) {
+      toast({
+        description:
+          error instanceof Error ? error.message : "Please try again.",
+        title: "Failed to save book.",
+        variant: "error",
+      });
+    }
   };
 
   return (
@@ -139,9 +158,12 @@ export function BooksPage() {
       </div>
 
       {isError ? (
-        <div className="rounded-[28px] border border-rose-200 bg-rose-50 px-5 py-4 text-rose-700">
-          {error instanceof Error ? error.message : "Unable to load books."}
-        </div>
+        <ErrorBanner
+          message={error instanceof Error ? error.message : "Unable to load books."}
+          onRetry={() => {
+            void refetch();
+          }}
+        />
       ) : null}
 
       {isLoading ? (
@@ -151,16 +173,47 @@ export function BooksPage() {
           ))}
         </div>
       ) : books.length ? (
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {books.map((book) => (
-            <BookCard
-              key={book.id}
-              book={book}
-              onEdit={openEditModal}
-              onDelete={(id) => deleteBookMutation.mutate(id)}
-            />
-          ))}
-        </div>
+        <motion.div
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.05 } },
+          }}
+          initial="hidden"
+          animate="show"
+          className="grid gap-5 md:grid-cols-2 xl:grid-cols-3"
+        >
+          <AnimatePresence>
+            {books.map((book) => (
+              <motion.div
+                key={book.id}
+                variants={{
+                  hidden: { opacity: 0, y: 16 },
+                  show: { opacity: 1, y: 0 },
+                }}
+              >
+                <BookCard
+                  book={book}
+                  onEdit={openEditModal}
+                  onDelete={async (id) => {
+                    try {
+                      await deleteBookMutation.mutateAsync(id);
+                      toast({ title: "Book deleted!", variant: "success" });
+                    } catch (deleteError) {
+                      toast({
+                        description:
+                          deleteError instanceof Error
+                            ? deleteError.message
+                            : "Please try again.",
+                        title: "Failed to delete book.",
+                        variant: "error",
+                      });
+                    }
+                  }}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       ) : (
         <EmptyState hasFilters={hasActiveFilters} onAction={openCreateModal} />
       )}
@@ -169,7 +222,7 @@ export function BooksPage() {
         <Button
           variant="ghost"
           className="rounded-2xl"
-          onClick={() => setPage((current) => Math.max(1, current - 1))}
+          onClick={() => setPage(Math.max(1, page - 1))}
           disabled={page <= 1 || isLoading}
         >
           <ChevronLeft className="size-4" />
@@ -181,11 +234,7 @@ export function BooksPage() {
         <Button
           variant="ghost"
           className="rounded-2xl"
-          onClick={() =>
-            setPage((current) =>
-              data?.hasNextPage ? current + 1 : current,
-            )
-          }
+          onClick={() => setPage(data?.hasNextPage ? page + 1 : page)}
           disabled={!data?.hasNextPage || isLoading}
         >
           Next

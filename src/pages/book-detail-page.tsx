@@ -1,13 +1,24 @@
-import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Calendar, Layers3, UserRound } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft, Calendar, Layers3, Pencil, Trash2, UserRound } from "lucide-react";
 
+import { BookFormModal } from "@/components/books/book-form-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ErrorBanner } from "@/components/ui/error-banner";
+import { useToast } from "@/components/ui/toast-context";
 import { useBook } from "@/hooks/use-books";
+import { useDeleteBook, useUpdateBook } from "@/hooks/use-books";
+import type { BookDraft } from "@/types/book";
 
 export function BookDetailPage() {
   const { id = "" } = useParams();
+  const navigate = useNavigate();
   const { data: book, error, isError, isLoading } = useBook(id);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const deleteBookMutation = useDeleteBook();
+  const updateBookMutation = useUpdateBook();
+  const { toast } = useToast();
 
   if (isLoading) {
     return (
@@ -19,12 +30,38 @@ export function BookDetailPage() {
   }
 
   if (isError || !book) {
-    return (
-      <div className="rounded-[28px] border border-rose-200 bg-rose-50 px-6 py-6 text-rose-700">
-        {error instanceof Error ? error.message : "Book not found"}
-      </div>
-    );
+    return <ErrorBanner message={error instanceof Error ? error.message : "Book not found"} />;
   }
+
+  const handleDelete = async () => {
+    try {
+      await deleteBookMutation.mutateAsync(book.id);
+      toast({ title: "Book deleted!", variant: "success" });
+      navigate("/books");
+    } catch (deleteError) {
+      toast({
+        description:
+          deleteError instanceof Error ? deleteError.message : "Please try again.",
+        title: "Failed to delete book.",
+        variant: "error",
+      });
+    }
+  };
+
+  const handleUpdate = async (data: BookDraft) => {
+    try {
+      await updateBookMutation.mutateAsync({ id: book.id, bookData: data });
+      toast({ title: "Book updated!", variant: "success" });
+    } catch (updateError) {
+      toast({
+        description:
+          updateError instanceof Error ? updateError.message : "Please try again.",
+        title: "Failed to save book.",
+        variant: "error",
+      });
+      throw updateError;
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -90,6 +127,22 @@ export function BookDetailPage() {
                 </p>
               </div>
             </div>
+            <div className="flex flex-wrap gap-3">
+              <Button
+                className="rounded-2xl bg-white text-slate-950 hover:bg-slate-100"
+                onClick={() => setIsEditOpen(true)}
+              >
+                <Pencil className="size-4" />
+                Edit book
+              </Button>
+              <Button
+                className="rounded-2xl bg-rose-500 text-white hover:bg-rose-600"
+                onClick={handleDelete}
+              >
+                <Trash2 className="size-4" />
+                Delete book
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -138,6 +191,14 @@ export function BookDetailPage() {
           </CardContent>
         </Card>
       </div>
+
+      <BookFormModal
+        book={book}
+        isOpen={isEditOpen}
+        isLoading={updateBookMutation.isPending}
+        onClose={() => setIsEditOpen(false)}
+        onSubmit={handleUpdate}
+      />
     </div>
   );
 }

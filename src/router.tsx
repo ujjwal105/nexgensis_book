@@ -1,9 +1,17 @@
+import { Suspense, type ReactNode } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 import { AppLayout } from "@/components/layout/app-layout";
-import { BookDetailPage } from "@/pages/book-detail-page";
-import { BooksPage } from "@/pages/books-page";
-import { DashboardPage } from "@/pages/dashboard-page";
+import { RouteFallback } from "@/components/ui/route-fallback";
+import {
+  LazyBookDetailPage,
+  LazyBooksPage,
+  LazyDashboardPage,
+} from "@/pages/lazy-pages";
+
+function withSuspense(node: ReactNode) {
+  return <Suspense fallback={<RouteFallback />}>{node}</Suspense>;
+}
 
 export const appRouter = createBrowserRouter([
   {
@@ -12,21 +20,21 @@ export const appRouter = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <DashboardPage />,
+        element: withSuspense(<LazyDashboardPage />),
         handle: {
           title: "Overview",
         },
       },
       {
         path: "books",
-        element: <BooksPage />,
+        element: withSuspense(<LazyBooksPage />),
         handle: {
           title: "Books",
         },
       },
       {
         path: "books/:id",
-        element: <BookDetailPage />,
+        element: withSuspense(<LazyBookDetailPage />),
         handle: {
           title: "Book Details",
         },

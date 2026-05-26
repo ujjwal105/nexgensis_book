@@ -1,73 +1,124 @@
-# React + TypeScript + Vite
+# Book Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React application for browsing and managing a book catalog with a hosted read API and local CRUD persistence.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Browse a live hosted catalog of books
+- Search by title or author with debounce
+- Filter by genre
+- Paginate through the catalog
+- View detailed book pages
+- Add, edit, and delete locally persisted books
+- Inline loading, error, empty, and toast feedback states
+- Responsive app shell with animated transitions
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + Vite
+- TypeScript
+- Tailwind CSS v4
+- TanStack Query v5
+- React Router
+- React Hook Form + Zod
+- Axios
+- Framer Motion
+- Lucide React
 
-## Expanding the ESLint configuration
+## Data Model
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+This project currently uses a hybrid backend approach:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Read operations use `https://api.freeapi.app/api/v1/public/books`
+- Create, update, and delete operations are persisted in `localStorage`
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+That keeps the app functional without requiring a paid or authenticated mock backend.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting Started
+
+1. Install dependencies:
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Create your local environment file:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
+
+3. Start the dev server:
+
+```bash
+npm run dev
+```
+
+4. Open `http://localhost:5173`
+
+## Environment Variables
+
+`.env.example` includes:
+
+```env
+VITE_API_BASE_URL=https://api.freeapi.app/api/v1
+```
+
+You can replace this later with your own compatible backend.
+
+## Available Scripts
+
+```bash
+npm run dev
+npm run build
+npm run lint
+npm run preview
+```
+
+## Project Structure
+
+```text
+src/
+├── components/
+│   ├── books/
+│   ├── layout/
+│   └── ui/
+├── hooks/
+├── lib/
+├── pages/
+├── services/
+├── types/
+├── App.tsx
+├── main.tsx
+└── router.tsx
+```
+
+## Deployment Notes
+
+This app is ready to deploy to Vercel or Netlify.
+
+### Vercel
+
+1. Push the repo to GitHub.
+2. Import the project in Vercel.
+3. Add `VITE_API_BASE_URL` in project environment variables if you want to override the default.
+4. Deploy.
+
+### Netlify
+
+1. Connect the repository.
+2. Build command: `npm run build`
+3. Publish directory: `dist`
+4. Add `VITE_API_BASE_URL` if needed.
+
+## Current Constraints
+
+- Hosted reads come from FreeAPI, so remote writes are not available.
+- Local CRUD entries are browser-specific because they are stored in `localStorage`.
+
+## Next Improvements
+
+- Replace local write persistence with a real writable backend
+- Add route-level tests
+- Add authentication and per-user collections
+- Split additional heavy UI code if the bundle grows further

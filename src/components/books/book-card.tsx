@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Pencil, Trash2, X } from "lucide-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -23,6 +23,7 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
         <Link
           to={`/books/${book.id}`}
           className="block focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-100"
+          title={book.title}
         >
           <div
             className="relative h-28 overflow-hidden"
@@ -63,48 +64,66 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
         </CardContent>
 
         <CardFooter className="mt-auto flex flex-col items-stretch gap-3 border-t border-slate-200 bg-slate-50/80 px-5 py-4">
-          {isConfirmingDelete ? (
-            <div className="flex items-center justify-between gap-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-              <span>Delete this book?</span>
-              <div className="flex items-center gap-2">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="text-slate-600 hover:bg-white"
-                  onClick={() => setIsConfirmingDelete(false)}
-                >
-                  <X className="size-4" />
-                  Cancel
-                </Button>
-                <Button
-                  size="sm"
-                  className="bg-rose-500 text-white hover:bg-rose-600"
-                  onClick={() => onDelete(book.id)}
-                >
-                  Confirm
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                className="flex-1 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700"
-                onClick={() => onEdit(book)}
+          <AnimatePresence mode="wait">
+            {isConfirmingDelete ? (
+              <motion.div
+                key="confirm"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="overflow-hidden"
               >
-                <Pencil className="size-4" />
-                Edit
-              </Button>
-              <Button
-                variant="ghost"
-                className="flex-1 rounded-xl text-rose-600 hover:bg-rose-50 hover:text-rose-700"
-                onClick={() => setIsConfirmingDelete(true)}
+                <div className="flex items-center justify-between gap-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                  <span>Delete this book?</span>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="text-slate-600 hover:bg-white"
+                      onClick={() => setIsConfirmingDelete(false)}
+                    >
+                      <X className="size-4" />
+                      Cancel
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="bg-rose-500 text-white hover:bg-rose-600"
+                      onClick={() => onDelete(book.id)}
+                    >
+                      Confirm
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="actions"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="overflow-hidden"
               >
-                <Trash2 className="size-4" />
-                Delete
-              </Button>
-            </div>
-          )}
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    className="flex-1 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700"
+                    onClick={() => onEdit(book)}
+                  >
+                    <Pencil className="size-4" />
+                    Edit
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="flex-1 rounded-xl text-rose-600 hover:bg-rose-50 hover:text-rose-700"
+                    onClick={() => setIsConfirmingDelete(true)}
+                  >
+                    <Trash2 className="size-4" />
+                    Delete
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </CardFooter>
       </Card>
     </motion.div>
