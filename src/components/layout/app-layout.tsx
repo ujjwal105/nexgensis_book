@@ -5,7 +5,6 @@ import {
   BookOpenText,
   ChartColumnBig,
   ChevronRight,
-  Menu,
   Plus,
 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -18,6 +17,12 @@ const navigationItems = [
   { label: "Books", icon: BookOpenText, to: "/books" },
 ];
 
+const mobileNavigationItems = [
+  { label: "Overview", icon: ChartColumnBig, to: "/" },
+  { label: "Add", icon: Plus, to: { pathname: "/books", search: "?create=true" } },
+  { label: "Books", icon: BookOpenText, to: "/books" },
+];
+
 export function AppLayout() {
   const matches = useMatches();
   const activeMatch = [...matches]
@@ -27,8 +32,8 @@ export function AppLayout() {
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(249,115,22,0.10),_transparent_22%),radial-gradient(circle_at_top_right,_rgba(99,102,241,0.14),_transparent_28%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_48%,_#fff7ed_100%)] text-slate-900">
-      <div className="mx-auto grid min-h-screen max-w-[1580px] gap-6 px-4 py-4 xl:grid-cols-[300px_1fr] xl:px-6 xl:py-6">
-        <aside className="flex flex-col overflow-hidden rounded-[34px] border border-white/60 bg-[linear-gradient(180deg,_#0f172a_0%,_#131f38_55%,_#1e1b4b_100%)] px-5 py-6 text-slate-100 shadow-[0_45px_120px_-65px_rgba(15,23,42,1)]">
+      <div className="mx-auto grid min-h-screen max-w-[1580px] gap-6 px-4 py-4 md:grid-cols-[280px_1fr] md:px-6 md:py-6">
+        <aside className="hidden flex-col overflow-hidden rounded-[34px] border border-white/60 bg-[linear-gradient(180deg,_#0f172a_0%,_#131f38_55%,_#1e1b4b_100%)] px-5 py-6 text-slate-100 shadow-[0_45px_120px_-65px_rgba(15,23,42,1)] md:flex">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex size-12 items-center justify-center rounded-2xl bg-white/8 ring-1 ring-white/10">
@@ -41,12 +46,6 @@ export function AppLayout() {
                 <h1 className="text-lg font-semibold">Book System</h1>
               </div>
             </div>
-            <button
-              type="button"
-              className="inline-flex rounded-2xl p-2 text-slate-400 transition hover:bg-white/10 hover:text-white xl:hidden"
-            >
-              <Menu className="size-4" />
-            </button>
           </div>
 
           <div className="mt-10 rounded-[28px] border border-white/10 bg-white/5 p-5">
@@ -116,8 +115,8 @@ export function AppLayout() {
           </div>
         </aside>
 
-        <main className="min-w-0 overflow-hidden rounded-[36px] border border-white/60 bg-white/72 shadow-[0_45px_120px_-70px_rgba(15,23,42,0.7)] backdrop-blur-xl">
-          <div className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/80 px-5 py-4 backdrop-blur-xl md:px-8">
+        <main className="min-w-0 overflow-hidden rounded-[28px] border border-white/60 bg-white/72 shadow-[0_45px_120px_-70px_rgba(15,23,42,0.7)] backdrop-blur-xl md:rounded-[36px]">
+          <div className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/80 px-4 py-4 backdrop-blur-xl md:px-8">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-medium text-slate-500">Workspace</p>
@@ -151,11 +150,37 @@ export function AppLayout() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="p-5 md:p-8"
+            className="p-4 pb-24 md:p-8 md:pb-8"
           >
             <Outlet />
           </motion.div>
         </main>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200/80 bg-white/92 px-3 py-3 backdrop-blur-xl md:hidden">
+        <nav className="mx-auto grid max-w-lg grid-cols-3 gap-2 rounded-[28px] border border-slate-200/80 bg-white px-2 py-2 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)]">
+          {mobileNavigationItems.map(({ label, icon: Icon, to }) => (
+            <NavLink
+              key={label}
+              to={to}
+              aria-label={label}
+              className={({ isActive }) =>
+                cn(
+                  "flex flex-col items-center justify-center gap-1 rounded-2xl px-3 py-2 text-xs font-medium transition",
+                  label === "Add" && "border border-indigo-200/90 bg-indigo-50 text-indigo-700",
+                  isActive
+                    ? "bg-indigo-50 text-indigo-700"
+                    : label === "Add"
+                      ? "hover:bg-indigo-100 hover:text-indigo-800"
+                      : "text-slate-500 hover:bg-slate-50 hover:text-slate-900",
+                )
+              }
+            >
+              <Icon className="size-4" />
+              <span>{label}</span>
+            </NavLink>
+          ))}
+        </nav>
       </div>
     </div>
   );

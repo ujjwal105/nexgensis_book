@@ -1,6 +1,7 @@
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, LoaderCircle, Plus } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 
 import { BookCard } from "@/components/books/book-card";
 import { BookFormModal } from "@/components/books/book-form-modal";
@@ -25,10 +26,12 @@ const pageSize = 9;
 export function BooksPage() {
   const { genre, page, reset, search: searchFromParams, setGenre, setPage, setSearch } =
     useLocalFilters();
+  const [params, setParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState(searchFromParams);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const { toast } = useToast();
+  const isCreateRequested = params.get("create") === "true";
+  const isModalOpen = Boolean(selectedBook) || isCreateRequested;
 
   const deferredSearch = useDeferredValue(searchInput);
   const search = useDebouncedValue(deferredSearch, 250);
@@ -51,19 +54,31 @@ export function BooksPage() {
     }
   }, [search, searchFromParams, setSearch]);
 
+  const clearCreateParam = () => {
+    const nextParams = new URLSearchParams(params);
+    nextParams.delete("create");
+    setParams(nextParams);
+  };
+
   const openCreateModal = () => {
     setSelectedBook(null);
-    setIsModalOpen(true);
+    const nextParams = new URLSearchParams(params);
+    nextParams.set("create", "true");
+    setParams(nextParams);
   };
 
   const openEditModal = (book: Book) => {
     setSelectedBook(book);
-    setIsModalOpen(true);
+    if (isCreateRequested) {
+      clearCreateParam();
+    }
   };
 
   const closeModal = () => {
     setSelectedBook(null);
-    setIsModalOpen(false);
+    if (isCreateRequested) {
+      clearCreateParam();
+    }
   };
 
   const handleSearchChange = (value: string) => {
