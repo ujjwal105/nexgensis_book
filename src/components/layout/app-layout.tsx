@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navigationItems = [
@@ -33,8 +32,8 @@ export function AppLayout() {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(249,115,22,0.10),_transparent_22%),radial-gradient(circle_at_top_right,_rgba(99,102,241,0.14),_transparent_28%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_48%,_#fff7ed_100%)] text-slate-900">
       <div className="mx-auto grid min-h-screen max-w-[1580px] gap-6 px-4 py-4 md:grid-cols-[280px_1fr] md:px-6 md:py-6">
-        <aside className="hidden flex-col overflow-hidden rounded-[34px] border border-white/60 bg-[linear-gradient(180deg,_#0f172a_0%,_#131f38_55%,_#1e1b4b_100%)] px-5 py-6 text-slate-100 shadow-[0_45px_120px_-65px_rgba(15,23,42,1)] md:flex">
-          <div className="flex items-center justify-between">
+        <aside className="hidden h-[calc(100dvh-3rem)] flex-col overflow-hidden rounded-[34px] border border-white/60 bg-[linear-gradient(180deg,_#0f172a_0%,_#131f38_55%,_#1e1b4b_100%)] px-5 py-6 text-slate-100 shadow-[0_45px_120px_-65px_rgba(15,23,42,1)] md:sticky md:top-6 md:flex">
+          <div className="flex items-center justify-between shrink-0">
             <div className="flex items-center gap-3">
               <div className="flex size-12 items-center justify-center rounded-2xl bg-white/8 ring-1 ring-white/10">
                 <BookMarked className="size-5 text-amber-300" />
@@ -48,70 +47,56 @@ export function AppLayout() {
             </div>
           </div>
 
-          <div className="mt-10 rounded-[28px] border border-white/10 bg-white/5 p-5">
-            <p className="text-xs uppercase tracking-[0.28em] text-slate-400">
-              Today
-            </p>
-            <h2 className="mt-3 text-2xl font-semibold text-white">
-              Curate the catalog with real structure.
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-slate-300">
-              Move from a passive dashboard into an actual management workflow:
-              browse, inspect, add, and edit books.
-            </p>
-            <Button
-              asChild
-              className="mt-5 w-full rounded-2xl bg-white text-slate-950 hover:bg-slate-100"
-              size="lg"
-            >
-              <NavLink to="/books">
-                <Plus className="size-4" />
-                Open catalog
-              </NavLink>
-            </Button>
-          </div>
-
-          <nav className="mt-8 space-y-2">
-            {navigationItems.map(({ label, icon: Icon, to }) => (
-              <NavLink
-                key={label}
-                to={to}
-                className={({ isActive }) =>
-                  cn(
-                    "flex items-center justify-between rounded-2xl px-4 py-3 text-sm transition",
-                    isActive
-                      ? "bg-white/12 text-white ring-1 ring-white/10"
-                      : "text-slate-300 hover:bg-white/8 hover:text-white",
-                  )
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    <span className="flex items-center gap-3">
-                      <Icon className={cn("size-4", isActive ? "text-amber-300" : "")} />
-                      <span>{label}</span>
-                    </span>
-                    <ChevronRight
-                      className={cn(
-                        "size-4 transition",
-                        isActive ? "text-white" : "text-slate-500",
-                      )}
-                    />
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </nav>
-
-          <div className="mt-auto rounded-[28px] border border-white/10 bg-white/6 p-5">
-            <p className="text-sm font-medium text-white">Build Progress</p>
-            <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
-              <div className="h-full w-3/4 rounded-full bg-[linear-gradient(90deg,_#fb7185,_#f59e0b,_#818cf8)]" />
+          <div className="mt-10 flex min-h-0 flex-1 flex-col">
+            <div className="shrink-0">
+              <p className="px-2 text-xs uppercase tracking-[0.28em] text-slate-500">
+                Navigation
+              </p>
             </div>
-            <p className="mt-3 text-sm leading-6 text-slate-300">
-              Shell, service layer, live catalog, search, filters, detail view,
-              and local CRUD are now active.
-            </p>
+
+            <nav className="mt-4 min-h-0 flex-1 space-y-2 overflow-y-auto pr-1">
+              {navigationItems.map(({ label, icon: Icon, to }) => (
+                <NavLink
+                  key={label}
+                  to={to}
+                  className={({ isActive }) =>
+                    cn(
+                      "flex items-center justify-between rounded-2xl px-4 py-3 text-sm transition",
+                      isActive
+                        ? "bg-white/12 text-white ring-1 ring-white/10"
+                        : "text-slate-300 hover:bg-white/8 hover:text-white",
+                    )
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span className="flex items-center gap-3">
+                        <Icon className={cn("size-4", isActive ? "text-amber-300" : "")} />
+                        <span>{label}</span>
+                      </span>
+                      <ChevronRight
+                        className={cn(
+                          "size-4 transition",
+                          isActive ? "text-white" : "text-slate-500",
+                        )}
+                      />
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </nav>
+
+            <div className="mt-6 shrink-0 border-t border-white/10 pt-5">
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
+                Status
+              </p>
+              <p className="mt-3 text-sm font-medium text-white">
+                Workspace online
+              </p>
+              <p className="mt-1 text-sm text-slate-300">
+                Live reads, local writes, and catalog tools are active.
+              </p>
+            </div>
           </div>
         </aside>
 
