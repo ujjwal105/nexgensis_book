@@ -9,25 +9,25 @@ type EmptyStateProps = {
 
 export function EmptyState({ hasFilters = false, onAction }: EmptyStateProps) {
   return (
-    <div className="rounded-[28px] border border-dashed border-slate-300 bg-white/80 px-6 py-14 text-center shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)]">
-      <div className="mx-auto flex size-16 items-center justify-center rounded-3xl bg-slate-100 text-slate-500">
-        <BookX className="size-7" />
+    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center shadow-sm">
+      <div className="flex size-12 items-center justify-center rounded-xl bg-slate-100">
+        <BookX className="size-5 text-slate-400" />
       </div>
-      <h3 className="mt-5 text-2xl font-semibold text-slate-950">
-        {hasFilters ? "No books match these filters" : "Your catalog is empty"}
+      <h3 className="mt-4 text-sm font-semibold text-slate-900">
+        {hasFilters ? "No books match your filters" : "No books yet"}
       </h3>
-      <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-500">
+      <p className="mt-1.5 max-w-xs text-xs text-slate-400 leading-relaxed">
         {hasFilters
-          ? "Adjust your search or genre filters to widen the results."
-          : "Add your first custom book to start building the collection."}
+          ? "Try adjusting your search or genre filter to find what you're looking for."
+          : "Add your first book to start building your catalog."}
       </p>
       <Button
-        className="mt-6 rounded-2xl bg-indigo-600 text-white hover:bg-indigo-700"
-        size="lg"
+        size="sm"
+        className="mt-5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm"
         onClick={onAction}
       >
-        <Plus className="size-4" />
-        Add book
+        <Plus className="size-3.5" />
+        {hasFilters ? "Add a book" : "Add your first book"}
       </Button>
     </div>
   );

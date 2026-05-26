@@ -25,29 +25,29 @@ export function SearchAndFilter({
   onSearchChange,
 }: SearchAndFilterProps) {
   return (
-    <div className="rounded-[30px] border border-slate-200/70 bg-white/88 p-4 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)] backdrop-blur md:p-5">
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px_auto] lg:items-center">
+    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+      <div className="grid gap-2 lg:grid-cols-[1fr_220px_auto] lg:items-center">
         <div className="relative">
-          <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-slate-400" />
           <Input
             value={search}
-            onChange={(event) => onSearchChange(event.target.value)}
+            onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search by title or author..."
-            className="pl-11"
+            className="pl-9"
           />
         </div>
 
         <div className="relative">
-          <SlidersHorizontal className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+          <SlidersHorizontal className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-slate-400" />
           <Select
             value={genre}
-            onChange={(event) => onGenreChange(event.target.value)}
-            className="pl-11"
+            onChange={(e) => onGenreChange(e.target.value)}
+            className="pl-9"
           >
             <option value="">All genres</option>
-            {genreOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
+            {genreOptions.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
               </option>
             ))}
           </Select>
@@ -56,16 +56,22 @@ export function SearchAndFilter({
         {hasActiveFilters ? (
           <Button
             variant="ghost"
-            className="rounded-2xl text-slate-600 hover:bg-slate-100 lg:justify-self-end"
+            size="sm"
+            className="h-9 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-700 lg:justify-self-end"
             onClick={onClearFilters}
           >
-            <X className="size-4" />
-            Clear filters
+            <X className="size-3.5" />
+            Clear
           </Button>
         ) : null}
       </div>
 
-      <div className="mt-4 text-sm font-medium text-slate-500">Showing {resultsCount} books</div>
+      <div className="mt-2.5 px-0.5 text-[0.72rem] text-slate-400">
+        {resultsCount} {resultsCount === 1 ? "book" : "books"} found
+        {hasActiveFilters ? (
+          <span className="ml-1.5 text-indigo-500">· filtered</span>
+        ) : null}
+      </div>
     </div>
   );
 }

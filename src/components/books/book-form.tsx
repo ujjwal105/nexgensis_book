@@ -147,7 +147,7 @@ export function BookForm({
       <Button
         type="submit"
         size="lg"
-        className="w-full rounded-2xl bg-indigo-600 text-white hover:bg-indigo-700"
+        className="w-full rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm"
         disabled={isLoading}
       >
         {isLoading ? <LoaderCircle className="size-4 animate-spin" /> : null}

@@ -11,73 +11,58 @@ type ModalProps = {
   description?: string;
 };
 
-export function Modal({
-  children,
-  isOpen,
-  onClose,
-  title,
-  description,
-}: ModalProps) {
+export function Modal({ children, isOpen, onClose, title, description }: ModalProps) {
   useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
+    if (!isOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
     };
-
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handleEscape);
-
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleEscape);
     };
   }, [isOpen, onClose]);
 
-  if (typeof document === "undefined") {
-    return null;
-  }
+  if (typeof document === "undefined") return null;
 
   return createPortal(
     <AnimatePresence>
       {isOpen ? (
         <motion.div
           key="overlay"
-          className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/50 p-3 backdrop-blur-sm md:flex md:items-center md:justify-center md:p-4"
+          className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/40 p-4 backdrop-blur-sm md:flex md:items-center md:justify-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="mt-4 flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden rounded-[28px] border border-white/60 bg-white shadow-[0_40px_120px_-60px_rgba(15,23,42,0.9)] md:mt-0 md:max-h-[min(860px,calc(100dvh-2rem))]"
-            initial={{ opacity: 0, y: 18, scale: 0.98 }}
+            className="mx-auto mt-4 flex max-h-[calc(100dvh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl md:mt-0 md:max-h-[min(800px,calc(100dvh-2rem))]"
+            initial={{ opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.98 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            onClick={(event) => event.stopPropagation()}
+            exit={{ opacity: 0, y: 8, scale: 0.99 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 z-10 flex items-start justify-between border-b border-slate-200 bg-white px-4 py-4 md:px-6 md:py-5">
+            <div className="flex flex-none items-start justify-between gap-4 border-b border-slate-200 px-5 py-4">
               <div>
-                <h2 className="text-xl font-semibold text-slate-950">{title}</h2>
+                <h2 className="text-base font-semibold text-slate-900">{title}</h2>
                 {description ? (
-                  <p className="mt-1 text-sm text-slate-500">{description}</p>
+                  <p className="mt-0.5 text-xs text-slate-400">{description}</p>
                 ) : null}
               </div>
               <button
                 type="button"
                 aria-label="Close dialog"
-                className="rounded-full p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-900"
+                className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
                 onClick={onClose}
               >
                 <X className="size-4" />
               </button>
             </div>
-            <div className="overflow-y-auto px-4 py-4 md:px-6 md:py-6">{children}</div>
+            <div className="overflow-y-auto px-5 py-5">{children}</div>
           </motion.div>
         </motion.div>
       ) : null}

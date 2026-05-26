@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Calendar, Layers3, Pencil, Trash2, UserRound } from "lucide-react";
+import { ArrowLeft, Calendar, Hash, Layers3, Palette, Pencil, Trash2, UserRound } from "lucide-react";
 
 import { BookFormModal } from "@/components/books/book-form-modal";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ErrorBanner } from "@/components/ui/error-banner";
 import { useToast } from "@/components/ui/toast-context";
-import { useBook } from "@/hooks/use-books";
-import { useDeleteBook, useUpdateBook } from "@/hooks/use-books";
+import { useBook, useDeleteBook, useUpdateBook } from "@/hooks/use-books";
 import type { BookDraft } from "@/types/book";
 
 export function BookDetailPage() {
@@ -22,11 +20,16 @@ export function BookDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <div className="h-10 w-40 animate-pulse rounded-full bg-slate-200" />
-        <div className="h-72 animate-pulse rounded-[32px] bg-slate-200" />
+      <div className="space-y-5 animate-fade-in">
+        <div className="h-8 w-32 animate-pulse rounded-lg bg-slate-200" />
+        <div className="h-52 animate-pulse rounded-xl bg-slate-200" />
+        <div className="grid gap-4 lg:grid-cols-[1fr_300px]">
+          <div className="h-48 animate-pulse rounded-xl bg-slate-200" />
+          <div className="h-48 animate-pulse rounded-xl bg-slate-200" />
+        </div>
       </div>
     );
+
   }
 
   if (isError || !book) {
@@ -40,8 +43,7 @@ export function BookDetailPage() {
       navigate("/books");
     } catch (deleteError) {
       toast({
-        description:
-          deleteError instanceof Error ? deleteError.message : "Please try again.",
+        description: deleteError instanceof Error ? deleteError.message : "Please try again.",
         title: "Failed to delete book.",
         variant: "error",
       });
@@ -54,8 +56,7 @@ export function BookDetailPage() {
       toast({ title: "Book updated!", variant: "success" });
     } catch (updateError) {
       toast({
-        description:
-          updateError instanceof Error ? updateError.message : "Please try again.",
+        description: updateError instanceof Error ? updateError.message : "Please try again.",
         title: "Failed to save book.",
         variant: "error",
       });
@@ -64,23 +65,26 @@ export function BookDetailPage() {
   };
 
   return (
-    <div className="space-y-8">
-      <Button asChild variant="ghost" className="rounded-2xl text-slate-600">
+    <div className="space-y-5 animate-fade-in">
+      {/* Back nav */}
+      <Button asChild variant="ghost" size="sm" className="rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 -ml-1 h-8">
         <Link to="/books">
-          <ArrowLeft className="size-4" />
-          Back to catalog
+          <ArrowLeft className="size-3.5" />
+          Back to Books
         </Link>
       </Button>
 
-      <section
-        className="overflow-hidden rounded-[36px] text-white shadow-[0_40px_120px_-70px_rgba(15,23,42,0.9)]"
+      {/* Hero */}
+      <div
+        className="overflow-hidden rounded-xl shadow-sm"
         style={{
-          background: `linear-gradient(135deg, ${book.coverColor} 0%, #0f172a 85%)`,
+          background: `linear-gradient(135deg, ${book.coverColor}ee 0%, #0f172a 100%)`,
         }}
       >
-        <div className="grid gap-8 px-6 py-8 md:px-8 md:py-10 lg:grid-cols-[220px_1fr] lg:px-10">
-          <div className="relative">
-            <div className="aspect-[3/4] overflow-hidden rounded-[28px] border border-white/15 bg-white/10 shadow-2xl backdrop-blur-sm">
+        <div className="grid gap-6 px-6 py-6 md:px-8 md:py-7 lg:grid-cols-[180px_1fr]">
+          {/* Book cover */}
+          <div className="hidden lg:block flex-none">
+            <div className="aspect-[3/4] overflow-hidden rounded-lg border border-white/15 bg-white/10 shadow-lg">
               {book.coverImage ? (
                 <img
                   src={book.coverImage}
@@ -88,108 +92,129 @@ export function BookDetailPage() {
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <div className="flex h-full items-center justify-center text-7xl font-semibold text-white/90">
+                <div className="flex h-full items-center justify-center text-5xl font-bold text-white/80">
                   {book.title.charAt(0).toUpperCase()}
                 </div>
               )}
             </div>
           </div>
 
-          <div className="flex flex-col justify-between gap-8">
+          {/* Book info */}
+          <div className="flex flex-col justify-between gap-5 text-white">
             <div>
-              <span className="inline-flex rounded-full bg-white/12 px-4 py-2 text-[0.82rem] font-semibold uppercase tracking-[0.12em] text-white/85 ring-1 ring-white/15">
-                {book.genre}
-              </span>
-              <h1 className="mt-5 max-w-3xl text-[2.5rem] font-semibold leading-[0.95] tracking-[-0.05em] md:text-[4rem]">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-[0.72rem] font-semibold text-white/90 ring-1 ring-white/20">
+                  {book.genre}
+                </span>
+                <span className="text-[0.72rem] text-white/50">
+                  {book.id.startsWith("local-") ? "Local" : "Catalog"}
+                </span>
+              </div>
+              <h1 className="mt-3 text-[1.8rem] font-bold leading-tight tracking-tight text-white md:text-[2.4rem]">
                 {book.title}
               </h1>
-              <p className="mt-5 max-w-3xl text-[1rem] leading-8 text-white/80 md:text-[1.06rem]">
+              <p className="mt-2 text-sm text-white/70 leading-relaxed max-w-2xl">
                 {book.description}
               </p>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="rounded-[24px] bg-white/10 p-4 ring-1 ring-white/15 backdrop-blur-sm">
-                <UserRound className="size-5 text-white/80" />
-                <p className="mt-3 text-sm text-white/70">Author</p>
-                <p className="mt-1 text-[1.2rem] font-semibold tracking-[-0.03em]">{book.author}</p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              <div className="rounded-lg bg-white/10 px-3 py-2.5 ring-1 ring-white/10">
+                <div className="flex items-center gap-1.5 text-white/50">
+                  <UserRound className="size-3" />
+                  <span className="text-[0.65rem] font-medium uppercase tracking-wide">Author</span>
+                </div>
+                <p className="mt-1 text-sm font-semibold text-white">{book.author}</p>
               </div>
-              <div className="rounded-[24px] bg-white/10 p-4 ring-1 ring-white/15 backdrop-blur-sm">
-                <Calendar className="size-5 text-white/80" />
-                <p className="mt-3 text-sm text-white/70">Publication year</p>
-                <p className="mt-1 text-[1.2rem] font-semibold tracking-[-0.03em]">{book.publicationYear}</p>
+              <div className="rounded-lg bg-white/10 px-3 py-2.5 ring-1 ring-white/10">
+                <div className="flex items-center gap-1.5 text-white/50">
+                  <Calendar className="size-3" />
+                  <span className="text-[0.65rem] font-medium uppercase tracking-wide">Year</span>
+                </div>
+                <p className="mt-1 text-sm font-semibold text-white">{book.publicationYear}</p>
               </div>
-              <div className="rounded-[24px] bg-white/10 p-4 ring-1 ring-white/15 backdrop-blur-sm">
-                <Layers3 className="size-5 text-white/80" />
-                <p className="mt-3 text-sm text-white/70">Catalog type</p>
-                <p className="mt-1 text-[1.2rem] font-semibold tracking-[-0.03em]">
-                  {book.id.startsWith("local-") ? "Local custom" : "Hosted import"}
+              <div className="rounded-lg bg-white/10 px-3 py-2.5 ring-1 ring-white/10">
+                <div className="flex items-center gap-1.5 text-white/50">
+                  <Layers3 className="size-3" />
+                  <span className="text-[0.65rem] font-medium uppercase tracking-wide">Type</span>
+                </div>
+                <p className="mt-1 text-sm font-semibold text-white">
+                  {book.id.startsWith("local-") ? "Custom" : "Hosted"}
                 </p>
               </div>
             </div>
-            <div className="flex flex-wrap gap-3">
+
+            <div className="flex flex-wrap gap-2">
               <Button
-                className="rounded-2xl bg-white text-slate-950 hover:bg-slate-100"
+                size="sm"
+                className="rounded-lg bg-white text-slate-900 hover:bg-slate-100 shadow-sm h-8 text-xs"
                 onClick={() => setIsEditOpen(true)}
               >
-                <Pencil className="size-4" />
+                <Pencil className="size-3" />
                 Edit book
               </Button>
               <Button
-                className="rounded-2xl bg-rose-500 text-white hover:bg-rose-600"
+                size="sm"
+                className="rounded-lg bg-white/15 text-white hover:bg-white/25 ring-1 ring-white/20 h-8 text-xs"
                 onClick={handleDelete}
               >
-                <Trash2 className="size-4" />
-                Delete book
+                <Trash2 className="size-3" />
+                Delete
               </Button>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.3fr_0.8fr]">
-        <Card className="rounded-[28px] border border-slate-200/70 bg-white/88 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)]">
-          <CardHeader>
-            <CardTitle className="text-[2rem] font-semibold tracking-[-0.04em] text-slate-950">
-              Description
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-[1rem] leading-8 text-slate-600">
-            {book.description}
-          </CardContent>
-        </Card>
+      {/* Details grid */}
+      <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
+        {/* Description */}
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900">About this book</h2>
+          <p className="mt-3 text-sm leading-relaxed text-slate-600">{book.description}</p>
+        </div>
 
-        <Card className="rounded-[28px] border border-slate-200/70 bg-white/88 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)]">
-          <CardHeader>
-            <CardTitle className="text-[2rem] font-semibold tracking-[-0.04em] text-slate-950">
-              Metadata
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-sm text-slate-600">
-            <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <span className="block text-slate-500">Book ID</span>
-              <span className="mt-1 block break-all font-medium text-slate-900">
+        {/* Metadata */}
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900">Metadata</h2>
+          <div className="mt-3 space-y-3">
+            <div>
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
+                <Hash className="size-3" />
+                <span>Book ID</span>
+              </div>
+              <p className="rounded-md bg-slate-50 px-3 py-2 text-xs font-mono text-slate-700 break-all">
                 {book.id}
-              </span>
+              </p>
             </div>
-            <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <span className="block text-slate-500">Created at</span>
-              <span className="mt-1 block font-medium text-slate-900">
-                {new Date(book.createdAt).toLocaleDateString()}
-              </span>
+            <div>
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
+                <Calendar className="size-3" />
+                <span>Created</span>
+              </div>
+              <p className="rounded-md bg-slate-50 px-3 py-2 text-xs text-slate-700">
+                {new Date(book.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
             </div>
-            <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <span className="block text-slate-500">Theme color</span>
-              <div className="mt-2 flex items-center gap-3">
+            <div>
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
+                <Palette className="size-3" />
+                <span>Theme color</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-md bg-slate-50 px-3 py-2">
                 <span
-                  className="inline-flex size-6 rounded-full border border-slate-200"
+                  className="size-4 rounded-full border border-slate-200 flex-none"
                   style={{ backgroundColor: book.coverColor }}
                 />
-                <span className="font-medium text-slate-900">{book.coverColor}</span>
+                <span className="text-xs font-mono text-slate-700">{book.coverColor}</span>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
       <BookFormModal

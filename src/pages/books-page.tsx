@@ -69,28 +69,20 @@ export function BooksPage() {
 
   const openEditModal = (book: Book) => {
     setSelectedBook(book);
-    if (isCreateRequested) {
-      clearCreateParam();
-    }
+    if (isCreateRequested) clearCreateParam();
   };
 
   const closeModal = () => {
     setSelectedBook(null);
-    if (isCreateRequested) {
-      clearCreateParam();
-    }
+    if (isCreateRequested) clearCreateParam();
   };
 
   const handleSearchChange = (value: string) => {
-    startTransition(() => {
-      setSearchInput(value);
-    });
+    startTransition(() => setSearchInput(value));
   };
 
   const handleGenreChange = (value: string) => {
-    startTransition(() => {
-      setGenre(value);
-    });
+    startTransition(() => setGenre(value));
   };
 
   const handleClearFilters = () => {
@@ -107,13 +99,11 @@ export function BooksPage() {
         toast({ title: "Book updated!", variant: "success" });
         return;
       }
-
       await createBookMutation.mutateAsync(formData);
       toast({ title: "Book added!", variant: "success" });
-    } catch (error) {
+    } catch (err) {
       toast({
-        description:
-          error instanceof Error ? error.message : "Please try again.",
+        description: err instanceof Error ? err.message : "Please try again.",
         title: "Failed to save book.",
         variant: "error",
       });
@@ -121,35 +111,26 @@ export function BooksPage() {
   };
 
   return (
-    <div className="space-y-6 md:space-y-8">
-      <section className="rounded-[32px] bg-[linear-gradient(135deg,_#fff7ed_0%,_#ffedd5_26%,_#e0e7ff_100%)] p-6 shadow-[0_35px_100px_-60px_rgba(15,23,42,0.8)] ring-1 ring-white/70 md:p-8 lg:p-10">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl">
-            <p className="text-[0.78rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
-              Catalog
-            </p>
-            <h1 className="mt-3 max-w-3xl text-[2.45rem] font-semibold leading-[0.94] tracking-[-0.05em] text-slate-950 md:text-[3.6rem]">
-              A proper library view, not a placeholder dashboard.
-            </h1>
-            <p className="mt-5 max-w-2xl text-[1rem] leading-8 text-slate-600 md:text-[1.08rem]">
-              Browse the hosted catalog, search it, filter by genre, inspect
-              details, and add your own records into local persistent state.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3 lg:pb-1">
-            <Button
-              size="lg"
-              className="rounded-2xl bg-slate-950 text-white hover:bg-slate-800"
-              onClick={openCreateModal}
-            >
-              <Plus className="size-4" />
-              Add book
-            </Button>
-          </div>
+    <div className="space-y-5">
+      {/* Page header */}
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-semibold text-slate-900 tracking-tight">Books</h2>
+          <p className="mt-0.5 text-sm text-slate-500">
+            Browse, search, and manage your library.
+          </p>
         </div>
-      </section>
+        <Button
+          size="sm"
+          className="rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm"
+          onClick={openCreateModal}
+        >
+          <Plus className="size-3.5" />
+          Add book
+        </Button>
+      </div>
 
+      {/* Search & filter */}
       <SearchAndFilter
         search={searchInput}
         genre={genre}
@@ -160,51 +141,46 @@ export function BooksPage() {
         onSearchChange={handleSearchChange}
       />
 
-      <div className="flex flex-col gap-2 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+      {/* Status bar */}
+      <div className="flex items-center justify-between text-xs text-slate-400">
         <span>
           Page {data?.page ?? page} of {data?.totalPages ?? 1}
         </span>
         {isFetching && !isLoading ? (
-          <span className="flex items-center gap-2 text-indigo-600">
-            <LoaderCircle className="size-4 animate-spin" />
-            Refreshing catalog
+          <span className="flex items-center gap-1.5 text-indigo-500">
+            <LoaderCircle className="size-3 animate-spin" />
+            Refreshing
           </span>
         ) : null}
       </div>
 
+      {/* Error */}
       {isError ? (
         <ErrorBanner
           message={error instanceof Error ? error.message : "Unable to load books."}
-          onRetry={() => {
-            void refetch();
-          }}
+          onRetry={() => void refetch()}
         />
       ) : null}
 
+      {/* Grid */}
       {isLoading ? (
-        <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
-          {Array.from({ length: pageSize }).map((_, index) => (
-            <SkeletonCard key={index} />
+        <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+          {Array.from({ length: pageSize }).map((_, i) => (
+            <SkeletonCard key={i} />
           ))}
         </div>
       ) : books.length ? (
         <motion.div
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.05 } },
-          }}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.04 } } }}
           initial="hidden"
           animate="show"
-          className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3"
+          className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3"
         >
           <AnimatePresence>
             {books.map((book) => (
               <motion.div
                 key={book.id}
-                variants={{
-                  hidden: { opacity: 0, y: 16 },
-                  show: { opacity: 1, y: 0 },
-                }}
+                variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
               >
                 <BookCard
                   book={book}
@@ -216,9 +192,7 @@ export function BooksPage() {
                     } catch (deleteError) {
                       toast({
                         description:
-                          deleteError instanceof Error
-                            ? deleteError.message
-                            : "Please try again.",
+                          deleteError instanceof Error ? deleteError.message : "Please try again.",
                         title: "Failed to delete book.",
                         variant: "error",
                       });
@@ -233,27 +207,30 @@ export function BooksPage() {
         <EmptyState hasFilters={hasActiveFilters} onAction={openCreateModal} />
       )}
 
-      <div className="flex flex-col gap-3 rounded-[24px] border border-slate-200/70 bg-white/88 p-4 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)] sm:flex-row sm:items-center sm:justify-between">
+      {/* Pagination */}
+      <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
         <Button
           variant="ghost"
-          className="rounded-2xl"
+          size="sm"
+          className="rounded-lg text-slate-600 hover:bg-slate-100"
           onClick={() => setPage(Math.max(1, page - 1))}
           disabled={page <= 1 || isLoading}
         >
-          <ChevronLeft className="size-4" />
+          <ChevronLeft className="size-3.5" />
           Previous
         </Button>
-        <div className="text-sm font-medium text-slate-500">
-          {data?.totalItems ?? 0} total books
-        </div>
+        <span className="text-xs font-medium text-slate-400">
+          {data?.totalItems ?? 0} books total
+        </span>
         <Button
           variant="ghost"
-          className="rounded-2xl"
+          size="sm"
+          className="rounded-lg text-slate-600 hover:bg-slate-100"
           onClick={() => setPage(data?.hasNextPage ? page + 1 : page)}
           disabled={!data?.hasNextPage || isLoading}
         >
           Next
-          <ChevronRight className="size-4" />
+          <ChevronRight className="size-3.5" />
         </Button>
       </div>
 

@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Pencil, Trash2, X } from "lucide-react";
+import { ExternalLink, Pencil, Trash2, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import type { Book } from "@/types/book";
 
 type BookCardProps = {
@@ -20,15 +19,16 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
   const hasCoverImage = Boolean(book.coverImage) && !imageFailed;
 
   return (
-    <motion.div layout initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
-      <Card className="h-full overflow-hidden rounded-[28px] border border-slate-200/70 bg-white/92 py-0 shadow-[0_20px_60px_-50px_rgba(15,23,42,0.9)] transition duration-200 hover:-translate-y-1 hover:shadow-[0_30px_80px_-50px_rgba(15,23,42,0.45)]">
+    <motion.div layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+      <div className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300 h-full">
+        {/* Cover */}
         <Link
           to={`/books/${book.id}`}
-          className="block focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-100"
+          className="block flex-none focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-1"
           title={book.title}
         >
           <div
-            className="relative h-32 overflow-hidden md:h-36"
+            className="relative h-[88px] overflow-hidden"
             style={{ backgroundColor: book.coverColor }}
           >
             {hasCoverImage ? (
@@ -40,107 +40,124 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
                   loading="lazy"
                   onError={() => setImageFailed(true)}
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,_rgba(15,23,42,0.02)_0%,_rgba(15,23,42,0.38)_100%)]" />
+                <div className="absolute inset-0 bg-black/20" />
               </>
             ) : (
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.32),_transparent_36%),linear-gradient(135deg,_rgba(15,23,42,0.08),_transparent)]" />
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 25% 25%, rgba(255,255,255,0.18), transparent 50%)",
+                }}
+              />
             )}
-            <div className="absolute bottom-4 left-4 flex size-14 items-center justify-center rounded-[22px] bg-white/18 text-2xl font-semibold text-white ring-1 ring-white/20 backdrop-blur-sm">
+            <div className="absolute bottom-3 left-4 flex size-9 items-center justify-center rounded-lg bg-black/25 text-base font-bold text-white ring-1 ring-white/20 backdrop-blur-[2px]">
               {titleInitial}
             </div>
           </div>
         </Link>
 
-        <CardContent className="space-y-4 px-5 py-5 md:px-6 md:py-6">
-          <div>
-            <Link to={`/books/${book.id}`} className="block">
-              <h3 className="line-clamp-2 text-[1.35rem] font-semibold leading-tight tracking-[-0.03em] text-slate-950">
+        {/* Body */}
+        <div className="flex flex-1 flex-col px-4 pt-3.5 pb-3">
+          <div className="flex-1">
+            <Link to={`/books/${book.id}`} className="block group/title">
+              <h3 className="line-clamp-2 text-[0.9rem] font-semibold leading-snug tracking-tight text-slate-900 group-hover/title:text-indigo-600 transition-colors">
                 {book.title}
               </h3>
             </Link>
-            <p className="mt-2 line-clamp-1 text-[0.98rem] text-slate-500">{book.author}</p>
-          </div>
+            <p className="mt-1 line-clamp-1 text-xs text-slate-400">{book.author}</p>
 
-          <div className="flex flex-wrap gap-2">
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-[0.78rem] font-semibold text-slate-600">
-              {book.publicationYear}
-            </span>
-            <span
-              className="rounded-full px-3 py-1 text-[0.78rem] font-semibold text-white"
-              style={{ backgroundColor: book.coverColor }}
-            >
-              {book.genre}
-            </span>
-          </div>
-
-          <p className="line-clamp-3 text-[0.98rem] leading-7 text-slate-600">
-            {book.description}
-          </p>
-        </CardContent>
-
-        <CardFooter className="mt-auto flex flex-col items-stretch gap-3 border-t border-slate-200 bg-slate-50/80 px-5 py-4 md:px-6">
-          <AnimatePresence mode="wait">
-            {isConfirmingDelete ? (
-              <motion.div
-                key="confirm"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="overflow-hidden"
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
+              <span className="inline-flex rounded-md bg-slate-100 px-2 py-0.5 text-[0.68rem] font-medium text-slate-500">
+                {book.publicationYear}
+              </span>
+              <span
+                className="inline-flex rounded-md px-2 py-0.5 text-[0.68rem] font-semibold text-white"
+                style={{ backgroundColor: book.coverColor }}
               >
-                <div className="flex flex-col gap-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 sm:flex-row sm:items-center sm:justify-between">
-                  <span>Delete this book?</span>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="text-slate-600 hover:bg-white"
-                      onClick={() => setIsConfirmingDelete(false)}
-                    >
-                      <X className="size-4" />
-                      Cancel
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="bg-rose-500 text-white hover:bg-rose-600"
-                      onClick={() => onDelete(book.id)}
-                    >
-                      Confirm
-                    </Button>
+                {book.genre}
+              </span>
+            </div>
+
+            <p className="mt-2.5 line-clamp-2 text-xs leading-relaxed text-slate-500">
+              {book.description}
+            </p>
+          </div>
+
+          {/* Actions */}
+          <div className="mt-3 border-t border-slate-100 pt-3">
+            <AnimatePresence mode="wait">
+              {isConfirmingDelete ? (
+                <motion.div
+                  key="confirm"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="flex items-center justify-between gap-2 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2">
+                    <span className="text-xs text-rose-700 font-medium">Delete this book?</span>
+                    <div className="flex items-center gap-1.5">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 rounded-md px-2 text-xs text-slate-500 hover:bg-white"
+                        onClick={() => setIsConfirmingDelete(false)}
+                      >
+                        <X className="size-3" />
+                        Cancel
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="h-7 rounded-md px-2.5 text-xs bg-rose-500 text-white hover:bg-rose-600"
+                        onClick={() => onDelete(book.id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="actions"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    className="flex-1 rounded-xl text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700"
-                    onClick={() => onEdit(book)}
-                  >
-                    <Pencil className="size-4" />
-                    Edit
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="flex-1 rounded-xl text-rose-600 hover:bg-rose-50 hover:text-rose-700"
-                    onClick={() => setIsConfirmingDelete(true)}
-                  >
-                    <Trash2 className="size-4" />
-                    Delete
-                  </Button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </CardFooter>
-      </Card>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="actions"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 flex-1 rounded-md text-xs text-slate-600 hover:bg-indigo-50 hover:text-indigo-700"
+                      onClick={() => onEdit(book)}
+                    >
+                      <Pencil className="size-3" />
+                      Edit
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 flex-1 rounded-md text-xs text-slate-500 hover:bg-rose-50 hover:text-rose-600"
+                      onClick={() => setIsConfirmingDelete(true)}
+                    >
+                      <Trash2 className="size-3" />
+                      Delete
+                    </Button>
+                    <Link
+                      to={`/books/${book.id}`}
+                      className="inline-flex h-7 w-7 flex-none items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+                      title="View details"
+                    >
+                      <ExternalLink className="size-3" />
+                    </Link>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }
