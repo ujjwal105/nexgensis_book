@@ -39,24 +39,24 @@ export function Modal({ children, isOpen, onClose, title, description }: ModalPr
           onClick={onClose}
         >
           <motion.div
-            className="mx-auto mt-4 flex max-h-[calc(100dvh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl md:mt-0 md:max-h-[min(800px,calc(100dvh-2rem))]"
+            className="mx-auto mt-4 flex max-h-[calc(100dvh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl md:mt-0 md:max-h-[min(800px,calc(100dvh-2rem))]"
             initial={{ opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.99 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex flex-none items-start justify-between gap-4 border-b border-slate-200 px-5 py-4">
+            <div className="flex flex-none items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-700 px-5 py-4">
               <div>
-                <h2 className="text-base font-semibold text-slate-900">{title}</h2>
+                <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">{title}</h2>
                 {description ? (
-                  <p className="mt-0.5 text-xs text-slate-400">{description}</p>
+                  <p className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">{description}</p>
                 ) : null}
               </div>
               <button
                 type="button"
                 aria-label="Close dialog"
-                className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+                className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300"
                 onClick={onClose}
               >
                 <X className="size-4" />

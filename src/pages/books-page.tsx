@@ -115,8 +115,8 @@ export function BooksPage() {
       {/* Page header */}
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-slate-900 tracking-tight">Books</h2>
-          <p className="mt-0.5 text-sm text-slate-500">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 tracking-tight">Books</h2>
+          <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
             Browse, search, and manage your library.
           </p>
         </div>
@@ -208,7 +208,7 @@ export function BooksPage() {
       )}
 
       {/* Pagination */}
-      <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+      <div className="flex items-center justify-between rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-3 shadow-sm">
         <Button
           variant="ghost"
           size="sm"

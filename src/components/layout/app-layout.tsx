@@ -4,12 +4,15 @@ import {
   BookMarked,
   BookOpenText,
   ChartColumnBig,
+  Moon,
   Plus,
   Search,
+  Sun,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/hooks/use-theme";
 
 const navigationItems = [
   { label: "Overview", icon: ChartColumnBig, to: "/" },
@@ -24,6 +27,7 @@ const mobileNavigationItems = [
 
 export function AppLayout() {
   const matches = useMatches();
+  const { theme, toggle } = useTheme();
   const activeMatch = [...matches]
     .reverse()
     .find((match) => Boolean((match.handle as { title?: string } | undefined)?.title));
@@ -31,7 +35,7 @@ export function AppLayout() {
     (activeMatch?.handle as { title?: string } | undefined)?.title ?? "Book System";
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       {/* Sidebar — fixed, desktop only */}
       <aside className="hidden md:flex fixed inset-y-0 left-0 z-30 w-[220px] flex-col bg-slate-900 border-r border-slate-800/50">
         {/* Logo */}
@@ -97,19 +101,59 @@ export function AppLayout() {
           ))}
         </nav>
 
-        {/* User */}
-        <div className="px-3 pb-4 border-t border-slate-800/60 pt-3 flex-none">
-          <div className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 hover:bg-slate-800/60 cursor-pointer transition-colors">
-            <div className="flex size-7 flex-none items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-violet-500 text-[0.65rem] font-bold text-white">
-              NT
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-[0.78rem] font-medium text-white truncate leading-none">
-                Nexgensis Team
-              </p>
-              <p className="text-[0.65rem] text-slate-500 truncate mt-0.5">
-                Product workspace
-              </p>
+        {/* Theme toggle + User */}
+        <div className="flex-none border-t border-slate-800/60">
+          {/* Theme toggle */}
+          <div className="px-3 pt-3">
+            <button
+              type="button"
+              onClick={toggle}
+              className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.82rem] font-medium text-slate-400 transition-colors hover:bg-slate-800/60 hover:text-slate-200"
+            >
+              {theme === "dark" ? (
+                <>
+                  <Sun className="size-3.5 flex-none text-amber-400" />
+                  <span>Light mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="size-3.5 flex-none text-slate-400" />
+                  <span>Dark mode</span>
+                </>
+              )}
+              {/* Toggle pill */}
+              <div
+                className={cn(
+                  "ml-auto flex h-5 w-9 items-center rounded-full border transition-colors",
+                  theme === "dark"
+                    ? "border-indigo-500/50 bg-indigo-500/30"
+                    : "border-slate-600 bg-slate-700",
+                )}
+              >
+                <div
+                  className={cn(
+                    "size-3.5 rounded-full bg-white shadow-sm transition-transform",
+                    theme === "dark" ? "translate-x-[18px]" : "translate-x-0.5",
+                  )}
+                />
+              </div>
+            </button>
+          </div>
+
+          {/* User */}
+          <div className="px-3 py-3">
+            <div className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 hover:bg-slate-800/60 cursor-pointer transition-colors">
+              <div className="flex size-7 flex-none items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-violet-500 text-[0.65rem] font-bold text-white">
+                NT
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[0.78rem] font-medium text-white truncate leading-none">
+                  Nexgensis Team
+                </p>
+                <p className="text-[0.65rem] text-slate-500 truncate mt-0.5">
+                  Product workspace
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -118,23 +162,23 @@ export function AppLayout() {
       {/* Content — offset by sidebar width on desktop */}
       <div className="md:pl-[220px] flex flex-col min-h-screen">
         {/* Top header */}
-        <header className="sticky top-0 z-20 flex h-[54px] flex-none items-center justify-between gap-4 border-b border-slate-200 bg-white px-5 md:px-6">
-          <h1 className="text-[0.9rem] font-semibold text-slate-800 tracking-tight">
+        <header className="sticky top-0 z-20 flex h-[54px] flex-none items-center justify-between gap-4 border-b border-slate-200 bg-white px-5 dark:bg-slate-900 dark:border-slate-800 md:px-6">
+          <h1 className="text-[0.9rem] font-semibold text-slate-800 tracking-tight dark:text-slate-200">
             {String(currentTitle)}
           </h1>
           <div className="flex items-center gap-1.5">
             <button
               type="button"
               aria-label="Open notifications"
-              className="inline-flex size-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+              className="inline-flex size-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-300"
             >
               <Bell className="size-3.5" />
             </button>
-            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 hover:bg-slate-100 cursor-pointer transition-colors">
+            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 hover:bg-slate-100 cursor-pointer transition-colors dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700">
               <div className="flex size-6 flex-none items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-violet-500 text-[0.6rem] font-bold text-white">
                 NT
               </div>
-              <p className="hidden text-[0.78rem] font-medium text-slate-700 md:block">
+              <p className="hidden text-[0.78rem] font-medium text-slate-700 dark:text-slate-300 md:block">
                 Nexgensis
               </p>
             </div>
@@ -156,7 +200,7 @@ export function AppLayout() {
       </div>
 
       {/* Mobile bottom nav */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur-sm px-4 py-2 md:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur-sm px-4 py-2 dark:bg-slate-900/95 dark:border-slate-800 md:hidden">
         <nav className="flex justify-around">
           {mobileNavigationItems.map(({ label, icon: Icon, to }) => (
             <NavLink
@@ -170,7 +214,7 @@ export function AppLayout() {
                     ? "bg-indigo-600 text-white"
                     : isActive
                       ? "text-indigo-600"
-                      : "text-slate-400 hover:text-slate-700",
+                      : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-300",
                 )
               }
             >

@@ -9,14 +9,14 @@ type EmptyStateProps = {
 
 export function EmptyState({ hasFilters = false, onAction }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center shadow-sm">
-      <div className="flex size-12 items-center justify-center rounded-xl bg-slate-100">
-        <BookX className="size-5 text-slate-400" />
+    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-6 py-16 text-center shadow-sm">
+      <div className="flex size-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
+        <BookX className="size-5 text-slate-400 dark:text-slate-500" />
       </div>
-      <h3 className="mt-4 text-sm font-semibold text-slate-900">
+      <h3 className="mt-4 text-sm font-semibold text-slate-900 dark:text-slate-100">
         {hasFilters ? "No books match your filters" : "No books yet"}
       </h3>
-      <p className="mt-1.5 max-w-xs text-xs text-slate-400 leading-relaxed">
+      <p className="mt-1.5 max-w-xs text-xs text-slate-400 dark:text-slate-500 leading-relaxed">
         {hasFilters
           ? "Try adjusting your search or genre filter to find what you're looking for."
           : "Add your first book to start building your catalog."}

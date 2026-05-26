@@ -1,8 +1,8 @@
 export function RouteFallback() {
   return (
-    <div className="rounded-[28px] border border-slate-200/70 bg-white/85 p-6 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)]">
-      <div className="h-8 w-40 animate-pulse rounded-full bg-slate-200" />
-      <div className="mt-5 h-48 animate-pulse rounded-[24px] bg-slate-100" />
+    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
+      <div className="h-6 w-36 animate-pulse rounded-md bg-slate-200 dark:bg-slate-800" />
+      <div className="mt-4 h-44 animate-pulse rounded-lg bg-slate-100 dark:bg-slate-800" />
     </div>
   );
 }

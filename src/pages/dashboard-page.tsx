@@ -3,7 +3,6 @@ import {
   BookCopy,
   Boxes,
   ChevronRight,
-  LoaderCircle,
   Sparkles,
   TrendingUp,
 } from "lucide-react";
@@ -26,7 +25,7 @@ export function DashboardPage() {
       sub: "across the catalog",
       icon: BookCopy,
       iconColor: "text-indigo-600",
-      iconBg: "bg-indigo-50",
+      iconBg: "bg-indigo-50 dark:bg-indigo-500/10",
       trend: "+12 this month",
     },
     {
@@ -35,7 +34,7 @@ export function DashboardPage() {
       sub: "unique categories",
       icon: Boxes,
       iconColor: "text-emerald-600",
-      iconBg: "bg-emerald-50",
+      iconBg: "bg-emerald-50 dark:bg-emerald-500/10",
       trend: "Well curated",
     },
     {
@@ -44,7 +43,7 @@ export function DashboardPage() {
       sub: "all systems normal",
       icon: Sparkles,
       iconColor: "text-amber-600",
-      iconBg: "bg-amber-50",
+      iconBg: "bg-amber-50 dark:bg-amber-500/10",
       trend: "100% uptime",
     },
   ];
@@ -54,8 +53,10 @@ export function DashboardPage() {
       {/* Page header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-slate-900 tracking-tight">Overview</h2>
-          <p className="mt-1 text-sm text-slate-500">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 tracking-tight">
+            Overview
+          </h2>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             Your book catalog at a glance.
           </p>
         </div>
@@ -76,27 +77,27 @@ export function DashboardPage() {
         {stats.map(({ label, value, sub, icon: Icon, iconColor, iconBg, trend }) => (
           <div
             key={label}
-            className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+            className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:bg-slate-900 dark:border-slate-800"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                   {label}
                 </p>
                 {value === null ? (
-                  <div className="mt-2 h-7 w-16 animate-pulse rounded-md bg-slate-100" />
+                  <div className="mt-2 h-7 w-16 animate-pulse rounded-md bg-slate-200 dark:bg-slate-700" />
                 ) : (
-                  <p className="mt-1.5 text-2xl font-bold text-slate-900 tracking-tight">
+                  <p className="mt-1.5 text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                     {value}
                   </p>
                 )}
-                <p className="mt-1 text-xs text-slate-400">{sub}</p>
+                <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">{sub}</p>
               </div>
               <div className={cn("flex size-9 flex-none items-center justify-center rounded-lg", iconBg)}>
                 <Icon className={cn("size-4", iconColor)} />
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-1.5 text-xs text-slate-500">
+            <div className="mt-4 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
               <TrendingUp className="size-3 text-emerald-500" />
               <span>{trend}</span>
             </div>
@@ -105,11 +106,13 @@ export function DashboardPage() {
       </div>
 
       {/* Recent books */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
           <div>
-            <h3 className="text-sm font-semibold text-slate-900">Recent Books</h3>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+              Recent Books
+            </h3>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
               Latest entries from the connected catalog
             </p>
           </div>
@@ -117,7 +120,7 @@ export function DashboardPage() {
             asChild
             variant="ghost"
             size="sm"
-            className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg h-7 text-xs"
+            className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg h-7 text-xs"
           >
             <Link to="/books">
               View all
@@ -126,16 +129,16 @@ export function DashboardPage() {
           </Button>
         </div>
 
-        <div className="divide-y divide-slate-100">
+        <div className="divide-y divide-slate-100 dark:divide-slate-800">
           {isLoading ? (
             Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex items-center gap-4 px-5 py-3.5">
-                <div className="size-9 rounded-lg bg-slate-100 animate-pulse flex-none" />
+                <div className="size-9 rounded-lg bg-slate-100 dark:bg-slate-800 animate-pulse flex-none" />
                 <div className="flex-1 space-y-1.5 min-w-0">
-                  <div className="h-3 bg-slate-100 rounded animate-pulse w-2/5" />
-                  <div className="h-3 bg-slate-100 rounded animate-pulse w-1/4" />
+                  <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded animate-pulse w-2/5" />
+                  <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded animate-pulse w-1/4" />
                 </div>
-                <div className="h-5 w-16 bg-slate-100 rounded-full animate-pulse hidden sm:block" />
+                <div className="h-5 w-16 bg-slate-100 dark:bg-slate-800 rounded-full animate-pulse hidden sm:block" />
               </div>
             ))
           ) : isError ? (
@@ -147,7 +150,11 @@ export function DashboardPage() {
           ) : books.length === 0 ? (
             <div className="px-5 py-10 text-center">
               <p className="text-sm text-slate-400">No books in the catalog yet.</p>
-              <Button asChild size="sm" className="mt-3 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">
+              <Button
+                asChild
+                size="sm"
+                className="mt-3 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+              >
                 <Link to="/books?create=true">Add your first book</Link>
               </Button>
             </div>
@@ -156,7 +163,7 @@ export function DashboardPage() {
               <Link
                 key={book.id}
                 to={`/books/${book.id}`}
-                className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors group"
+                className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors group"
               >
                 <div
                   className="flex size-9 flex-none items-center justify-center rounded-lg text-sm font-bold text-white"
@@ -165,10 +172,10 @@ export function DashboardPage() {
                   {book.title.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-slate-900 truncate group-hover:text-indigo-600 transition-colors">
+                  <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                     {book.title}
                   </p>
-                  <p className="text-xs text-slate-400 truncate mt-0.5">
+                  <p className="text-xs text-slate-400 dark:text-slate-500 truncate mt-0.5">
                     {book.author} · {book.publicationYear}
                   </p>
                 </div>
@@ -178,15 +185,15 @@ export function DashboardPage() {
                 >
                   {book.genre}
                 </span>
-                <ChevronRight className="size-3.5 text-slate-300 group-hover:text-slate-400 flex-none transition-colors" />
+                <ChevronRight className="size-3.5 text-slate-300 dark:text-slate-600 group-hover:text-slate-400 dark:group-hover:text-slate-500 flex-none transition-colors" />
               </Link>
             ))
           )}
         </div>
 
         {!isLoading && !isError && books.length > 0 ? (
-          <div className="border-t border-slate-100 px-5 py-3 bg-slate-50/50">
-            <p className="text-xs text-slate-400">
+          <div className="border-t border-slate-100 dark:border-slate-800 px-5 py-3 bg-slate-50/50 dark:bg-slate-800/30">
+            <p className="text-xs text-slate-400 dark:text-slate-500">
               Showing {books.length} of {totalItems} books
             </p>
           </div>
@@ -197,33 +204,33 @@ export function DashboardPage() {
       <div className="grid gap-3 sm:grid-cols-2">
         <Link
           to="/books?create=true"
-          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 bg-white p-4 text-sm transition-all hover:border-indigo-300 hover:bg-indigo-50/30"
+          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 text-sm transition-all hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/30 dark:hover:bg-indigo-500/5"
         >
-          <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 group-hover:bg-indigo-100 transition-colors">
+          <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/20 transition-colors">
             <BookCopy className="size-4" />
           </div>
           <div>
-            <p className="font-medium text-slate-900">Add a book</p>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="font-medium text-slate-900 dark:text-slate-100">Add a book</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
               Create a new catalog entry
             </p>
           </div>
-          <ArrowRight className="size-4 text-slate-300 group-hover:text-indigo-400 ml-auto flex-none transition-colors" />
+          <ArrowRight className="size-4 text-slate-300 dark:text-slate-600 group-hover:text-indigo-400 ml-auto flex-none transition-colors" />
         </Link>
         <Link
           to="/books"
-          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 bg-white p-4 text-sm transition-all hover:border-slate-400 hover:bg-slate-50"
+          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 text-sm transition-all hover:border-slate-400 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800/50"
         >
-          <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-slate-100 text-slate-600 group-hover:bg-slate-200 transition-colors">
+          <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 group-hover:bg-slate-200 dark:group-hover:bg-slate-700 transition-colors">
             <Boxes className="size-4" />
           </div>
           <div>
-            <p className="font-medium text-slate-900">Browse catalog</p>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="font-medium text-slate-900 dark:text-slate-100">Browse catalog</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
               Search and filter all books
             </p>
           </div>
-          <ArrowRight className="size-4 text-slate-300 group-hover:text-slate-500 ml-auto flex-none transition-colors" />
+          <ArrowRight className="size-4 text-slate-300 dark:text-slate-600 group-hover:text-slate-500 ml-auto flex-none transition-colors" />
         </Link>
       </div>
     </div>

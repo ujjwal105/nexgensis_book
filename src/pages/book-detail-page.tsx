@@ -21,11 +21,11 @@ export function BookDetailPage() {
   if (isLoading) {
     return (
       <div className="space-y-5 animate-fade-in">
-        <div className="h-8 w-32 animate-pulse rounded-lg bg-slate-200" />
-        <div className="h-52 animate-pulse rounded-xl bg-slate-200" />
+        <div className="h-8 w-32 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+        <div className="h-52 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
         <div className="grid gap-4 lg:grid-cols-[1fr_300px]">
-          <div className="h-48 animate-pulse rounded-xl bg-slate-200" />
-          <div className="h-48 animate-pulse rounded-xl bg-slate-200" />
+          <div className="h-48 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+          <div className="h-48 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
         </div>
       </div>
     );
@@ -169,30 +169,30 @@ export function BookDetailPage() {
       {/* Details grid */}
       <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
         {/* Description */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-slate-900">About this book</h2>
-          <p className="mt-3 text-sm leading-relaxed text-slate-600">{book.description}</p>
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">About this book</h2>
+          <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{book.description}</p>
         </div>
 
         {/* Metadata */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-slate-900">Metadata</h2>
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Metadata</h2>
           <div className="mt-3 space-y-3">
             <div>
-              <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mb-1">
                 <Hash className="size-3" />
                 <span>Book ID</span>
               </div>
-              <p className="rounded-md bg-slate-50 px-3 py-2 text-xs font-mono text-slate-700 break-all">
+              <p className="rounded-md bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-mono text-slate-700 dark:text-slate-300 break-all">
                 {book.id}
               </p>
             </div>
             <div>
-              <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mb-1">
                 <Calendar className="size-3" />
                 <span>Created</span>
               </div>
-              <p className="rounded-md bg-slate-50 px-3 py-2 text-xs text-slate-700">
+              <p className="rounded-md bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs text-slate-700 dark:text-slate-300">
                 {new Date(book.createdAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
@@ -201,13 +201,13 @@ export function BookDetailPage() {
               </p>
             </div>
             <div>
-              <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mb-1">
                 <Palette className="size-3" />
                 <span>Theme color</span>
               </div>
-              <div className="flex items-center gap-2 rounded-md bg-slate-50 px-3 py-2">
+              <div className="flex items-center gap-2 rounded-md bg-slate-50 dark:bg-slate-800 px-3 py-2">
                 <span
-                  className="size-4 rounded-full border border-slate-200 flex-none"
+                  className="size-4 rounded-full border border-slate-200 dark:border-slate-700 flex-none"
                   style={{ backgroundColor: book.coverColor }}
                 />
                 <span className="text-xs font-mono text-slate-700">{book.coverColor}</span>
