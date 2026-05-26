@@ -7,7 +7,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: var(--font-sans);
+    --font-heading: "Geist Variable", sans-serif;
     --font-sans: "Inter Variable", sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
@@ -50,6 +50,7 @@
 }
 
 :root {
+    color-scheme: light;
     --background: #f8fafc;
     --foreground: #0f172a;
     --card: #ffffff;
@@ -127,15 +128,36 @@
   }
 
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11" 1, "ss01" 1;
+    text-rendering: optimizeLegibility;
+    background-image:
+      radial-gradient(circle at top left, rgba(249, 115, 22, 0.1), transparent 24%),
+      radial-gradient(circle at top right, rgba(99, 102, 241, 0.12), transparent 28%),
+      linear-gradient(180deg, #f8fafc 0%, #eef2ff 52%, #fff8f1 100%);
   }
 
   #root {
     min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.18);
+    color: #0f172a;
   }
 }
 

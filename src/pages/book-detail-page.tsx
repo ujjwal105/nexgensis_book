@@ -78,7 +78,7 @@ export function BookDetailPage() {
           background: `linear-gradient(135deg, ${book.coverColor} 0%, #0f172a 85%)`,
         }}
       >
-        <div className="grid gap-8 px-8 py-10 lg:grid-cols-[220px_1fr] lg:px-10">
+        <div className="grid gap-8 px-6 py-8 md:px-8 md:py-10 lg:grid-cols-[220px_1fr] lg:px-10">
           <div className="relative">
             <div className="aspect-[3/4] overflow-hidden rounded-[28px] border border-white/15 bg-white/10 shadow-2xl backdrop-blur-sm">
               {book.coverImage ? (
@@ -97,13 +97,13 @@ export function BookDetailPage() {
 
           <div className="flex flex-col justify-between gap-8">
             <div>
-              <span className="inline-flex rounded-full bg-white/12 px-4 py-2 text-sm font-medium text-white/85 ring-1 ring-white/15">
+              <span className="inline-flex rounded-full bg-white/12 px-4 py-2 text-[0.82rem] font-semibold uppercase tracking-[0.12em] text-white/85 ring-1 ring-white/15">
                 {book.genre}
               </span>
-              <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight md:text-5xl">
+              <h1 className="mt-5 max-w-3xl text-[2.5rem] font-semibold leading-[0.95] tracking-[-0.05em] md:text-[4rem]">
                 {book.title}
               </h1>
-              <p className="mt-5 max-w-3xl text-base leading-8 text-white/80">
+              <p className="mt-5 max-w-3xl text-[1rem] leading-8 text-white/80 md:text-[1.06rem]">
                 {book.description}
               </p>
             </div>
@@ -112,17 +112,17 @@ export function BookDetailPage() {
               <div className="rounded-[24px] bg-white/10 p-4 ring-1 ring-white/15 backdrop-blur-sm">
                 <UserRound className="size-5 text-white/80" />
                 <p className="mt-3 text-sm text-white/70">Author</p>
-                <p className="mt-1 text-lg font-medium">{book.author}</p>
+                <p className="mt-1 text-[1.2rem] font-semibold tracking-[-0.03em]">{book.author}</p>
               </div>
               <div className="rounded-[24px] bg-white/10 p-4 ring-1 ring-white/15 backdrop-blur-sm">
                 <Calendar className="size-5 text-white/80" />
                 <p className="mt-3 text-sm text-white/70">Publication year</p>
-                <p className="mt-1 text-lg font-medium">{book.publicationYear}</p>
+                <p className="mt-1 text-[1.2rem] font-semibold tracking-[-0.03em]">{book.publicationYear}</p>
               </div>
               <div className="rounded-[24px] bg-white/10 p-4 ring-1 ring-white/15 backdrop-blur-sm">
                 <Layers3 className="size-5 text-white/80" />
                 <p className="mt-3 text-sm text-white/70">Catalog type</p>
-                <p className="mt-1 text-lg font-medium">
+                <p className="mt-1 text-[1.2rem] font-semibold tracking-[-0.03em]">
                   {book.id.startsWith("local-") ? "Local custom" : "Hosted import"}
                 </p>
               </div>
@@ -148,20 +148,20 @@ export function BookDetailPage() {
       </section>
 
       <div className="grid gap-6 lg:grid-cols-[1.3fr_0.8fr]">
-        <Card className="border border-slate-200/70 bg-white/85 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)]">
+        <Card className="rounded-[28px] border border-slate-200/70 bg-white/88 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)]">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-slate-950">
+            <CardTitle className="text-[2rem] font-semibold tracking-[-0.04em] text-slate-950">
               Description
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-sm leading-7 text-slate-600">
+          <CardContent className="text-[1rem] leading-8 text-slate-600">
             {book.description}
           </CardContent>
         </Card>
 
-        <Card className="border border-slate-200/70 bg-white/85 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)]">
+        <Card className="rounded-[28px] border border-slate-200/70 bg-white/88 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)]">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-slate-950">
+            <CardTitle className="text-[2rem] font-semibold tracking-[-0.04em] text-slate-950">
               Metadata
             </CardTitle>
           </CardHeader>

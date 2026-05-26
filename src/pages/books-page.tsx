@@ -121,23 +121,23 @@ export function BooksPage() {
   };
 
   return (
-    <div className="space-y-8">
-      <section className="rounded-[32px] bg-[linear-gradient(135deg,_#fff7ed_0%,_#ffedd5_30%,_#e0e7ff_100%)] p-6 shadow-[0_35px_100px_-60px_rgba(15,23,42,0.8)] ring-1 ring-white/70 md:p-8">
+    <div className="space-y-6 md:space-y-8">
+      <section className="rounded-[32px] bg-[linear-gradient(135deg,_#fff7ed_0%,_#ffedd5_26%,_#e0e7ff_100%)] p-6 shadow-[0_35px_100px_-60px_rgba(15,23,42,0.8)] ring-1 ring-white/70 md:p-8 lg:p-10">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-slate-500">
+            <p className="text-[0.78rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
               Catalog
             </p>
-            <h1 className="mt-3 max-w-2xl text-4xl font-semibold tracking-tight text-slate-950 md:text-5xl">
+            <h1 className="mt-3 max-w-3xl text-[2.45rem] font-semibold leading-[0.94] tracking-[-0.05em] text-slate-950 md:text-[3.6rem]">
               A proper library view, not a placeholder dashboard.
             </h1>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 md:text-base">
+            <p className="mt-5 max-w-2xl text-[1rem] leading-8 text-slate-600 md:text-[1.08rem]">
               Browse the hosted catalog, search it, filter by genre, inspect
               details, and add your own records into local persistent state.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 lg:pb-1">
             <Button
               size="lg"
               className="rounded-2xl bg-slate-950 text-white hover:bg-slate-800"
@@ -160,7 +160,7 @@ export function BooksPage() {
         onSearchChange={handleSearchChange}
       />
 
-      <div className="flex items-center justify-between text-sm text-slate-500">
+      <div className="flex flex-col gap-2 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
         <span>
           Page {data?.page ?? page} of {data?.totalPages ?? 1}
         </span>
@@ -182,7 +182,7 @@ export function BooksPage() {
       ) : null}
 
       {isLoading ? (
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
           {Array.from({ length: pageSize }).map((_, index) => (
             <SkeletonCard key={index} />
           ))}
@@ -195,7 +195,7 @@ export function BooksPage() {
           }}
           initial="hidden"
           animate="show"
-          className="grid gap-5 md:grid-cols-2 xl:grid-cols-3"
+          className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3"
         >
           <AnimatePresence>
             {books.map((book) => (
@@ -233,7 +233,7 @@ export function BooksPage() {
         <EmptyState hasFilters={hasActiveFilters} onAction={openCreateModal} />
       )}
 
-      <div className="flex items-center justify-between rounded-[24px] border border-slate-200/70 bg-white/85 p-4 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)]">
+      <div className="flex flex-col gap-3 rounded-[24px] border border-slate-200/70 bg-white/88 p-4 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)] sm:flex-row sm:items-center sm:justify-between">
         <Button
           variant="ghost"
           className="rounded-2xl"
@@ -243,7 +243,7 @@ export function BooksPage() {
           <ChevronLeft className="size-4" />
           Previous
         </Button>
-        <div className="text-sm text-slate-500">
+        <div className="text-sm font-medium text-slate-500">
           {data?.totalItems ?? 0} total books
         </div>
         <Button

@@ -100,6 +100,14 @@ function getPublicationYear(value?: string) {
   return match ? Number(match[0]) : new Date().getFullYear();
 }
 
+function normalizeImageUrl(value?: string) {
+  if (!value) {
+    return undefined;
+  }
+
+  return value.replace(/^http:\/\//i, "https://");
+}
+
 function normalizeBook(item: FreeApiBookItem): Book {
   const title = item.volumeInfo?.title?.trim() || "Untitled Book";
   const author = item.volumeInfo?.authors?.join(", ").trim() || "Unknown Author";
@@ -109,8 +117,10 @@ function normalizeBook(item: FreeApiBookItem): Book {
     item.volumeInfo?.description?.trim() ||
     "No description is available for this book yet.";
   const coverImage =
-    item.volumeInfo?.imageLinks?.thumbnail ||
-    item.volumeInfo?.imageLinks?.smallThumbnail;
+    normalizeImageUrl(
+      item.volumeInfo?.imageLinks?.thumbnail ||
+        item.volumeInfo?.imageLinks?.smallThumbnail,
+    );
 
   return {
     id: String(item.id),

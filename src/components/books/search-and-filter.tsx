@@ -25,8 +25,8 @@ export function SearchAndFilter({
   onSearchChange,
 }: SearchAndFilterProps) {
   return (
-    <div className="rounded-[28px] border border-slate-200/70 bg-white/85 p-4 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)] backdrop-blur">
-      <div className="grid gap-4 lg:grid-cols-[1fr_220px_auto] lg:items-center">
+    <div className="rounded-[30px] border border-slate-200/70 bg-white/88 p-4 shadow-[0_24px_70px_-55px_rgba(15,23,42,0.8)] backdrop-blur md:p-5">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px_auto] lg:items-center">
         <div className="relative">
           <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
           <Input
@@ -56,7 +56,7 @@ export function SearchAndFilter({
         {hasActiveFilters ? (
           <Button
             variant="ghost"
-            className="rounded-2xl text-slate-600 hover:bg-slate-100"
+            className="rounded-2xl text-slate-600 hover:bg-slate-100 lg:justify-self-end"
             onClick={onClearFilters}
           >
             <X className="size-4" />
@@ -65,7 +65,7 @@ export function SearchAndFilter({
         ) : null}
       </div>
 
-      <div className="mt-4 text-sm text-slate-500">Showing {resultsCount} books</div>
+      <div className="mt-4 text-sm font-medium text-slate-500">Showing {resultsCount} books</div>
     </div>
   );
 }
