@@ -63,6 +63,13 @@ const LIST_CONFIG: Record<
   },
 };
 
+const LIST_ROUTE_MAP: Record<string, BookListViewKey> = {
+  "/books/all": "all",
+  "/books/want-to-read": "want-to-read",
+  "/books/finished": "finished",
+  "/books/my-samples": "my-samples",
+};
+
 /* ─── helpers ─────────────────────────────────────────────────── */
 
 function sortBooksByRecency(books: Book[]) {
@@ -308,11 +315,7 @@ export function BooksPage() {
   );
   const totalBookCount = data?.totalItems ?? 0;
 
-  // List filter — activated by ?list= search param
-  const rawList = params.get("list") ?? "";
-  const listFilter = (
-    rawList in LIST_CONFIG ? rawList : null
-  ) as BookListViewKey | null;
+  const listFilter = LIST_ROUTE_MAP[location.pathname] ?? null;
   const isListView = Boolean(listFilter);
   const listFilteredBooks =
     listFilter === "my-samples"

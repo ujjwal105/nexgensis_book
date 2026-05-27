@@ -30,32 +30,21 @@ function LibraryNavItem({
   icon: Icon,
   label,
   to,
-  listParam,
   count,
   collapsed = false,
 }: {
   icon: React.ElementType;
   label: string;
   to: string;
-  /** URL ?list= value — undefined means "All Books" (no param) */
-  listParam?: string;
   count?: number;
   collapsed?: boolean;
 }) {
   const location = useLocation();
-  const currentList = new URLSearchParams(location.search).get("list");
-
-  // Exact match: if this item has a listParam, active only when ?list matches.
-  // "All Books" (no listParam) is active only when on /books with NO list param.
-  const isActive = listParam
-    ? location.pathname === "/books" && currentList === listParam
-    : location.pathname === "/books" && !currentList;
-
-  const href = listParam ? `${to}?list=${listParam}` : to;
+  const isActive = location.pathname === to;
 
   return (
     <Link
-      to={href}
+      to={to}
       className={cn(
         "mb-0.5 flex items-center rounded-lg py-2 text-[0.82rem] font-medium transition-colors",
         collapsed ? "justify-center px-0" : "gap-2.5 px-2.5",
@@ -92,8 +81,7 @@ export function AppLayout() {
   const { theme, toggle } = useTheme();
   const { counts } = useBookLists();
   const isSearchRoute = location.pathname === "/search";
-  const currentList = new URLSearchParams(location.search).get("list");
-  const isBooksTabActive = location.pathname === "/books" && !currentList;
+  const isBooksTabActive = location.pathname.startsWith("/books");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(() => {
     if (typeof window === "undefined") return false;
     return window.localStorage.getItem("sidebar-collapsed") === "true";
@@ -231,31 +219,27 @@ export function AppLayout() {
               <LibraryNavItem
                 icon={LayoutGrid}
                 label="All Books"
-                to="/books"
-                listParam="all"
+                to="/books/all"
                 collapsed={isSidebarCollapsed}
               />
               <LibraryNavItem
                 icon={BookMarked}
                 label="Want to Read"
-                to="/books"
-                listParam="want-to-read"
+                to="/books/want-to-read"
                 count={counts["want-to-read"]}
                 collapsed={isSidebarCollapsed}
               />
               <LibraryNavItem
                 icon={CheckCircle2}
                 label="Finished"
-                to="/books"
-                listParam="finished"
+                to="/books/finished"
                 count={counts.finished}
                 collapsed={isSidebarCollapsed}
               />
               <LibraryNavItem
                 icon={FolderPlus}
                 label="My Samples"
-                to="/books"
-                listParam="my-samples"
+                to="/books/my-samples"
                 collapsed={isSidebarCollapsed}
               />
             </div>

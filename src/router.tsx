@@ -38,6 +38,34 @@ export const appRouter = createBrowserRouter([
         },
       },
       {
+        path: "books/all",
+        element: withSuspense(<LazyBooksPage />),
+        handle: {
+          title: "All Books",
+        },
+      },
+      {
+        path: "books/want-to-read",
+        element: withSuspense(<LazyBooksPage />),
+        handle: {
+          title: "Want to Read",
+        },
+      },
+      {
+        path: "books/finished",
+        element: withSuspense(<LazyBooksPage />),
+        handle: {
+          title: "Finished",
+        },
+      },
+      {
+        path: "books/my-samples",
+        element: withSuspense(<LazyBooksPage />),
+        handle: {
+          title: "My Samples",
+        },
+      },
+      {
         path: "books/:id",
         element: withSuspense(<LazyBookDetailPage />),
         handle: {
