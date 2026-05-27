@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Calendar, Hash, Layers3, Palette, UserRound } from "lucide-react";
 
@@ -16,11 +16,20 @@ export function BookDetailPage() {
   const navigate = useNavigate();
   const { data: book, error, isError, isLoading } = useBook(id);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDescExpanded, setIsDescExpanded] = useState(false);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const descRef = useRef<HTMLParagraphElement>(null);
   const deleteBookMutation = useDeleteBook();
   const updateBookMutation = useUpdateBook();
   const { toast } = useToast();
   const backHref =
     typeof location.state?.from === "string" ? location.state.from : "/books";
+
+  useEffect(() => {
+    const el = descRef.current;
+    if (!el) return;
+    setIsOverflowing(el.scrollHeight > el.clientHeight);
+  }, [book?.description]);
 
   if (isLoading) {
     return (
@@ -125,7 +134,7 @@ export function BookDetailPage() {
               <h1 className="mt-3 text-[1.8rem] font-bold leading-tight tracking-tight text-white md:text-[2.4rem]">
                 {book.title}
               </h1>
-              <p className="mt-2 text-sm text-white/70 leading-relaxed max-w-2xl">
+              <p className="mt-2 text-sm text-white/70 leading-relaxed max-w-2xl line-clamp-4">
                 {book.description}
               </p>
             </div>
@@ -165,7 +174,20 @@ export function BookDetailPage() {
         {/* Description */}
         <div className="rounded-xl border border-slate-200 dark:border-white/8 bg-white dark:bg-[#232324] p-5 shadow-sm">
           <h2 className="text-sm font-semibold text-slate-900 dark:text-white/90">About this book</h2>
-          <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-white/60">{book.description}</p>
+          <p
+            ref={descRef}
+            className={`mt-3 text-sm leading-relaxed text-slate-600 dark:text-white/60 ${!isDescExpanded ? "line-clamp-5" : ""}`}
+          >
+            {book.description}
+          </p>
+          {isOverflowing || isDescExpanded ? (
+            <button
+              onClick={() => setIsDescExpanded((prev) => !prev)}
+              className="mt-2 text-xs font-medium text-blue-700 dark:text-blue-600 hover:text-slate-800 dark:hover:text-white/80 transition-colors"
+            >
+              {isDescExpanded ? "Show less ↑" : "Read more ↓"}
+            </button>
+          ) : null}
         </div>
 
         {/* Metadata */}
