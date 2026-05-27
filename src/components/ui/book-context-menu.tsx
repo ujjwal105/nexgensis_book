@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   BookMarked,
+  CircleMinus,
   CheckCircle2,
   EllipsisVertical,
   Pencil,
@@ -27,17 +28,25 @@ type BookContextMenuActionKey = Exclude<BookListKey, "collection">;
 
 const listActions: Record<
   BookContextMenuActionKey,
-  { key: BookContextMenuActionKey; icon: typeof BookMarked; label: string; activeLabel: string }
+  {
+    key: BookContextMenuActionKey;
+    icon: typeof BookMarked;
+    activeIcon: typeof CircleMinus;
+    label: string;
+    activeLabel: string;
+  }
 > = {
   "want-to-read": {
     key: "want-to-read",
     icon: BookMarked,
+    activeIcon: CircleMinus,
     label: "Add to Want to Read",
     activeLabel: "Remove",
   },
   finished: {
     key: "finished",
     icon: CheckCircle2,
+    activeIcon: CircleMinus,
     label: "Mark as Finished",
     activeLabel: "Remove",
   },
@@ -154,7 +163,12 @@ export function BookContextMenu({
             {actions.length > 0 && (
               <div className="px-1 py-1">
                 {actions.map((key) => {
-                  const { icon: Icon, label, activeLabel } = listActions[key];
+                  const {
+                    icon: Icon,
+                    activeIcon: ActiveIcon,
+                    label,
+                    activeLabel,
+                  } = listActions[key];
                   const active = isIn(key, bookId);
                   return (
                     <button
@@ -165,17 +179,13 @@ export function BookContextMenu({
                         const result = toggle(key, bookId);
                         if (result.ok) {
                           const title =
-                            result.action === "moved"
+                            result.action === "removed"
                               ? key === "want-to-read"
-                                ? "Moved to Want to Read"
-                                : "Moved to Finished"
-                              : result.action === "added"
-                                ? key === "want-to-read"
-                                  ? "Added to Want to Read"
-                                  : "Added to Finished"
-                                : key === "want-to-read"
-                                  ? "Removed from Want to Read"
-                                  : "Removed from Finished";
+                                ? "Removed from Want to Read"
+                                : "Removed from Finished"
+                              : key === "want-to-read"
+                                ? "Want to Read — great pick for your next read!"
+                                : "Finished — great job completing it!";
 
                           toast.success(title);
                         }
@@ -183,14 +193,21 @@ export function BookContextMenu({
                       }}
                       className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-white/85 dark:hover:bg-white/8"
                     >
-                      <Icon
-                        className={cn(
-                          "size-4 flex-none",
-                          active
-                            ? "text-emerald-500 dark:text-emerald-300"
-                            : "text-slate-400 dark:text-white/40",
-                        )}
-                      />
+                      {active ? (
+                        <ActiveIcon
+                          className={cn(
+                            "size-4 flex-none",
+                            "text-rose-500 dark:text-rose-300",
+                          )}
+                        />
+                      ) : (
+                        <Icon
+                          className={cn(
+                            "size-4 flex-none",
+                            "text-slate-400 dark:text-white/40",
+                          )}
+                        />
+                      )}
                       {active ? activeLabel : label}
                       {active && (
                         <span className="ml-auto size-1.5 rounded-full bg-emerald-500 dark:bg-emerald-300" />
