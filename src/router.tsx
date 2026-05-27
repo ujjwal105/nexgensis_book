@@ -7,6 +7,7 @@ import {
   LazyBookDetailPage,
   LazyBooksPage,
   LazyDashboardPage,
+  LazyNotFoundPage,
   LazySearchPage,
 } from "@/pages/lazy-pages";
 
@@ -80,5 +81,16 @@ export const appRouter = createBrowserRouter([
         },
       },
     ],
+  },
+  {
+    path: "/not-found",
+    element: withSuspense(<LazyNotFoundPage />),
+    handle: {
+      title: "Page Not Found",
+    },
+  },
+  {
+    path: "*",
+    element: <Navigate to="/not-found" replace />,
   },
 ]);

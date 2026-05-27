@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Calendar, Hash, Layers3, Palette, UserRound } from "lucide-react";
 
 import { BookFormModal } from "@/components/books/book-form-modal";
@@ -46,7 +46,20 @@ export function BookDetailPage() {
   }
 
   if (isError || !book) {
-    return <ErrorBanner message={error instanceof Error ? error.message : "Book not found"} />;
+    const message =
+      error instanceof Error ? error.message.toLowerCase() : "book not found";
+    const isMissingBook =
+      message.includes("not found") || message.includes("does not exist");
+
+    if (isMissingBook || !book) {
+      return <Navigate to="/not-found" replace />;
+    }
+
+    return (
+      <ErrorBanner
+        message={error instanceof Error ? error.message : "Unable to load book."}
+      />
+    );
   }
 
   const handleDelete = async () => {

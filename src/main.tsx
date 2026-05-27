@@ -7,6 +7,9 @@ import "./index.css";
 import { queryClient } from "@/lib/query-client";
 import { ToastProvider } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
+import { applyTheme, getInitialTheme } from "@/hooks/use-theme";
+
+applyTheme(getInitialTheme());
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

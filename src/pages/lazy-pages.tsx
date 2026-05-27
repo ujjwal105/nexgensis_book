@@ -19,3 +19,8 @@ export const LazySearchPage = lazy(async () => {
   const module = await import("@/pages/search-page");
   return { default: module.SearchPage };
 });
+
+export const LazyNotFoundPage = lazy(async () => {
+  const module = await import("@/pages/not-found-page");
+  return { default: module.NotFoundPage };
+});
