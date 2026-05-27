@@ -43,7 +43,8 @@ const LIST_CONFIG: Record<
   "want-to-read": {
     label: "Want to Read",
     icon: BookMarked,
-    emptyHint: "Browse the store and mark books you want to read from the ⋮ menu.",
+    emptyHint:
+      "Browse the store and mark books you want to read from the ⋮ menu.",
   },
   finished: {
     label: "Finished",
@@ -126,7 +127,9 @@ function BookCover({
           <p className="line-clamp-2 text-[0.92rem] font-semibold leading-snug tracking-tight text-white drop-shadow">
             {book.title}
           </p>
-          <p className="mt-1 line-clamp-1 text-[0.75rem] text-white/70">{book.author}</p>
+          <p className="mt-1 line-clamp-1 text-[0.75rem] text-white/70">
+            {book.author}
+          </p>
         </div>
       )}
     </div>
@@ -166,13 +169,22 @@ function RankedBookRow({
         {index + 1}
       </span>
 
-      <Link to={`/books/${book.id}`} className="flex flex-1 items-center gap-3 min-w-0">
-        <BookCover book={book} className="h-[60px] w-[44px] flex-none rounded-[10px]" showText={false} />
+      <Link
+        to={`/books/${book.id}`}
+        className="flex flex-1 items-center gap-3 min-w-0"
+      >
+        <BookCover
+          book={book}
+          className="h-[60px] w-[44px] flex-none rounded-[10px]"
+          showText={false}
+        />
         <div className="min-w-0">
           <p className="truncate text-[0.92rem] font-semibold tracking-tight text-slate-900 dark:text-white transition-colors group-hover:text-emerald-600 dark:group-hover:text-emerald-300">
             {book.title}
           </p>
-          <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/50">{book.author}</p>
+          <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/50">
+            {book.author}
+          </p>
         </div>
       </Link>
 
@@ -188,7 +200,13 @@ function RankedBookRow({
 /* ─── SectionHeading ────────────────────────────────────────────── */
 // Apple Books: ~20–22 px semibold/bold — NOT 37 px
 
-function SectionHeading({ eyebrow, title }: { eyebrow?: string; title: string }) {
+function SectionHeading({
+  eyebrow,
+  title,
+}: {
+  eyebrow?: string;
+  title: string;
+}) {
   return (
     <div className="mb-5">
       {eyebrow ? (
@@ -265,11 +283,16 @@ export function BooksPage() {
 
   const isCreateRequested = params.get("create") === "true";
   const isModalOpen = Boolean(selectedBook) || isCreateRequested;
-  const books = useMemo(() => sortBooksByRecency(data?.data ?? []), [data?.data]);
+  const books = useMemo(
+    () => sortBooksByRecency(data?.data ?? []),
+    [data?.data],
+  );
 
   // List filter — activated by ?list= search param
   const rawList = params.get("list") ?? "";
-  const listFilter = (rawList in LIST_CONFIG ? rawList : null) as BookListViewKey | null;
+  const listFilter = (
+    rawList in LIST_CONFIG ? rawList : null
+  ) as BookListViewKey | null;
   const isListView = Boolean(listFilter);
   const listFilteredBooks =
     listFilter === "my-samples"
@@ -280,9 +303,14 @@ export function BooksPage() {
 
   const featuredBooks = books.slice(0, 3);
   const rankedBooks = books.slice(0, 6);
-  const genreShelves = useMemo(() => groupBooksByGenre(books).slice(0, 4), [books]);
+  const genreShelves = useMemo(
+    () => groupBooksByGenre(books).slice(0, 4),
+    [books],
+  );
   const curatedShelf = books.slice(3, 9);
-  const fictionShelf = genreShelves.find(([g]) => g.toLowerCase().includes("fiction"));
+  const fictionShelf = genreShelves.find(([g]) =>
+    g.toLowerCase().includes("fiction"),
+  );
   const libraryShelf = fictionShelf?.[1] ?? curatedShelf;
 
   const clearCreateParam = () => {
@@ -311,7 +339,10 @@ export function BooksPage() {
   const handleSubmit = async (formData: BookDraft) => {
     try {
       if (selectedBook) {
-        await updateBookMutation.mutateAsync({ id: selectedBook.id, bookData: formData });
+        await updateBookMutation.mutateAsync({
+          id: selectedBook.id,
+          bookData: formData,
+        });
         toast({ title: "Book updated!", variant: "success" });
         return;
       }
@@ -333,7 +364,9 @@ export function BooksPage() {
     } catch (deleteError) {
       toast({
         description:
-          deleteError instanceof Error ? deleteError.message : "Please try again.",
+          deleteError instanceof Error
+            ? deleteError.message
+            : "Please try again.",
         title: "Failed to delete book.",
         variant: "error",
       });
@@ -343,7 +376,9 @@ export function BooksPage() {
   if (isError) {
     return (
       <ErrorBanner
-        message={error instanceof Error ? error.message : "Unable to load books."}
+        message={
+          error instanceof Error ? error.message : "Unable to load books."
+        }
         onRetry={() => void refetch()}
       />
     );
@@ -354,10 +389,22 @@ export function BooksPage() {
     return (
       <>
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <h1 className="text-[2rem] font-bold tracking-tight text-slate-900 dark:text-white">
-            All
-          </h1>
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-[2rem] font-bold tracking-tight text-slate-900 dark:text-white">
+                All
+              </h1>
+              {!isLoading && books.length > 0 && (
+                <span className="flex h-6 min-w-[1.5rem] items-center justify-center rounded-full bg-slate-100 px-2 text-[0.7rem] font-semibold text-slate-500 dark:bg-white/10 dark:text-white/50">
+                  {books.length}
+                </span>
+              )}
+            </div>
+            <p className="mt-1 text-[0.82rem] text-slate-400 dark:text-white/35">
+              Your complete book library
+            </p>
+          </div>
           <Button
             size="sm"
             variant="outline"
@@ -398,7 +445,9 @@ export function BooksPage() {
         <BookFormModal
           book={selectedBook}
           isOpen={isModalOpen}
-          isLoading={createBookMutation.isPending || updateBookMutation.isPending}
+          isLoading={
+            createBookMutation.isPending || updateBookMutation.isPending
+          }
           onClose={closeModal}
           onSubmit={handleSubmit}
         />
@@ -406,52 +455,72 @@ export function BooksPage() {
     );
   }
 
-  /* ── List view (Want to Read / Finished / Collection) ─────────── */
+  /* ── List view (Want to Read / Finished / Collection / My Samples) */
   if (isListView && listFilter && !isLoading) {
     const { label, icon: ListIcon, emptyHint } = LIST_CONFIG[listFilter];
     return (
       <>
-        {/* Header */}
-        <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <ListIcon className="size-5 text-emerald-500 dark:text-emerald-300" />
-            <h1 className="text-[1.4rem] font-bold tracking-tight text-slate-900 dark:text-white">
-              {label}
-            </h1>
-            <span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-emerald-100 px-1.5 text-[0.68rem] font-semibold text-emerald-600 dark:bg-emerald-400/15 dark:text-emerald-300">
-              {listFilteredBooks.length}
-            </span>
+        {/* ── Page header ─────────────────────────────────────────── */}
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            {/* Title row */}
+            <div className="flex items-center gap-3">
+              <h1 className="text-[2rem] font-bold tracking-tight text-slate-900 dark:text-white">
+                {label}
+              </h1>
+              {listFilteredBooks.length > 0 && (
+                <span className="flex h-6 min-w-[1.5rem] items-center justify-center rounded-full bg-slate-100 px-2 text-[0.7rem] font-semibold text-slate-500 dark:bg-white/10 dark:text-white/50">
+                  {listFilteredBooks.length}
+                </span>
+              )}
+            </div>
+            {/* Subtitle */}
+            {emptyHint && (
+              <p className="mt-1 text-[0.82rem] text-slate-400 dark:text-white/35">
+                {emptyHint}
+              </p>
+            )}
           </div>
-          {listFilter === "my-samples" ? (
+
+          {/* Action button — only for My Samples */}
+          {listFilter === "my-samples" && (
             <Button
               size="sm"
-              variant="outline"
               onClick={openCreateModal}
-              className="rounded-full px-4"
+              className="flex-none rounded-full bg-slate-900 px-4 text-white hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-white/90"
             >
               <Plus className="size-3.5" />
               Add Book
             </Button>
-          ) : null}
+          )}
         </div>
-        <p className="mt-0.5 text-xs text-slate-400 dark:text-white/40">{emptyHint}</p>
 
+        {/* ── Content ──────────────────────────────────────────────── */}
         {listFilteredBooks.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 dark:border-white/10 bg-white dark:bg-white/4 py-20 text-center">
-            <ListIcon className="size-10 text-slate-200 dark:text-white/25 mb-3" />
-            <p className="text-sm font-medium text-slate-400 dark:text-white/40">Nothing here yet</p>
-            <p className="mt-1 max-w-xs text-xs text-slate-300 dark:text-white/30">{emptyHint}</p>
+          /* Full-height centered empty state — no border box */
+          <div className="flex min-h-[52vh] flex-col items-center justify-center gap-4 text-center">
+            <div className="flex size-16 items-center justify-center rounded-2xl bg-slate-100 dark:bg-white/6">
+              <ListIcon className="size-7 text-slate-300 dark:text-white/25" />
+            </div>
+            <div>
+              <p className="text-[0.95rem] font-semibold text-slate-500 dark:text-white/45">
+                Nothing here yet
+              </p>
+              <p className="mt-1 max-w-[22rem] text-[0.78rem] leading-relaxed text-slate-400 dark:text-white/30">
+                {emptyHint}
+              </p>
+            </div>
           </div>
         ) : (
           <div className="grid gap-3 md:grid-cols-2">
             {listFilteredBooks.map((book) => (
               <div
                 key={book.id}
-                className="flex items-center gap-4 rounded-[16px] border border-slate-200 bg-white p-3.5 dark:border-white/8 dark:bg-[#232324]"
+                className="flex items-center gap-4 rounded-2xl border border-slate-100 bg-white p-3.5 shadow-sm transition-shadow hover:shadow-md dark:border-white/6 dark:bg-[#232324] dark:hover:border-white/10"
               >
                 <BookCover
                   book={book}
-                  className="h-[72px] w-[52px] flex-none rounded-[10px]"
+                  className="h-[68px] w-[50px] flex-none rounded-[10px]"
                   showText={false}
                 />
                 <div className="min-w-0 flex-1">
@@ -460,12 +529,12 @@ export function BooksPage() {
                       {book.title}
                     </p>
                   </Link>
-                  <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/50">
+                  <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/45">
                     {book.author}
                   </p>
-                  <p className="mt-1.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-slate-300 dark:text-white/35">
+                  <span className="mt-2 inline-block rounded-full bg-slate-100 px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-slate-400 dark:bg-white/8 dark:text-white/30">
                     {book.genre}
-                  </p>
+                  </span>
                 </div>
                 <BookContextMenu
                   bookId={book.id}
@@ -480,7 +549,9 @@ export function BooksPage() {
         <BookFormModal
           book={selectedBook}
           isOpen={isModalOpen}
-          isLoading={createBookMutation.isPending || updateBookMutation.isPending}
+          isLoading={
+            createBookMutation.isPending || updateBookMutation.isPending
+          }
           onClose={closeModal}
           onSubmit={handleSubmit}
         />
@@ -500,7 +571,6 @@ export function BooksPage() {
        * Dark : Apple Books charcoal palette
        */}
       <div className="-mx-5 -mt-5 overflow-hidden bg-white dark:bg-[#1c1c1d] md:-mx-6 md:-mt-6 md:rounded-[28px] md:border md:border-slate-200/60 dark:md:border-white/6 shadow-sm">
-
         {/* ── Hero / Featured ── */}
         <div className="relative overflow-hidden bg-slate-50 dark:bg-[#232324]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.06),transparent_40%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.07),transparent_26%)]" />
@@ -540,7 +610,10 @@ export function BooksPage() {
             {isLoading ? (
               <div className="grid gap-5 xl:grid-cols-3">
                 {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="h-[360px] animate-pulse rounded-[18px] bg-slate-200 dark:bg-white/6" />
+                  <div
+                    key={i}
+                    className="h-[360px] animate-pulse rounded-[18px] bg-slate-200 dark:bg-white/6"
+                  />
                 ))}
               </div>
             ) : (
@@ -561,7 +634,11 @@ export function BooksPage() {
                       </h2>
                     </div>
                     <Link to={`/books/${book.id}`} className="block">
-                      <BookCover book={book} className="h-[360px] w-full" priority={index === 0} />
+                      <BookCover
+                        book={book}
+                        className="h-[360px] w-full"
+                        priority={index === 0}
+                      />
                     </Link>
                   </motion.div>
                 ))}
@@ -572,7 +649,11 @@ export function BooksPage() {
 
         {/* ── Fiction shelf ── */}
         <div className="border-t border-slate-100 dark:border-white/5 px-6 py-10 md:px-10">
-          <SectionHeading title={libraryShelf.length ? "Fiction & Literature" : "Curated Shelf"} />
+          <SectionHeading
+            title={
+              libraryShelf.length ? "Fiction & Literature" : "Curated Shelf"
+            }
+          />
           <div className="flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {libraryShelf.map((book) => (
               <ShelfBook key={book.id} book={book} />
@@ -641,7 +722,11 @@ export function BooksPage() {
                 key={book.id}
                 className="flex items-center gap-4 rounded-[16px] border border-slate-200 bg-white p-3.5 dark:border-white/8 dark:bg-white/4"
               >
-                <BookCover book={book} className="h-[72px] w-[52px] flex-none rounded-[10px]" showText={false} />
+                <BookCover
+                  book={book}
+                  className="h-[72px] w-[52px] flex-none rounded-[10px]"
+                  showText={false}
+                />
                 <div className="min-w-0 flex-1">
                   <Link to={`/books/${book.id}`}>
                     <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-300 transition-colors">

@@ -21,9 +21,14 @@ const bookSchema = z.object({
     .number()
     .min(1000, "Invalid year")
     .max(currentYear, "Year cannot be in the future"),
-  description: z.string().max(500, "Description must stay under 500 characters"),
+  description: z
+    .string()
+    .max(500, "Description must stay under 500 characters"),
   coverColor: z.string().default("#6366F1"),
-  coverImage: z.string().url("Cover image must be a valid URL").or(z.literal("")),
+  coverImage: z
+    .string()
+    .url("Cover image must be a valid URL")
+    .or(z.literal("")),
 });
 
 type BookFormValues = z.output<typeof bookSchema>;
@@ -65,7 +70,11 @@ export function BookForm({
       <div className="grid gap-5 md:grid-cols-2">
         <div>
           <Label htmlFor="title">Title</Label>
-          <Input id="title" placeholder="Atomic Habits" {...register("title")} />
+          <Input
+            id="title"
+            placeholder="Type Title . . ."
+            {...register("title")}
+          />
           {errors.title ? (
             <p className="mt-2 text-sm text-rose-500">{errors.title.message}</p>
           ) : null}
@@ -73,9 +82,15 @@ export function BookForm({
 
         <div>
           <Label htmlFor="author">Author</Label>
-          <Input id="author" placeholder="James Clear" {...register("author")} />
+          <Input
+            id="author"
+            placeholder="Type Author . . ."
+            {...register("author")}
+          />
           {errors.author ? (
-            <p className="mt-2 text-sm text-rose-500">{errors.author.message}</p>
+            <p className="mt-2 text-sm text-rose-500">
+              {errors.author.message}
+            </p>
           ) : null}
         </div>
       </div>
@@ -113,9 +128,16 @@ export function BookForm({
 
         <div>
           <Label htmlFor="coverColor">Cover color</Label>
-          <Input id="coverColor" type="color" className="h-11 p-2" {...register("coverColor")} />
+          <Input
+            id="coverColor"
+            type="color"
+            className="h-11 p-2"
+            {...register("coverColor")}
+          />
           {errors.coverColor ? (
-            <p className="mt-2 text-sm text-rose-500">{errors.coverColor.message}</p>
+            <p className="mt-2 text-sm text-rose-500">
+              {errors.coverColor.message}
+            </p>
           ) : null}
         </div>
       </div>
@@ -124,11 +146,13 @@ export function BookForm({
         <Label htmlFor="coverImage">Cover image URL</Label>
         <Input
           id="coverImage"
-          placeholder="https://example.com/cover.jpg"
+          placeholder="Type cover image URL . . ."
           {...register("coverImage")}
         />
         {errors.coverImage ? (
-          <p className="mt-2 text-sm text-rose-500">{errors.coverImage.message}</p>
+          <p className="mt-2 text-sm text-rose-500">
+            {errors.coverImage.message}
+          </p>
         ) : null}
       </div>
 
@@ -140,7 +164,9 @@ export function BookForm({
           {...register("description")}
         />
         {errors.description ? (
-          <p className="mt-2 text-sm text-rose-500">{errors.description.message}</p>
+          <p className="mt-2 text-sm text-rose-500">
+            {errors.description.message}
+          </p>
         ) : null}
       </div>
 
