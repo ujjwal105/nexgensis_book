@@ -56,8 +56,8 @@ function LibraryNavItem({
       className={cn(
         "mb-0.5 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.82rem] font-medium transition-colors",
         isActive
-          ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white"
-          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200",
+          ? "bg-slate-100 text-slate-900 dark:bg-white/8 dark:text-white"
+          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/6 dark:hover:text-slate-200",
       )}
     >
       <Icon
@@ -96,11 +96,11 @@ export function AppLayout() {
   const isSearchRoute = location.pathname === "/search";
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#1c1c1d]">
       {/* Sidebar — fixed, desktop only */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[220px] flex-col border-r border-slate-200 bg-white md:flex dark:border-slate-800/50 dark:bg-slate-900">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[220px] flex-col border-r border-slate-200 bg-white md:flex dark:border-white/8 dark:bg-[#1c1c1d]">
         {/* Logo */}
-        <div className="flex flex-none items-center gap-2.5 border-b border-slate-200 px-4 py-4 dark:border-slate-800/60">
+        <div className="flex flex-none items-center gap-2.5 border-b border-slate-200 px-4 py-4 dark:border-white/8">
           <div className="flex size-7 items-center justify-center rounded-lg bg-indigo-500/12 ring-1 ring-indigo-400/20 dark:bg-indigo-500/20 dark:ring-indigo-400/25">
             <BookMarked className="size-3.5 text-indigo-500 dark:text-indigo-400" />
           </div>
@@ -123,7 +123,7 @@ export function AppLayout() {
               "flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-colors",
               isSearchRoute
                 ? "border-indigo-200 bg-indigo-50 text-indigo-600 dark:border-indigo-500/30 dark:bg-indigo-500/12 dark:text-indigo-300"
-                : "border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:border-slate-700/60 dark:bg-slate-800/50 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-300",
+                : "border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:border-white/10 dark:bg-white/6 dark:text-slate-400 dark:hover:bg-white/8 dark:hover:text-slate-300",
             )}
           >
             <Search
@@ -135,10 +135,10 @@ export function AppLayout() {
             <span className="flex-1 text-left">Search...</span>
             <kbd
               className={cn(
-                "inline-flex h-4 items-center rounded border bg-white px-1 text-[0.6rem] font-medium dark:bg-slate-800",
+                "inline-flex h-4 items-center rounded border bg-white px-1 text-[0.6rem] font-medium dark:bg-white/6",
                 isSearchRoute
                   ? "border-indigo-200 text-indigo-400 dark:border-indigo-500/30 dark:text-indigo-300"
-                  : "border-slate-200 text-slate-400 dark:border-slate-700 dark:text-slate-500",
+                  : "border-slate-200 text-slate-400 dark:border-white/10 dark:text-slate-500",
               )}
             >
               ⌘K
@@ -162,8 +162,8 @@ export function AppLayout() {
                   cn(
                     "mb-0.5 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.82rem] font-medium transition-colors",
                     isActive
-                      ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200",
+                      ? "bg-slate-100 text-slate-900 dark:bg-white/8 dark:text-white"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/6 dark:hover:text-slate-200",
                   )
                 }
               >
@@ -217,7 +217,7 @@ export function AppLayout() {
               <button
                 type="button"
                 aria-label="New collection"
-                className="rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300 transition-colors"
+                className="rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-white/8 dark:hover:text-slate-300 transition-colors"
               >
                 <Plus className="size-3" />
               </button>
@@ -233,13 +233,13 @@ export function AppLayout() {
         </nav>
 
         {/* Theme toggle + User */}
-        <div className="flex-none border-t border-slate-200 dark:border-slate-800/60">
+        <div className="flex-none border-t border-slate-200 dark:border-white/8">
           {/* Theme toggle */}
           <div className="px-3 pt-3">
             <button
               type="button"
               onClick={toggle}
-              className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.82rem] font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200"
+              className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.82rem] font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/6 dark:hover:text-slate-200"
             >
               {theme === "dark" ? (
                 <>
@@ -273,7 +273,7 @@ export function AppLayout() {
 
           {/* User */}
           <div className="px-3 py-3">
-            <div className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800/60">
+            <div className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 transition-colors hover:bg-slate-100 dark:hover:bg-white/6">
               <div className="flex size-7 flex-none items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-violet-500 text-[0.65rem] font-bold text-white">
                 NT
               </div>
@@ -291,9 +291,9 @@ export function AppLayout() {
       </aside>
 
       {/* Content — offset by sidebar width on desktop */}
-      <div className="md:pl-[220px] flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
+      <div className="md:pl-[220px] flex flex-col min-h-screen bg-slate-50 dark:bg-[#1c1c1d]">
         {/* Top header */}
-        <header className="sticky top-0 z-20 flex h-[54px] flex-none items-center justify-between gap-4 border-b border-slate-200 bg-white px-5 dark:bg-slate-900 dark:border-slate-800 md:px-6">
+        <header className="sticky top-0 z-20 flex h-[54px] flex-none items-center justify-between gap-4 border-b border-slate-200 bg-white px-5 dark:bg-[#1c1c1d] dark:border-white/8 md:px-6">
           <h1 className="text-[0.9rem] font-semibold text-slate-800 tracking-tight dark:text-slate-200">
             {String(currentTitle)}
           </h1>
@@ -301,11 +301,11 @@ export function AppLayout() {
             <button
               type="button"
               aria-label="Open notifications"
-              className="inline-flex size-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+              className="inline-flex size-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-white/6 dark:hover:text-slate-300"
             >
               <Bell className="size-3.5" />
             </button>
-            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 hover:bg-slate-100 cursor-pointer transition-colors dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700">
+            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 hover:bg-slate-100 cursor-pointer transition-colors dark:border-white/10 dark:bg-white/6 dark:hover:bg-white/8">
               <div className="flex size-6 flex-none items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-violet-500 text-[0.6rem] font-bold text-white">
                 NT
               </div>
@@ -317,7 +317,7 @@ export function AppLayout() {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 bg-slate-50 dark:bg-slate-950">
+        <main className="flex-1 bg-slate-50 dark:bg-[#1c1c1d]">
           <motion.div
             key={String(currentTitle)}
             initial={{ opacity: 0, y: 5 }}
@@ -331,7 +331,7 @@ export function AppLayout() {
       </div>
 
       {/* Mobile bottom nav */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur-sm px-4 py-2 dark:bg-slate-900/95 dark:border-slate-800 md:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur-sm px-4 py-2 dark:bg-[#1c1c1d]/95 dark:border-white/8 md:hidden">
         <nav className="flex justify-around">
           {mobileNavigationItems.map(({ label, icon: Icon, to }) => (
             <NavLink

@@ -77,7 +77,7 @@ export function DashboardPage() {
         {stats.map(({ label, value, sub, icon: Icon, iconColor, iconBg, trend }) => (
           <div
             key={label}
-            className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:bg-slate-900 dark:border-slate-800"
+            className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:bg-[#232324] dark:border-white/8"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
@@ -106,8 +106,8 @@ export function DashboardPage() {
       </div>
 
       {/* Recent books */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:bg-slate-900 dark:border-slate-800">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:bg-[#232324] dark:border-white/8">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-white/8">
           <div>
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
               Recent Books
@@ -133,12 +133,12 @@ export function DashboardPage() {
           {isLoading ? (
             Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex items-center gap-4 px-5 py-3.5">
-                <div className="size-9 rounded-lg bg-slate-100 dark:bg-slate-800 animate-pulse flex-none" />
+                <div className="size-9 rounded-lg bg-slate-100 dark:bg-white/8 animate-pulse flex-none" />
                 <div className="flex-1 space-y-1.5 min-w-0">
-                  <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded animate-pulse w-2/5" />
-                  <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded animate-pulse w-1/4" />
+                  <div className="h-3 bg-slate-100 dark:bg-white/8 rounded animate-pulse w-2/5" />
+                  <div className="h-3 bg-slate-100 dark:bg-white/8 rounded animate-pulse w-1/4" />
                 </div>
-                <div className="h-5 w-16 bg-slate-100 dark:bg-slate-800 rounded-full animate-pulse hidden sm:block" />
+                <div className="h-5 w-16 bg-slate-100 dark:bg-white/8 rounded-full animate-pulse hidden sm:block" />
               </div>
             ))
           ) : isError ? (
@@ -163,7 +163,7 @@ export function DashboardPage() {
               <Link
                 key={book.id}
                 to={`/books/${book.id}`}
-                className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors group"
+                className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-white/6 transition-colors group"
               >
                 <div
                   className="flex size-9 flex-none items-center justify-center rounded-lg text-sm font-bold text-white"
@@ -192,7 +192,7 @@ export function DashboardPage() {
         </div>
 
         {!isLoading && !isError && books.length > 0 ? (
-          <div className="border-t border-slate-100 dark:border-slate-800 px-5 py-3 bg-slate-50/50 dark:bg-slate-800/30">
+          <div className="border-t border-slate-100 dark:border-white/8 px-5 py-3 bg-slate-50/50 dark:bg-white/4">
             <p className="text-xs text-slate-400 dark:text-slate-500">
               Showing {books.length} of {totalItems} books
             </p>
@@ -204,7 +204,7 @@ export function DashboardPage() {
       <div className="grid gap-3 sm:grid-cols-2">
         <Link
           to="/books?create=true"
-          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 text-sm transition-all hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/30 dark:hover:bg-indigo-500/5"
+          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 dark:border-white/10 bg-white dark:bg-[#232324] p-4 text-sm transition-all hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/30 dark:hover:bg-indigo-500/5"
         >
           <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/20 transition-colors">
             <BookCopy className="size-4" />
@@ -219,9 +219,9 @@ export function DashboardPage() {
         </Link>
         <Link
           to="/books"
-          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 text-sm transition-all hover:border-slate-400 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 dark:border-white/10 bg-white dark:bg-[#232324] p-4 text-sm transition-all hover:border-slate-400 dark:hover:border-white/16 hover:bg-slate-50 dark:hover:bg-white/8"
         >
-          <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 group-hover:bg-slate-200 dark:group-hover:bg-slate-700 transition-colors">
+          <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-slate-100 dark:bg-white/8 text-slate-600 dark:text-slate-400 group-hover:bg-slate-200 dark:group-hover:bg-white/12 transition-colors">
             <Boxes className="size-4" />
           </div>
           <div>

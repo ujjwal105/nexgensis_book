@@ -9,8 +9,8 @@ type EmptyStateProps = {
 
 export function EmptyState({ hasFilters = false, onAction }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-6 py-16 text-center shadow-sm">
-      <div className="flex size-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
+    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 dark:border-white/10 bg-white dark:bg-[#232324] px-6 py-16 text-center shadow-sm">
+      <div className="flex size-12 items-center justify-center rounded-xl bg-slate-100 dark:bg-white/8">
         <BookX className="size-5 text-slate-400 dark:text-slate-500" />
       </div>
       <h3 className="mt-4 text-sm font-semibold text-slate-900 dark:text-slate-100">

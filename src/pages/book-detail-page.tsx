@@ -22,11 +22,11 @@ export function BookDetailPage() {
   if (isLoading) {
     return (
       <div className="space-y-5 animate-fade-in">
-        <div className="h-8 w-32 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-        <div className="h-52 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+        <div className="h-8 w-32 animate-pulse rounded-lg bg-slate-200 dark:bg-white/8" />
+        <div className="h-52 animate-pulse rounded-xl bg-slate-200 dark:bg-white/8" />
         <div className="grid gap-4 lg:grid-cols-[1fr_300px]">
-          <div className="h-48 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
-          <div className="h-48 animate-pulse rounded-xl bg-slate-200 dark:bg-slate-800" />
+          <div className="h-48 animate-pulse rounded-xl bg-slate-200 dark:bg-white/8" />
+          <div className="h-48 animate-pulse rounded-xl bg-slate-200 dark:bg-white/8" />
         </div>
       </div>
     );
@@ -69,7 +69,7 @@ export function BookDetailPage() {
     <div className="space-y-5 animate-fade-in">
       {/* Back nav + actions */}
       <div className="flex items-center justify-between">
-        <Button asChild variant="ghost" size="sm" className="rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 -ml-1 h-8 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800">
+        <Button asChild variant="ghost" size="sm" className="rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 -ml-1 h-8 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/8">
           <Link to="/books">
             <ArrowLeft className="size-3.5" />
             Back to Books
@@ -160,13 +160,13 @@ export function BookDetailPage() {
       {/* Details grid */}
       <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
         {/* Description */}
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+        <div className="rounded-xl border border-slate-200 dark:border-white/8 bg-white dark:bg-[#232324] p-5 shadow-sm">
           <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">About this book</h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{book.description}</p>
         </div>
 
         {/* Metadata */}
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+        <div className="rounded-xl border border-slate-200 dark:border-white/8 bg-white dark:bg-[#232324] p-5 shadow-sm">
           <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Metadata</h2>
           <div className="mt-3 space-y-3">
             <div>
@@ -174,7 +174,7 @@ export function BookDetailPage() {
                 <Hash className="size-3" />
                 <span>Book ID</span>
               </div>
-              <p className="rounded-md bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs font-mono text-slate-700 dark:text-slate-300 break-all">
+              <p className="rounded-md bg-slate-50 dark:bg-white/8 px-3 py-2 text-xs font-mono text-slate-700 dark:text-slate-300 break-all">
                 {book.id}
               </p>
             </div>
@@ -183,7 +183,7 @@ export function BookDetailPage() {
                 <Calendar className="size-3" />
                 <span>Created</span>
               </div>
-              <p className="rounded-md bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs text-slate-700 dark:text-slate-300">
+              <p className="rounded-md bg-slate-50 dark:bg-white/8 px-3 py-2 text-xs text-slate-700 dark:text-slate-300">
                 {new Date(book.createdAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
@@ -196,9 +196,9 @@ export function BookDetailPage() {
                 <Palette className="size-3" />
                 <span>Theme color</span>
               </div>
-              <div className="flex items-center gap-2 rounded-md bg-slate-50 dark:bg-slate-800 px-3 py-2">
+              <div className="flex items-center gap-2 rounded-md bg-slate-50 dark:bg-white/8 px-3 py-2">
                 <span
-                  className="size-4 rounded-full border border-slate-200 dark:border-slate-700 flex-none"
+                  className="size-4 rounded-full border border-slate-200 dark:border-white/10 flex-none"
                   style={{ backgroundColor: book.coverColor }}
                 />
                 <span className="text-xs font-mono text-slate-700">{book.coverColor}</span>

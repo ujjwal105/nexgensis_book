@@ -20,7 +20,7 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
 
   return (
     <motion.div layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-      <div className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300 dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700 h-full">
+      <div className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300 dark:bg-[#232324] dark:border-white/8 dark:hover:border-white/14 h-full">
         {/* Cover */}
         <Link
           to={`/books/${book.id}`}
@@ -70,7 +70,7 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
             </p>
 
             <div className="mt-2.5 flex flex-wrap gap-1.5">
-              <span className="inline-flex rounded-md bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[0.68rem] font-medium text-slate-500 dark:text-slate-400">
+              <span className="inline-flex rounded-md bg-slate-100 dark:bg-white/8 px-2 py-0.5 text-[0.68rem] font-medium text-slate-500 dark:text-slate-400">
                 {book.publicationYear}
               </span>
               <span
@@ -87,7 +87,7 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
           </div>
 
           {/* Actions */}
-          <div className="mt-3 border-t border-slate-100 dark:border-slate-800 pt-3">
+          <div className="mt-3 border-t border-slate-100 dark:border-white/8 pt-3">
             <AnimatePresence mode="wait">
               {isConfirmingDelete ? (
                 <motion.div
@@ -105,7 +105,7 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="h-7 rounded-md px-2 text-xs text-slate-500 hover:bg-white dark:hover:bg-slate-800"
+                        className="h-7 rounded-md px-2 text-xs text-slate-500 hover:bg-white dark:hover:bg-white/8"
                         onClick={() => setIsConfirmingDelete(false)}
                       >
                         <X className="size-3" />
@@ -150,7 +150,7 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
                     </Button>
                     <Link
                       to={`/books/${book.id}`}
-                      className="inline-flex h-7 w-7 flex-none items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                      className="inline-flex h-7 w-7 flex-none items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 dark:hover:bg-white/8 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
                       title="View details"
                     >
                       <ExternalLink className="size-3" />

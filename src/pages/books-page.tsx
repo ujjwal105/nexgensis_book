@@ -309,7 +309,7 @@ export function BooksPage() {
         </div>
 
         {listFilteredBooks.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 dark:border-slate-700/60 bg-white dark:bg-slate-900/40 py-20 text-center">
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 dark:border-white/10 bg-white dark:bg-white/4 py-20 text-center">
             <ListIcon className="size-10 text-slate-200 dark:text-slate-700 mb-3" />
             <p className="text-sm font-medium text-slate-400 dark:text-slate-500">Nothing here yet</p>
             <p className="mt-1 max-w-xs text-xs text-slate-300 dark:text-slate-600">{emptyHint}</p>
@@ -319,7 +319,7 @@ export function BooksPage() {
             {listFilteredBooks.map((book) => (
               <div
                 key={book.id}
-                className="flex items-center gap-4 rounded-[16px] border border-slate-200 bg-white p-3.5 dark:border-white/8 dark:bg-slate-900"
+                className="flex items-center gap-4 rounded-[16px] border border-slate-200 bg-white p-3.5 dark:border-white/8 dark:bg-[#232324]"
               >
                 <BookCover
                   book={book}

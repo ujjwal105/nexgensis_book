@@ -125,7 +125,7 @@ export function BookContextMenu({
             ref={menuRef}
             role="menu"
             style={{ top: menuPos.top, left: menuPos.left }}
-            className="fixed z-[200] w-[216px] overflow-hidden rounded-[14px] border border-slate-200/80 bg-white/95 shadow-[0_8px_32px_rgba(0,0,0,0.14),0_2px_8px_rgba(0,0,0,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-800/95 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+            className="fixed z-[200] w-[216px] overflow-hidden rounded-[14px] border border-slate-200/80 bg-white/95 shadow-[0_8px_32px_rgba(0,0,0,0.14),0_2px_8px_rgba(0,0,0,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-[#232324]/95 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
           >
             {/* List actions */}
             <div className="px-1 py-1">
