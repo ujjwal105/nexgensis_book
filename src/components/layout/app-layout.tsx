@@ -112,7 +112,7 @@ export function AppLayout() {
     <div className="min-h-screen bg-slate-50 dark:bg-[#1c1c1d]">
       {/* Sidebar — fixed, desktop only */}
       <aside
-        className="fixed inset-y-0 left-0 z-30 hidden flex-col border-r border-slate-200 bg-white md:flex dark:border-white/8 dark:bg-[#1c1c1d]"
+        className="fixed inset-y-0 left-0 z-30 hidden flex-col border-r border-slate-200 bg-white transition-[width] duration-200 md:flex dark:border-white/8 dark:bg-[#1c1c1d]"
         style={{ width: sidebarWidth }}
       >
         {/* Logo */}
@@ -327,10 +327,12 @@ export function AppLayout() {
         </div>
       </aside>
 
-      {/* Content — offset by sidebar width on desktop */}
+      {/* Content — offset by sidebar width on desktop only */}
       <div
-        className="flex min-h-screen flex-col bg-slate-50 dark:bg-[#1c1c1d]"
-        style={{ paddingLeft: sidebarWidth }}
+        className={cn(
+          "flex min-h-screen flex-col bg-slate-50 dark:bg-[#1c1c1d] transition-[padding-left] duration-200",
+          isSidebarCollapsed ? "md:pl-[72px]" : "md:pl-[220px]",
+        )}
       >
         {/* Page content */}
         <main className="flex-1 bg-slate-50 dark:bg-[#1c1c1d]">
