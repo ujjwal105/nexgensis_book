@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   ChevronRight,
   FolderPlus,
+  LayoutGrid,
   LoaderCircle,
   Plus,
   Sparkles,
@@ -28,12 +29,17 @@ import type { Book, BookDraft } from "@/types/book";
 
 /* ─── List-view config ───────────────────────────────────────────── */
 
-type BookListViewKey = BookListKey | "my-samples";
+type BookListViewKey = BookListKey | "my-samples" | "all";
 
 const LIST_CONFIG: Record<
   BookListViewKey,
   { label: string; icon: typeof BookMarked; emptyHint: string }
 > = {
+  all: {
+    label: "All",
+    icon: LayoutGrid,
+    emptyHint: "",
+  },
   "want-to-read": {
     label: "Want to Read",
     icon: BookMarked,
@@ -200,6 +206,48 @@ function SectionHeading({ eyebrow, title }: { eyebrow?: string; title: string })
   );
 }
 
+/* ─── LibraryCoverCard ──────────────────────────────────────────── */
+
+function LibraryCoverCard({
+  book,
+  onEdit,
+  onDelete,
+}: {
+  book: Book;
+  onEdit: () => void;
+  onDelete: () => void;
+}) {
+  return (
+    <div className="group relative">
+      <Link to={`/books/${book.id}`} className="block">
+        <BookCover
+          book={book}
+          className="aspect-[2/3] w-full rounded-[14px]"
+          showText={false}
+        />
+      </Link>
+
+      {/* Below-cover row */}
+      <div className="mt-2 flex items-start justify-between gap-1 pr-0.5">
+        <div className="min-w-0 flex-1">
+          <p className="line-clamp-2 text-[0.73rem] font-semibold leading-tight text-slate-700 dark:text-white/80">
+            {book.title}
+          </p>
+          <p className="mt-0.5 truncate text-[0.62rem] text-slate-400 dark:text-white/35">
+            {book.author}
+          </p>
+        </div>
+        <BookContextMenu
+          bookId={book.id}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          triggerClassName="mt-0.5 flex-none opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+        />
+      </div>
+    </div>
+  );
+}
+
 /* ─── BooksPage ─────────────────────────────────────────────────── */
 
 export function BooksPage() {
@@ -223,11 +271,12 @@ export function BooksPage() {
   const rawList = params.get("list") ?? "";
   const listFilter = (rawList in LIST_CONFIG ? rawList : null) as BookListViewKey | null;
   const isListView = Boolean(listFilter);
-  const listFilteredBooks = listFilter
-    ? listFilter === "my-samples"
+  const listFilteredBooks =
+    listFilter === "my-samples"
       ? books.filter((b) => b.id.startsWith("local-"))
-      : books.filter((b) => isIn(listFilter, b.id))
-    : books;
+      : listFilter && listFilter !== "all"
+        ? books.filter((b) => isIn(listFilter as BookListKey, b.id))
+        : books;
 
   const featuredBooks = books.slice(0, 3);
   const rankedBooks = books.slice(0, 6);
@@ -297,6 +346,63 @@ export function BooksPage() {
         message={error instanceof Error ? error.message : "Unable to load books."}
         onRetry={() => void refetch()}
       />
+    );
+  }
+
+  /* ── All-books cover grid (Apple Books "All" view) ─────────────── */
+  if (isListView && listFilter === "all") {
+    return (
+      <>
+        {/* Header */}
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <h1 className="text-[2rem] font-bold tracking-tight text-slate-900 dark:text-white">
+            All
+          </h1>
+          <Button
+            size="sm"
+            variant="outline"
+            className="rounded-full px-4"
+            onClick={openCreateModal}
+          >
+            <Plus className="size-3.5" />
+            Add Book
+          </Button>
+        </div>
+
+        {isLoading ? (
+          /* Skeleton grid */
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
+            {Array.from({ length: 15 }).map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="aspect-[2/3] rounded-[14px] bg-slate-200 dark:bg-white/8" />
+                <div className="mt-2 h-2.5 w-3/4 rounded bg-slate-200 dark:bg-white/8" />
+                <div className="mt-1.5 h-2 w-1/2 rounded bg-slate-100 dark:bg-white/5" />
+              </div>
+            ))}
+          </div>
+        ) : books.length === 0 ? (
+          <EmptyState hasFilters={false} onAction={openCreateModal} />
+        ) : (
+          <div className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+            {books.map((book) => (
+              <LibraryCoverCard
+                key={book.id}
+                book={book}
+                onEdit={() => openEditModal(book)}
+                onDelete={() => void handleDelete(book.id)}
+              />
+            ))}
+          </div>
+        )}
+
+        <BookFormModal
+          book={selectedBook}
+          isOpen={isModalOpen}
+          isLoading={createBookMutation.isPending || updateBookMutation.isPending}
+          onClose={closeModal}
+          onSubmit={handleSubmit}
+        />
+      </>
     );
   }
 

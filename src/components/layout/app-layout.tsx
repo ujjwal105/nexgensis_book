@@ -184,6 +184,7 @@ export function AppLayout() {
               icon={LayoutGrid}
               label="All Books"
               to="/books"
+              listParam="all"
             />
             <LibraryNavItem
               icon={BookMarked}
