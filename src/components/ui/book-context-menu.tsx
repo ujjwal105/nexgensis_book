@@ -141,13 +141,13 @@ export function BookContextMenu({
         onClick={openMenu}
         className={cn(
           "flex size-7 items-center justify-center rounded-full transition-colors",
-          "text-slate-400 hover:bg-slate-100 hover:text-slate-700",
-          "dark:text-white/40 dark:hover:bg-white/8 dark:hover:text-white/80",
-          open && "bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-white/80",
+          "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
+          "dark:text-white/80 dark:hover:bg-white/8 dark:hover:text-white",
+          open && "bg-slate-100 text-slate-900 dark:bg-white/10 dark:text-white",
           triggerClassName,
         )}
       >
-        <EllipsisVertical className="size-4" />
+        <EllipsisVertical className="size-4 stroke-[2.4]" />
       </button>
 
       {open &&
