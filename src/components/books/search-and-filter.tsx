@@ -1,4 +1,5 @@
 import { Search, SlidersHorizontal, X } from "lucide-react";
+import type { RefObject } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,7 @@ import { genreOptions } from "@/lib/constants";
 type SearchAndFilterProps = {
   genre: string;
   hasActiveFilters: boolean;
+  searchInputRef?: RefObject<HTMLInputElement | null>;
   resultsCount: number;
   search: string;
   onClearFilters: () => void;
@@ -18,6 +20,7 @@ type SearchAndFilterProps = {
 export function SearchAndFilter({
   genre,
   hasActiveFilters,
+  searchInputRef,
   resultsCount,
   search,
   onClearFilters,
@@ -30,6 +33,7 @@ export function SearchAndFilter({
         <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-slate-400" />
           <Input
+            ref={searchInputRef}
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search by title or author..."

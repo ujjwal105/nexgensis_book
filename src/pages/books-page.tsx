@@ -1,4 +1,4 @@
-import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { startTransition, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, LoaderCircle, Plus } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
@@ -29,8 +29,10 @@ export function BooksPage() {
   const [params, setParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState(searchFromParams);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const isCreateRequested = params.get("create") === "true";
+  const shouldFocusSearch = params.get("focus") === "search";
   const isModalOpen = Boolean(selectedBook) || isCreateRequested;
 
   const deferredSearch = useDeferredValue(searchInput);
@@ -53,6 +55,16 @@ export function BooksPage() {
       setSearch(search);
     }
   }, [search, searchFromParams, setSearch]);
+
+  useEffect(() => {
+    if (!shouldFocusSearch) return;
+
+    searchInputRef.current?.focus();
+
+    const nextParams = new URLSearchParams(params);
+    nextParams.delete("focus");
+    setParams(nextParams, { replace: true });
+  }, [params, setParams, shouldFocusSearch]);
 
   const clearCreateParam = () => {
     const nextParams = new URLSearchParams(params);
@@ -134,6 +146,7 @@ export function BooksPage() {
       <SearchAndFilter
         search={searchInput}
         genre={genre}
+        searchInputRef={searchInputRef}
         resultsCount={data?.totalItems ?? 0}
         hasActiveFilters={hasActiveFilters}
         onClearFilters={handleClearFilters}

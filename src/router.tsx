@@ -7,6 +7,7 @@ import {
   LazyBookDetailPage,
   LazyBooksPage,
   LazyDashboardPage,
+  LazySearchPage,
 } from "@/pages/lazy-pages";
 
 function withSuspense(node: ReactNode) {
@@ -37,6 +38,13 @@ export const appRouter = createBrowserRouter([
         element: withSuspense(<LazyBookDetailPage />),
         handle: {
           title: "Book Details",
+        },
+      },
+      {
+        path: "search",
+        element: withSuspense(<LazySearchPage />),
+        handle: {
+          title: "Search",
         },
       },
     ],

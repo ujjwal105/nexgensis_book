@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useMatches } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useMatches, useNavigate } from "react-router-dom";
 import {
   Bell,
   BookMarked,
@@ -27,12 +27,15 @@ const mobileNavigationItems = [
 
 export function AppLayout() {
   const matches = useMatches();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { theme, toggle } = useTheme();
   const activeMatch = [...matches]
     .reverse()
     .find((match) => Boolean((match.handle as { title?: string } | undefined)?.title));
   const currentTitle =
     (activeMatch?.handle as { title?: string } | undefined)?.title ?? "Book System";
+  const isSearchRoute = location.pathname === "/search";
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
@@ -57,11 +60,29 @@ export function AppLayout() {
         <div className="px-3 pt-4 flex-none">
           <button
             type="button"
-            className="flex w-full items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:border-slate-700/60 dark:bg-slate-800/50 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+            onClick={() => navigate("/search")}
+            className={cn(
+              "flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-colors",
+              isSearchRoute
+                ? "border-indigo-200 bg-indigo-50 text-indigo-600 dark:border-indigo-500/30 dark:bg-indigo-500/12 dark:text-indigo-300"
+                : "border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:border-slate-700/60 dark:bg-slate-800/50 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-300",
+            )}
           >
-            <Search className="size-3 flex-none" />
+            <Search
+              className={cn(
+                "size-3 flex-none",
+                isSearchRoute && "text-indigo-500 dark:text-indigo-300",
+              )}
+            />
             <span className="flex-1 text-left">Search...</span>
-            <kbd className="inline-flex h-4 items-center rounded border border-slate-200 bg-white px-1 text-[0.6rem] font-medium text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500">
+            <kbd
+              className={cn(
+                "inline-flex h-4 items-center rounded border bg-white px-1 text-[0.6rem] font-medium dark:bg-slate-800",
+                isSearchRoute
+                  ? "border-indigo-200 text-indigo-400 dark:border-indigo-500/30 dark:text-indigo-300"
+                  : "border-slate-200 text-slate-400 dark:border-slate-700 dark:text-slate-500",
+              )}
+            >
               ⌘K
             </kbd>
           </button>

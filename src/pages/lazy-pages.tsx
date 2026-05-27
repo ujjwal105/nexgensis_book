@@ -14,3 +14,8 @@ export const LazyBookDetailPage = lazy(async () => {
   const module = await import("@/pages/book-detail-page");
   return { default: module.BookDetailPage };
 });
+
+export const LazySearchPage = lazy(async () => {
+  const module = await import("@/pages/search-page");
+  return { default: module.SearchPage };
+});
