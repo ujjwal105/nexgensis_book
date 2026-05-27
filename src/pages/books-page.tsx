@@ -1,17 +1,19 @@
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
+  BookMarked,
+  CheckCircle2,
   ChevronRight,
+  FolderPlus,
   LoaderCircle,
-  Pencil,
   Plus,
   Sparkles,
-  Trash2,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { BookFormModal } from "@/components/books/book-form-modal";
 import { EmptyState } from "@/components/books/empty-state";
+import { BookContextMenu } from "@/components/ui/book-context-menu";
 import { Button } from "@/components/ui/button";
 import { ErrorBanner } from "@/components/ui/error-banner";
 import { useToast } from "@/components/ui/toast-context";
@@ -21,7 +23,31 @@ import {
   useDeleteBook,
   useUpdateBook,
 } from "@/hooks/use-books";
+import { useBookLists, type BookListKey } from "@/hooks/use-book-lists";
 import type { Book, BookDraft } from "@/types/book";
+
+/* ─── List-view config ───────────────────────────────────────────── */
+
+const LIST_CONFIG: Record<
+  BookListKey,
+  { label: string; icon: typeof BookMarked; emptyHint: string }
+> = {
+  "want-to-read": {
+    label: "Want to Read",
+    icon: BookMarked,
+    emptyHint: "Browse the store and mark books you want to read from the ⋮ menu.",
+  },
+  finished: {
+    label: "Finished",
+    icon: CheckCircle2,
+    emptyHint: "Mark books as finished from the ⋮ menu on any book.",
+  },
+  collection: {
+    label: "Collection",
+    icon: FolderPlus,
+    emptyHint: "Add books to your collection from the ⋮ menu.",
+  },
+};
 
 /* ─── helpers ─────────────────────────────────────────────────── */
 
@@ -137,26 +163,11 @@ function RankedBookRow({
         </div>
       </Link>
 
-      <div className="hidden items-center gap-1.5 md:flex">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-7 rounded-full border border-slate-200 bg-slate-50 px-2.5 text-xs text-slate-600 hover:bg-slate-100 dark:border-white/10 dark:bg-white/4 dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-white"
-          onClick={() => onEdit(book)}
-        >
-          <Pencil className="size-3" />
-          Edit
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-7 rounded-full border border-slate-200 bg-slate-50 px-2.5 text-xs text-slate-500 hover:bg-rose-50 hover:text-rose-600 dark:border-white/10 dark:bg-white/4 dark:text-white/70 dark:hover:bg-rose-500/15 dark:hover:text-rose-300"
-          onClick={() => onDelete(book.id)}
-        >
-          <Trash2 className="size-3" />
-          Delete
-        </Button>
-      </div>
+      <BookContextMenu
+        bookId={book.id}
+        onEdit={() => onEdit(book)}
+        onDelete={() => onDelete(book.id)}
+      />
     </div>
   );
 }
@@ -195,9 +206,17 @@ export function BooksPage() {
   const createBookMutation = useCreateBook();
   const updateBookMutation = useUpdateBook();
   const deleteBookMutation = useDeleteBook();
+  const { isIn } = useBookLists();
+
   const isCreateRequested = params.get("create") === "true";
   const isModalOpen = Boolean(selectedBook) || isCreateRequested;
   const books = useMemo(() => sortBooksByRecency(data?.data ?? []), [data?.data]);
+
+  // List filter — activated by ?list= search param
+  const rawList = params.get("list") ?? "";
+  const listFilter = (rawList in LIST_CONFIG ? rawList : null) as BookListKey | null;
+  const isListView = Boolean(listFilter);
+  const listFilteredBooks = listFilter ? books.filter((b) => isIn(listFilter, b.id)) : books;
 
   const featuredBooks = books.slice(0, 3);
   const rankedBooks = books.slice(0, 6);
@@ -267,6 +286,77 @@ export function BooksPage() {
         message={error instanceof Error ? error.message : "Unable to load books."}
         onRetry={() => void refetch()}
       />
+    );
+  }
+
+  /* ── List view (Want to Read / Finished / Collection) ─────────── */
+  if (isListView && listFilter && !isLoading) {
+    const { label, icon: ListIcon, emptyHint } = LIST_CONFIG[listFilter];
+    return (
+      <>
+        {/* Header */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2.5">
+            <ListIcon className="size-5 text-indigo-500 dark:text-indigo-400" />
+            <h1 className="text-[1.4rem] font-bold tracking-tight text-slate-900 dark:text-white">
+              {label}
+            </h1>
+            <span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-indigo-100 px-1.5 text-[0.68rem] font-semibold text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300">
+              {listFilteredBooks.length}
+            </span>
+          </div>
+          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">{emptyHint}</p>
+        </div>
+
+        {listFilteredBooks.length === 0 ? (
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 dark:border-slate-700/60 bg-white dark:bg-slate-900/40 py-20 text-center">
+            <ListIcon className="size-10 text-slate-200 dark:text-slate-700 mb-3" />
+            <p className="text-sm font-medium text-slate-400 dark:text-slate-500">Nothing here yet</p>
+            <p className="mt-1 max-w-xs text-xs text-slate-300 dark:text-slate-600">{emptyHint}</p>
+          </div>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2">
+            {listFilteredBooks.map((book) => (
+              <div
+                key={book.id}
+                className="flex items-center gap-4 rounded-[16px] border border-slate-200 bg-white p-3.5 dark:border-white/8 dark:bg-slate-900"
+              >
+                <BookCover
+                  book={book}
+                  className="h-[72px] w-[52px] flex-none rounded-[10px]"
+                  showText={false}
+                />
+                <div className="min-w-0 flex-1">
+                  <Link to={`/books/${book.id}`}>
+                    <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-sky-300 transition-colors">
+                      {book.title}
+                    </p>
+                  </Link>
+                  <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/50">
+                    {book.author}
+                  </p>
+                  <p className="mt-1.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-slate-300 dark:text-white/35">
+                    {book.genre}
+                  </p>
+                </div>
+                <BookContextMenu
+                  bookId={book.id}
+                  onEdit={() => openEditModal(book)}
+                  onDelete={() => void handleDelete(book.id)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        <BookFormModal
+          book={selectedBook}
+          isOpen={isModalOpen}
+          isLoading={createBookMutation.isPending || updateBookMutation.isPending}
+          onClose={closeModal}
+          onSubmit={handleSubmit}
+        />
+      </>
     );
   }
 
@@ -436,26 +526,11 @@ export function BooksPage() {
                     {book.genre}
                   </p>
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 rounded-full border border-slate-200 bg-slate-50 px-2.5 text-xs text-slate-600 hover:bg-slate-100 dark:border-white/10 dark:bg-white/6 dark:text-white/70 dark:hover:bg-white/12 dark:hover:text-white"
-                    onClick={() => openEditModal(book)}
-                  >
-                    <Pencil className="size-3" />
-                    Edit
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 rounded-full border border-slate-200 bg-slate-50 px-2.5 text-xs text-slate-500 hover:bg-rose-50 hover:text-rose-600 dark:border-white/10 dark:bg-white/6 dark:text-white/70 dark:hover:bg-rose-500/15 dark:hover:text-rose-300"
-                    onClick={() => void handleDelete(book.id)}
-                  >
-                    <Trash2 className="size-3" />
-                    Delete
-                  </Button>
-                </div>
+                <BookContextMenu
+                  bookId={book.id}
+                  onEdit={() => openEditModal(book)}
+                  onDelete={() => void handleDelete(book.id)}
+                />
               </div>
             ))}
           </div>

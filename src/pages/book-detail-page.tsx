@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Calendar, Hash, Layers3, Palette, Pencil, Trash2, UserRound } from "lucide-react";
+import { ArrowLeft, Calendar, Hash, Layers3, Palette, UserRound } from "lucide-react";
 
 import { BookFormModal } from "@/components/books/book-form-modal";
+import { BookContextMenu } from "@/components/ui/book-context-menu";
 import { Button } from "@/components/ui/button";
 import { ErrorBanner } from "@/components/ui/error-banner";
 import { useToast } from "@/components/ui/toast-context";
@@ -66,13 +67,21 @@ export function BookDetailPage() {
 
   return (
     <div className="space-y-5 animate-fade-in">
-      {/* Back nav */}
-      <Button asChild variant="ghost" size="sm" className="rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 -ml-1 h-8">
-        <Link to="/books">
-          <ArrowLeft className="size-3.5" />
-          Back to Books
-        </Link>
-      </Button>
+      {/* Back nav + actions */}
+      <div className="flex items-center justify-between">
+        <Button asChild variant="ghost" size="sm" className="rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 -ml-1 h-8 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800">
+          <Link to="/books">
+            <ArrowLeft className="size-3.5" />
+            Back to Books
+          </Link>
+        </Button>
+
+        <BookContextMenu
+          bookId={book.id}
+          onEdit={() => setIsEditOpen(true)}
+          onDelete={() => void handleDelete()}
+        />
+      </div>
 
       {/* Hero */}
       <div
@@ -100,7 +109,7 @@ export function BookDetailPage() {
           </div>
 
           {/* Book info */}
-          <div className="flex flex-col justify-between gap-5 text-white">
+          <div className="flex flex-col gap-5 text-white">
             <div>
               <div className="flex items-center gap-2">
                 <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-[0.72rem] font-semibold text-white/90 ring-1 ring-white/20">
@@ -144,24 +153,6 @@ export function BookDetailPage() {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              <Button
-                size="sm"
-                className="rounded-lg bg-white text-slate-900 hover:bg-slate-100 shadow-sm h-8 text-xs"
-                onClick={() => setIsEditOpen(true)}
-              >
-                <Pencil className="size-3" />
-                Edit book
-              </Button>
-              <Button
-                size="sm"
-                className="rounded-lg bg-white/15 text-white hover:bg-white/25 ring-1 ring-white/20 h-8 text-xs"
-                onClick={handleDelete}
-              >
-                <Trash2 className="size-3" />
-                Delete
-              </Button>
-            </div>
           </div>
         </div>
       </div>

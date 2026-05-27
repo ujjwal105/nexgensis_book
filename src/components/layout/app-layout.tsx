@@ -1,14 +1,20 @@
-import { NavLink, Outlet, useLocation, useMatches, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, NavLink, Outlet, useLocation, useMatches, useNavigate } from "react-router-dom";
 import {
   Bell,
   BookMarked,
   BookOpenText,
   ChartColumnBig,
+  CheckCircle2,
+  FolderPlus,
+  LayoutGrid,
   Moon,
   Plus,
   Search,
   Sun,
 } from "lucide-react";
+
+import { useBookLists } from "@/hooks/use-book-lists";
 import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
@@ -18,6 +24,57 @@ const navigationItems = [
   { label: "Overview", icon: ChartColumnBig, to: "/" },
   { label: "Books", icon: BookOpenText, to: "/books" },
 ];
+
+function LibraryNavItem({
+  icon: Icon,
+  label,
+  to,
+  listParam,
+  count,
+}: {
+  icon: React.ElementType;
+  label: string;
+  to: string;
+  /** URL ?list= value — undefined means "All Books" (no param) */
+  listParam?: string;
+  count?: number;
+}) {
+  const location = useLocation();
+  const currentList = new URLSearchParams(location.search).get("list");
+
+  // Exact match: if this item has a listParam, active only when ?list matches.
+  // "All Books" (no listParam) is active only when on /books with NO list param.
+  const isActive = listParam
+    ? location.pathname === "/books" && currentList === listParam
+    : location.pathname === "/books" && !currentList;
+
+  const href = listParam ? `${to}?list=${listParam}` : to;
+
+  return (
+    <Link
+      to={href}
+      className={cn(
+        "mb-0.5 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.82rem] font-medium transition-colors",
+        isActive
+          ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white"
+          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200",
+      )}
+    >
+      <Icon
+        className={cn(
+          "size-3.5 flex-none",
+          isActive ? "text-indigo-500 dark:text-indigo-400" : "text-slate-400 dark:text-slate-500",
+        )}
+      />
+      <span className="flex-1">{label}</span>
+      {count !== undefined && count > 0 && (
+        <span className="ml-auto flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-indigo-100 px-1 text-[0.62rem] font-semibold text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300">
+          {count}
+        </span>
+      )}
+    </Link>
+  );
+}
 
 const mobileNavigationItems = [
   { label: "Overview", icon: ChartColumnBig, to: "/" },
@@ -30,6 +87,7 @@ export function AppLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, toggle } = useTheme();
+  const { counts } = useBookLists();
   const activeMatch = [...matches]
     .reverse()
     .find((match) => Boolean((match.handle as { title?: string } | undefined)?.title));
@@ -89,37 +147,89 @@ export function AppLayout() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-3 overflow-y-auto">
-          <p className="mb-1.5 px-2 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-slate-400 dark:text-slate-600">
-            Menu
-          </p>
-          {navigationItems.map(({ label, icon: Icon, to }) => (
-            <NavLink
-              key={label}
-              to={to}
-              end={to === "/"}
-              className={({ isActive }) =>
-                cn(
-                  "mb-0.5 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.82rem] font-medium transition-colors",
-                  isActive
-                    ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200",
-                )
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <Icon
-                    className={cn(
-                      "size-3.5 flex-none",
-                      isActive ? "text-indigo-500 dark:text-indigo-400" : "text-slate-400 dark:text-slate-500",
-                    )}
-                  />
-                  <span>{label}</span>
-                </>
-              )}
-            </NavLink>
-          ))}
+        <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-4">
+          {/* Main */}
+          <div>
+            <p className="mb-1.5 px-2 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-slate-400 dark:text-slate-600">
+              Menu
+            </p>
+            {navigationItems.map(({ label, icon: Icon, to }) => (
+              <NavLink
+                key={label}
+                to={to}
+                end={to === "/"}
+                className={({ isActive }) =>
+                  cn(
+                    "mb-0.5 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.82rem] font-medium transition-colors",
+                    isActive
+                      ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200",
+                  )
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    <Icon
+                      className={cn(
+                        "size-3.5 flex-none",
+                        isActive ? "text-indigo-500 dark:text-indigo-400" : "text-slate-400 dark:text-slate-500",
+                      )}
+                    />
+                    <span>{label}</span>
+                  </>
+                )}
+              </NavLink>
+            ))}
+          </div>
+
+          {/* Library */}
+          <div>
+            <p className="mb-1.5 px-2 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-slate-400 dark:text-slate-600">
+              Library
+            </p>
+            <LibraryNavItem
+              icon={LayoutGrid}
+              label="All Books"
+              to="/books"
+            />
+            <LibraryNavItem
+              icon={BookMarked}
+              label="Want to Read"
+              to="/books"
+              listParam="want-to-read"
+              count={counts["want-to-read"]}
+            />
+            <LibraryNavItem
+              icon={CheckCircle2}
+              label="Finished"
+              to="/books"
+              listParam="finished"
+              count={counts.finished}
+            />
+          </div>
+
+          {/* My Collections */}
+          <div>
+            <div className="mb-1.5 flex items-center justify-between px-2">
+              <p className="text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-slate-400 dark:text-slate-600">
+                My Collections
+              </p>
+              <button
+                type="button"
+                aria-label="New collection"
+                className="rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300 transition-colors"
+              >
+                <Plus className="size-3" />
+              </button>
+            </div>
+            <LibraryNavItem
+              icon={FolderPlus}
+              label="Collection"
+              to="/books"
+              listParam="collection"
+              count={counts.collection}
+            />
+          </div>
         </nav>
 
         {/* Theme toggle + User */}
