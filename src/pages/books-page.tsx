@@ -36,9 +36,9 @@ const LIST_CONFIG: Record<
   { label: string; icon: typeof BookMarked; emptyHint: string }
 > = {
   all: {
-    label: "All",
+    label: "All Books",
     icon: LayoutGrid,
-    emptyHint: "",
+    emptyHint: "Browse every book in your catalog.",
   },
   "want-to-read": {
     label: "Want to Read",
@@ -412,7 +412,7 @@ export function BooksPage() {
     return (
       <>
         {/* Header */}
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <ListIcon className="size-5 text-indigo-500 dark:text-emerald-300" />
             <h1 className="text-[1.4rem] font-bold tracking-tight text-slate-900 dark:text-white">
@@ -434,7 +434,7 @@ export function BooksPage() {
             </Button>
           ) : null}
         </div>
-        <p className="mt-1 text-xs text-slate-400 dark:text-white/40">{emptyHint}</p>
+        <p className="mt-0.5 text-xs text-slate-400 dark:text-white/40">{emptyHint}</p>
 
         {listFilteredBooks.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 dark:border-white/10 bg-white dark:bg-white/4 py-20 text-center">

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   BookMarked,
   BookOpenText,
@@ -87,6 +87,8 @@ export function AppLayout() {
   const { theme, toggle } = useTheme();
   const { counts } = useBookLists();
   const isSearchRoute = location.pathname === "/search";
+  const currentList = new URLSearchParams(location.search).get("list");
+  const isBooksTabActive = location.pathname === "/books" && !currentList;
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#1c1c1d]">
@@ -147,31 +149,34 @@ export function AppLayout() {
               Menu
             </p>
             {navigationItems.map(({ label, icon: Icon, to }) => (
-              <NavLink
+              <Link
                 key={label}
                 to={to}
-                end={to === "/"}
-                className={({ isActive }) =>
-                  cn(
-                    "mb-0.5 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.82rem] font-medium transition-colors",
-                    isActive
+                className={cn(
+                  "mb-0.5 flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.82rem] font-medium transition-colors",
+                  label === "Books"
+                    ? isBooksTabActive
+                      ? "bg-slate-100 text-slate-900 dark:bg-white/8 dark:text-white"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-white/60 dark:hover:bg-white/6 dark:hover:text-white/85"
+                    : location.pathname === to
                       ? "bg-slate-100 text-slate-900 dark:bg-white/8 dark:text-white"
                       : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-white/60 dark:hover:bg-white/6 dark:hover:text-white/85",
-                  )
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    <Icon
-                      className={cn(
-                        "size-3.5 flex-none",
-                        isActive ? "text-indigo-500 dark:text-emerald-300" : "text-slate-400 dark:text-white/40",
-                      )}
-                    />
-                    <span>{label}</span>
-                  </>
                 )}
-              </NavLink>
+              >
+                <Icon
+                  className={cn(
+                    "size-3.5 flex-none",
+                    label === "Books"
+                      ? isBooksTabActive
+                        ? "text-indigo-500 dark:text-emerald-300"
+                        : "text-slate-400 dark:text-white/40"
+                      : location.pathname === to
+                        ? "text-indigo-500 dark:text-emerald-300"
+                        : "text-slate-400 dark:text-white/40",
+                  )}
+                />
+                <span>{label}</span>
+              </Link>
             ))}
           </div>
 
@@ -288,24 +293,26 @@ export function AppLayout() {
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur-sm px-4 py-2 dark:bg-[#1c1c1d]/95 dark:border-white/8 md:hidden">
         <nav className="flex justify-around">
           {mobileNavigationItems.map(({ label, icon: Icon, to }) => (
-            <NavLink
+            <Link
               key={label}
               to={to}
               aria-label={label}
-              className={({ isActive }) =>
-                cn(
-                  "flex flex-col items-center justify-center gap-1 rounded-xl px-5 py-2 text-[0.68rem] font-semibold transition-colors",
-                  label === "Add"
-                    ? "bg-indigo-600 text-white dark:bg-emerald-400 dark:text-zinc-950"
-                    : isActive
+              className={cn(
+                "flex flex-col items-center justify-center gap-1 rounded-xl px-5 py-2 text-[0.68rem] font-semibold transition-colors",
+                label === "Add"
+                  ? "bg-indigo-600 text-white dark:bg-emerald-400 dark:text-zinc-950"
+                  : label === "Books"
+                    ? isBooksTabActive
+                      ? "text-indigo-600 dark:text-emerald-300"
+                      : "text-slate-400 hover:text-slate-700 dark:hover:text-white/75"
+                    : location.pathname === to
                       ? "text-indigo-600 dark:text-emerald-300"
                       : "text-slate-400 hover:text-slate-700 dark:hover:text-white/75",
-                )
-              }
+              )}
             >
               <Icon className="size-4" />
               <span>{label}</span>
-            </NavLink>
+            </Link>
           ))}
         </nav>
       </div>
