@@ -25,10 +25,10 @@ export const appRouter = createBrowserRouter([
         element: <Navigate to="/books" replace />,
       },
       {
-        path: "overview",
+        path: "home",
         element: withSuspense(<LazyDashboardPage />),
         handle: {
-          title: "Overview",
+          title: "Home",
         },
       },
       {

@@ -3,8 +3,7 @@ import {
   BookCopy,
   Boxes,
   ChevronRight,
-  Sparkles,
-  TrendingUp,
+  TrendingUp
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -37,15 +36,6 @@ export function DashboardPage() {
       iconBg: "bg-emerald-50 dark:bg-emerald-500/10",
       trend: "Well curated",
     },
-    {
-      label: "Status",
-      value: "Live",
-      sub: "all systems normal",
-      icon: Sparkles,
-      iconColor: "text-amber-600 dark:text-amber-300",
-      iconBg: "bg-amber-50 dark:bg-amber-500/10",
-      trend: "100% uptime",
-    },
   ];
 
   return (
@@ -54,7 +44,7 @@ export function DashboardPage() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="text-xl font-semibold text-slate-900 dark:text-white/90 tracking-tight">
-            Overview
+            Home
           </h2>
           <p className="mt-1 text-sm text-slate-500 dark:text-white/60">
             Your book catalog at a glance.
@@ -73,7 +63,7 @@ export function DashboardPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2">
         {stats.map(({ label, value, sub, icon: Icon, iconColor, iconBg, trend }) => (
           <div
             key={label}

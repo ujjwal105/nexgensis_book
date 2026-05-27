@@ -63,10 +63,10 @@ export function NotFoundPage() {
                 Go to Books
               </Link>
               <Link
-                to="/overview"
+                to="/home"
                 className="inline-flex items-center rounded-full border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-white/10 dark:text-white/78 dark:hover:bg-white/8"
               >
-                Open Overview
+                Open Home
               </Link>
             </div>
           </div>

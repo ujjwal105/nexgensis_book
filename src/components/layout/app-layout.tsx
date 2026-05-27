@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "@/hooks/use-theme";
 
 const navigationItems = [
-  { label: "Overview", icon: ChartColumnBig, to: "/overview" },
+  { label: "Home", icon: ChartColumnBig, to: "/home" },
   { label: "Books", icon: BookOpenText, to: "/books" },
 ];
 
@@ -74,7 +74,7 @@ function LibraryNavItem({
 }
 
 const mobileNavigationItems = [
-  { label: "Overview", icon: ChartColumnBig, to: "/overview" },
+  { label: "Home", icon: ChartColumnBig, to: "/home" },
   {
     label: "Add",
     icon: Plus,
