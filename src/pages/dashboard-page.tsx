@@ -24,8 +24,8 @@ export function DashboardPage() {
       value: isLoading ? null : String(totalItems),
       sub: "across the catalog",
       icon: BookCopy,
-      iconColor: "text-indigo-600 dark:text-emerald-300",
-      iconBg: "bg-indigo-50 dark:bg-emerald-400/10",
+      iconColor: "text-emerald-600 dark:text-emerald-300",
+      iconBg: "bg-emerald-50 dark:bg-emerald-400/10",
       trend: "+12 this month",
     },
     {
@@ -63,7 +63,7 @@ export function DashboardPage() {
         <Button
           asChild
           size="sm"
-          className="rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300 shadow-sm"
+          className="rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300 shadow-sm"
         >
           <Link to="/books">
             Browse catalog
@@ -120,7 +120,7 @@ export function DashboardPage() {
             asChild
             variant="ghost"
             size="sm"
-            className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 dark:text-emerald-300 dark:hover:bg-emerald-400/10 dark:hover:text-emerald-200 rounded-lg text-xs"
+            className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:text-emerald-300 dark:hover:bg-emerald-400/10 dark:hover:text-emerald-200 rounded-lg text-xs"
           >
             <Link to="/books">
               View all
@@ -153,7 +153,7 @@ export function DashboardPage() {
               <Button
                 asChild
                 size="sm"
-                className="mt-3 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
+                className="mt-3 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
               >
                 <Link to="/books?create=true">Add your first book</Link>
               </Button>
@@ -172,7 +172,7 @@ export function DashboardPage() {
                   {book.title.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-slate-900 dark:text-white/90 truncate group-hover:text-indigo-600 dark:group-hover:text-emerald-300 transition-colors">
+                  <p className="text-sm font-medium text-slate-900 dark:text-white/90 truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">
                     {book.title}
                   </p>
                   <p className="text-xs text-slate-400 dark:text-white/40 truncate mt-0.5">
@@ -204,9 +204,9 @@ export function DashboardPage() {
       <div className="grid gap-3 sm:grid-cols-2">
         <Link
           to="/books?create=true"
-          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 dark:border-white/10 bg-white dark:bg-[#232324] p-4 text-sm transition-all hover:border-indigo-300 dark:hover:border-emerald-300/30 hover:bg-indigo-50/30 dark:hover:bg-emerald-400/8"
+          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 dark:border-white/10 bg-white dark:bg-[#232324] p-4 text-sm transition-all hover:border-emerald-300 dark:hover:border-emerald-300/30 hover:bg-emerald-50/30 dark:hover:bg-emerald-400/8"
         >
-          <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-indigo-50 dark:bg-emerald-400/10 text-indigo-600 group-hover:bg-indigo-100 dark:group-hover:bg-emerald-400/18 transition-colors">
+          <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-400/10 text-emerald-600 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-400/18 transition-colors">
             <BookCopy className="size-4" />
           </div>
           <div>
@@ -215,7 +215,7 @@ export function DashboardPage() {
               Create a new catalog entry
             </p>
           </div>
-          <ArrowRight className="size-4 text-slate-300 dark:text-white/30 group-hover:text-indigo-400 dark:group-hover:text-emerald-300 ml-auto flex-none transition-colors" />
+          <ArrowRight className="size-4 text-slate-300 dark:text-white/30 group-hover:text-emerald-400 dark:group-hover:text-emerald-300 ml-auto flex-none transition-colors" />
         </Link>
         <Link
           to="/books"

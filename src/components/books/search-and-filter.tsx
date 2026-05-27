@@ -73,7 +73,7 @@ export function SearchAndFilter({
       <div className="mt-2.5 px-0.5 text-[0.72rem] text-slate-400 dark:text-white/40">
         {resultsCount} {resultsCount === 1 ? "book" : "books"} found
         {hasActiveFilters ? (
-          <span className="ml-1.5 text-indigo-500 dark:text-emerald-300">· filtered</span>
+          <span className="ml-1.5 text-emerald-500 dark:text-emerald-300">· filtered</span>
         ) : null}
       </div>
     </div>

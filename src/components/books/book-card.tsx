@@ -61,7 +61,7 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
         <div className="flex flex-1 flex-col px-4 pt-3.5 pb-3">
           <div className="flex-1">
             <Link to={`/books/${book.id}`} className="block group/title">
-              <h3 className="line-clamp-2 text-[0.9rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white/90 group-hover/title:text-indigo-600 dark:group-hover/title:text-emerald-300 transition-colors">
+              <h3 className="line-clamp-2 text-[0.9rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white/90 group-hover/title:text-emerald-600 dark:group-hover/title:text-emerald-300 transition-colors">
                 {book.title}
               </h3>
             </Link>
@@ -133,7 +133,7 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-7 flex-1 rounded-md text-xs text-slate-600 dark:text-white/60 hover:bg-indigo-50 hover:text-indigo-700 dark:hover:bg-emerald-400/10 dark:hover:text-emerald-300"
+                      className="h-7 flex-1 rounded-md text-xs text-slate-600 dark:text-white/60 hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-400/10 dark:hover:text-emerald-300"
                       onClick={() => onEdit(book)}
                     >
                       <Pencil className="size-3" />

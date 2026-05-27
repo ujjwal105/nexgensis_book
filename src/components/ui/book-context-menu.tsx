@@ -146,13 +146,13 @@ export function BookContextMenu({
                       className={cn(
                         "size-4 flex-none",
                         active
-                          ? "text-indigo-500 dark:text-emerald-300"
+                          ? "text-emerald-500 dark:text-emerald-300"
                           : "text-slate-400 dark:text-white/40",
                       )}
                     />
                     {active ? activeLabel : label}
                     {active && (
-                      <span className="ml-auto size-1.5 rounded-full bg-indigo-500 dark:bg-emerald-300" />
+                      <span className="ml-auto size-1.5 rounded-full bg-emerald-500 dark:bg-emerald-300" />
                     )}
                   </button>
                 );

@@ -169,7 +169,7 @@ function RankedBookRow({
       <Link to={`/books/${book.id}`} className="flex flex-1 items-center gap-3 min-w-0">
         <BookCover book={book} className="h-[60px] w-[44px] flex-none rounded-[10px]" showText={false} />
         <div className="min-w-0">
-          <p className="truncate text-[0.92rem] font-semibold tracking-tight text-slate-900 dark:text-white transition-colors group-hover:text-indigo-600 dark:group-hover:text-emerald-300">
+          <p className="truncate text-[0.92rem] font-semibold tracking-tight text-slate-900 dark:text-white transition-colors group-hover:text-emerald-600 dark:group-hover:text-emerald-300">
             {book.title}
           </p>
           <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/50">{book.author}</p>
@@ -414,11 +414,11 @@ export function BooksPage() {
         {/* Header */}
         <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <ListIcon className="size-5 text-indigo-500 dark:text-emerald-300" />
+            <ListIcon className="size-5 text-emerald-500 dark:text-emerald-300" />
             <h1 className="text-[1.4rem] font-bold tracking-tight text-slate-900 dark:text-white">
               {label}
             </h1>
-            <span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-indigo-100 px-1.5 text-[0.68rem] font-semibold text-indigo-600 dark:bg-emerald-400/15 dark:text-emerald-300">
+            <span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-emerald-100 px-1.5 text-[0.68rem] font-semibold text-emerald-600 dark:bg-emerald-400/15 dark:text-emerald-300">
               {listFilteredBooks.length}
             </span>
           </div>
@@ -456,7 +456,7 @@ export function BooksPage() {
                 />
                 <div className="min-w-0 flex-1">
                   <Link to={`/books/${book.id}`}>
-                    <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-emerald-300 transition-colors">
+                    <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-300 transition-colors">
                       {book.title}
                     </p>
                   </Link>
@@ -582,7 +582,7 @@ export function BooksPage() {
 
         {/* ── Top Free (ranked) ── */}
         <div className="border-t border-slate-100 dark:border-white/5 bg-slate-50/60 dark:bg-white/[0.018] px-6 py-10 md:px-10">
-          <SectionHeading title="Top Free" />
+          <SectionHeading title="Top Chart" />
           <div className="grid gap-x-10 xl:grid-cols-2">
             {rankedBooks.map((book, index) => (
               <RankedBookRow
@@ -623,7 +623,7 @@ export function BooksPage() {
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="flex items-center gap-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-white/55">
-                <Sparkles className="size-3.5 text-indigo-400 dark:text-emerald-300" />
+                <Sparkles className="size-3.5 text-emerald-400 dark:text-emerald-300" />
                 Manage Collection
               </p>
               <h2 className="mt-1 text-[1.35rem] font-bold tracking-tight text-slate-900 dark:text-white">
@@ -644,7 +644,7 @@ export function BooksPage() {
                 <BookCover book={book} className="h-[72px] w-[52px] flex-none rounded-[10px]" showText={false} />
                 <div className="min-w-0 flex-1">
                   <Link to={`/books/${book.id}`}>
-                    <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-emerald-300 transition-colors">
+                    <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-300 transition-colors">
                       {book.title}
                     </p>
                   </Link>

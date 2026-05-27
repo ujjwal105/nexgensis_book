@@ -61,7 +61,7 @@ function BookStripCard({ book }: { book: Book }) {
         <span className="line-clamp-3">{book.title}</span>
       </div>
       <div className="min-w-0">
-        <p className="line-clamp-2 text-sm font-semibold text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-white/90 dark:group-hover:text-emerald-300">
+        <p className="line-clamp-2 text-sm font-semibold text-slate-900 transition-colors group-hover:text-emerald-600 dark:text-white/90 dark:group-hover:text-emerald-300">
           {book.title}
         </p>
         <p className="mt-1 line-clamp-1 text-xs text-slate-500 dark:text-white/60">
@@ -88,7 +88,7 @@ function SearchResultRow({ book }: { book: Book }) {
         <span className="line-clamp-4">{book.title}</span>
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-lg font-semibold text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-white/90 dark:group-hover:text-emerald-300">
+        <p className="text-lg font-semibold text-slate-900 transition-colors group-hover:text-emerald-600 dark:text-white/90 dark:group-hover:text-emerald-300">
           {book.title}
         </p>
         <p className="mt-1 text-sm text-slate-500 dark:text-white/60">{book.author}</p>
@@ -192,7 +192,7 @@ export function SearchPage() {
         <div className="space-y-8">
           <section>
             <div className="mb-3 flex items-center gap-2">
-              <Sparkles className="size-4 text-indigo-500 dark:text-emerald-300" />
+              <Sparkles className="size-4 text-emerald-500 dark:text-emerald-300" />
               <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white/90">
                 Suggestions
               </h2>
@@ -220,7 +220,7 @@ export function SearchPage() {
 
           <section>
             <div className="mb-3 flex items-center gap-2">
-              <BookOpenText className="size-4 text-indigo-500 dark:text-emerald-300" />
+              <BookOpenText className="size-4 text-emerald-500 dark:text-emerald-300" />
               <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white/90">
                 In Your Library
               </h2>
@@ -240,7 +240,7 @@ export function SearchPage() {
 
           <section>
             <div className="mb-3 flex items-center gap-2">
-              <TrendingUp className="size-4 text-indigo-500 dark:text-emerald-300" />
+              <TrendingUp className="size-4 text-emerald-500 dark:text-emerald-300" />
               <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white/90">
                 Top Results
               </h2>
@@ -265,7 +265,7 @@ export function SearchPage() {
               </h2>
               <Link
                 to="/books"
-                className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-500 dark:text-emerald-300"
+                className="text-sm font-medium text-emerald-600 transition-colors hover:text-emerald-500 dark:text-emerald-300"
               >
                 Browse all
               </Link>

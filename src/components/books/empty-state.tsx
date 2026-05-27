@@ -23,7 +23,7 @@ export function EmptyState({ hasFilters = false, onAction }: EmptyStateProps) {
       </p>
       <Button
         size="sm"
-        className="mt-5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300 shadow-sm"
+        className="mt-5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300 shadow-sm"
         onClick={onAction}
       >
         <Plus className="size-3.5" />
