@@ -14,6 +14,8 @@ import {
   Search,
   Sun,
 } from "lucide-react";
+import nexgensisLogo from "@/assets/Nexgensis.png";
+import nexgensisSidebarLogo from "@/assets/NexgensisSidebar.png";
 
 import { useBookLists } from "@/hooks/use-book-lists";
 import { motion } from "framer-motion";
@@ -107,20 +109,27 @@ export function AppLayout() {
         <div
           className={cn(
             "flex flex-none items-center border-b border-slate-200 py-4 dark:border-white/8",
-            isSidebarCollapsed ? "justify-center px-2" : "gap-2.5 px-4",
+            isSidebarCollapsed ? "justify-center px-2" : "px-4",
           )}
         >
-          <div className="flex size-7 items-center justify-center rounded-lg bg-emerald-500/12 ring-1 ring-emerald-400/20 dark:bg-emerald-400/15 dark:ring-emerald-300/25">
-            <BookMarked className="size-3.5 text-emerald-500 dark:text-emerald-300" />
-          </div>
-          <div className={cn("min-w-0", isSidebarCollapsed && "hidden")}>
-            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-white/40">
-              Nexgensis
-            </p>
-            <p className="mt-0.5 truncate text-[0.82rem] font-semibold leading-none text-slate-900 dark:text-white">
-              Book System
-            </p>
-          </div>
+          {isSidebarCollapsed ? (
+            <img
+              src={nexgensisLogo}
+              alt="Nexgensis"
+              className="h-6 w-auto object-contain invert dark:invert-0"
+            />
+          ) : (
+            <div className="min-w-0">
+              <img
+                src={nexgensisSidebarLogo}
+                alt="Nexgensis"
+                className="h-6 w-auto object-contain invert dark:invert-0"
+              />
+              <p className="mt-px pl-[5.8rem] truncate text-[0.82rem] font-semibold leading-none text-slate-900 dark:text-white">
+                Book System
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Search shortcut */}
