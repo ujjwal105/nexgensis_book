@@ -181,7 +181,7 @@ export function AppLayout() {
       </aside>
 
       {/* Content — offset by sidebar width on desktop */}
-      <div className="md:pl-[220px] flex flex-col min-h-screen">
+      <div className="md:pl-[220px] flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
         {/* Top header */}
         <header className="sticky top-0 z-20 flex h-[54px] flex-none items-center justify-between gap-4 border-b border-slate-200 bg-white px-5 dark:bg-slate-900 dark:border-slate-800 md:px-6">
           <h1 className="text-[0.9rem] font-semibold text-slate-800 tracking-tight dark:text-slate-200">
@@ -207,7 +207,7 @@ export function AppLayout() {
         </header>
 
         {/* Page content */}
-        <main className="flex-1">
+        <main className="flex-1 bg-slate-50 dark:bg-slate-950">
           <motion.div
             key={String(currentTitle)}
             initial={{ opacity: 0, y: 5 }}
