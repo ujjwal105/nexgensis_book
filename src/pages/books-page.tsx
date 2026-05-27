@@ -535,24 +535,27 @@ export function BooksPage() {
                 key={book.id}
                 className="flex items-center gap-4 rounded-2xl border border-slate-100 bg-white p-3.5 shadow-sm transition-shadow hover:shadow-md dark:border-white/6 dark:bg-[#232324] dark:hover:border-white/10"
               >
-                <BookCover
-                  book={book}
-                  className="h-[68px] w-[50px] flex-none rounded-[10px]"
-                  showText={false}
-                />
-                <div className="min-w-0 flex-1">
-                  <Link to={`/books/${book.id}`}>
+                <Link
+                  to={`/books/${book.id}`}
+                  className="flex min-w-0 flex-1 items-center gap-4"
+                >
+                  <BookCover
+                    book={book}
+                    className="h-[68px] w-[50px] flex-none rounded-[10px]"
+                    showText={false}
+                  />
+                  <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-300 transition-colors">
                       {book.title}
                     </p>
-                  </Link>
-                  <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/45">
-                    {book.author}
-                  </p>
-                  <span className="mt-2 inline-block rounded-full bg-slate-100 px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-slate-400 dark:bg-white/8 dark:text-white/30">
-                    {book.genre}
-                  </span>
-                </div>
+                    <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/45">
+                      {book.author}
+                    </p>
+                    <span className="mt-2 inline-block rounded-full bg-slate-100 px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-slate-400 dark:bg-white/8 dark:text-white/30">
+                      {book.genre}
+                    </span>
+                  </div>
+                </Link>
                 <BookContextMenu
                   bookId={book.id}
                   onEdit={() => openEditModal(book)}
