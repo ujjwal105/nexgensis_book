@@ -48,15 +48,15 @@ export function Modal({ children, isOpen, onClose, title, description }: ModalPr
           >
             <div className="flex flex-none items-start justify-between gap-4 border-b border-slate-200 dark:border-white/10 px-5 py-4">
               <div>
-                <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">{title}</h2>
+                <h2 className="text-base font-semibold text-slate-900 dark:text-white/90">{title}</h2>
                 {description ? (
-                  <p className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">{description}</p>
+                  <p className="mt-0.5 text-xs text-slate-400 dark:text-white/40">{description}</p>
                 ) : null}
               </div>
               <button
                 type="button"
                 aria-label="Close dialog"
-                className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-white/8 hover:text-slate-700 dark:hover:text-slate-300"
+                className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-white/8 hover:text-slate-700 dark:hover:text-white/75"
                 onClick={onClose}
               >
                 <X className="size-4" />

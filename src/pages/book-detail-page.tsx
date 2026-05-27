@@ -69,7 +69,7 @@ export function BookDetailPage() {
     <div className="space-y-5 animate-fade-in">
       {/* Back nav + actions */}
       <div className="flex items-center justify-between">
-        <Button asChild variant="ghost" size="sm" className="rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 -ml-1 h-8 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/8">
+        <Button asChild variant="ghost" size="sm" className="rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 -ml-1 h-8 dark:text-white/60 dark:hover:text-white dark:hover:bg-white/8">
           <Link to="/books">
             <ArrowLeft className="size-3.5" />
             Back to Books
@@ -161,29 +161,29 @@ export function BookDetailPage() {
       <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
         {/* Description */}
         <div className="rounded-xl border border-slate-200 dark:border-white/8 bg-white dark:bg-[#232324] p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">About this book</h2>
-          <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{book.description}</p>
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-white/90">About this book</h2>
+          <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-white/60">{book.description}</p>
         </div>
 
         {/* Metadata */}
         <div className="rounded-xl border border-slate-200 dark:border-white/8 bg-white dark:bg-[#232324] p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Metadata</h2>
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-white/90">Metadata</h2>
           <div className="mt-3 space-y-3">
             <div>
-              <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mb-1">
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-white/40 mb-1">
                 <Hash className="size-3" />
                 <span>Book ID</span>
               </div>
-              <p className="rounded-md bg-slate-50 dark:bg-white/8 px-3 py-2 text-xs font-mono text-slate-700 dark:text-slate-300 break-all">
+              <p className="rounded-md bg-slate-50 dark:bg-white/8 px-3 py-2 text-xs font-mono text-slate-700 dark:text-white/75 break-all">
                 {book.id}
               </p>
             </div>
             <div>
-              <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mb-1">
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-white/40 mb-1">
                 <Calendar className="size-3" />
                 <span>Created</span>
               </div>
-              <p className="rounded-md bg-slate-50 dark:bg-white/8 px-3 py-2 text-xs text-slate-700 dark:text-slate-300">
+              <p className="rounded-md bg-slate-50 dark:bg-white/8 px-3 py-2 text-xs text-slate-700 dark:text-white/75">
                 {new Date(book.createdAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
@@ -192,7 +192,7 @@ export function BookDetailPage() {
               </p>
             </div>
             <div>
-              <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 mb-1">
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-white/40 mb-1">
                 <Palette className="size-3" />
                 <span>Theme color</span>
               </div>

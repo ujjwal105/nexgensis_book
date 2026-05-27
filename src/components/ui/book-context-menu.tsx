@@ -140,19 +140,19 @@ export function BookContextMenu({
                       toggle(key, bookId);
                       setOpen(false);
                     }}
-                    className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/8"
+                    className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-white/85 dark:hover:bg-white/8"
                   >
                     <Icon
                       className={cn(
                         "size-4 flex-none",
                         active
-                          ? "text-indigo-500 dark:text-indigo-400"
-                          : "text-slate-400 dark:text-slate-500",
+                          ? "text-indigo-500 dark:text-emerald-300"
+                          : "text-slate-400 dark:text-white/40",
                       )}
                     />
                     {active ? activeLabel : label}
                     {active && (
-                      <span className="ml-auto size-1.5 rounded-full bg-indigo-500" />
+                      <span className="ml-auto size-1.5 rounded-full bg-indigo-500 dark:bg-emerald-300" />
                     )}
                   </button>
                 );
@@ -171,9 +171,9 @@ export function BookContextMenu({
                   onEdit();
                   setOpen(false);
                 }}
-                className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/8"
+                className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-white/85 dark:hover:bg-white/8"
               >
-                <Pencil className="size-4 flex-none text-slate-400 dark:text-slate-500" />
+                <Pencil className="size-4 flex-none text-slate-400 dark:text-white/40" />
                 Edit
               </button>
               <button

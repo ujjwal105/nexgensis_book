@@ -156,7 +156,7 @@ function RankedBookRow({
       <Link to={`/books/${book.id}`} className="flex flex-1 items-center gap-3 min-w-0">
         <BookCover book={book} className="h-[60px] w-[44px] flex-none rounded-[10px]" showText={false} />
         <div className="min-w-0">
-          <p className="truncate text-[0.92rem] font-semibold tracking-tight text-slate-900 dark:text-white transition-colors group-hover:text-indigo-600 dark:group-hover:text-sky-300">
+          <p className="truncate text-[0.92rem] font-semibold tracking-tight text-slate-900 dark:text-white transition-colors group-hover:text-indigo-600 dark:group-hover:text-emerald-300">
             {book.title}
           </p>
           <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/50">{book.author}</p>
@@ -297,22 +297,22 @@ export function BooksPage() {
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-center gap-2.5">
-            <ListIcon className="size-5 text-indigo-500 dark:text-indigo-400" />
+            <ListIcon className="size-5 text-indigo-500 dark:text-emerald-300" />
             <h1 className="text-[1.4rem] font-bold tracking-tight text-slate-900 dark:text-white">
               {label}
             </h1>
-            <span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-indigo-100 px-1.5 text-[0.68rem] font-semibold text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300">
+            <span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-indigo-100 px-1.5 text-[0.68rem] font-semibold text-indigo-600 dark:bg-emerald-400/15 dark:text-emerald-300">
               {listFilteredBooks.length}
             </span>
           </div>
-          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">{emptyHint}</p>
+          <p className="mt-1 text-xs text-slate-400 dark:text-white/40">{emptyHint}</p>
         </div>
 
         {listFilteredBooks.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 dark:border-white/10 bg-white dark:bg-white/4 py-20 text-center">
-            <ListIcon className="size-10 text-slate-200 dark:text-slate-700 mb-3" />
-            <p className="text-sm font-medium text-slate-400 dark:text-slate-500">Nothing here yet</p>
-            <p className="mt-1 max-w-xs text-xs text-slate-300 dark:text-slate-600">{emptyHint}</p>
+            <ListIcon className="size-10 text-slate-200 dark:text-white/25 mb-3" />
+            <p className="text-sm font-medium text-slate-400 dark:text-white/40">Nothing here yet</p>
+            <p className="mt-1 max-w-xs text-xs text-slate-300 dark:text-white/30">{emptyHint}</p>
           </div>
         ) : (
           <div className="grid gap-3 md:grid-cols-2">
@@ -328,7 +328,7 @@ export function BooksPage() {
                 />
                 <div className="min-w-0 flex-1">
                   <Link to={`/books/${book.id}`}>
-                    <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-sky-300 transition-colors">
+                    <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-emerald-300 transition-colors">
                       {book.title}
                     </p>
                   </Link>
@@ -494,7 +494,7 @@ export function BooksPage() {
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="flex items-center gap-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-white/55">
-                <Sparkles className="size-3.5 text-indigo-400 dark:text-sky-400" />
+                <Sparkles className="size-3.5 text-indigo-400 dark:text-emerald-300" />
                 Manage Collection
               </p>
               <h2 className="mt-1 text-[1.35rem] font-bold tracking-tight text-slate-900 dark:text-white">
@@ -515,7 +515,7 @@ export function BooksPage() {
                 <BookCover book={book} className="h-[72px] w-[52px] flex-none rounded-[10px]" showText={false} />
                 <div className="min-w-0 flex-1">
                   <Link to={`/books/${book.id}`}>
-                    <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-sky-300 transition-colors">
+                    <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-emerald-300 transition-colors">
                       {book.title}
                     </p>
                   </Link>

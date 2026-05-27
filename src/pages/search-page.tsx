@@ -61,13 +61,13 @@ function BookStripCard({ book }: { book: Book }) {
         <span className="line-clamp-3">{book.title}</span>
       </div>
       <div className="min-w-0">
-        <p className="line-clamp-2 text-sm font-semibold text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-slate-100 dark:group-hover:text-indigo-400">
+        <p className="line-clamp-2 text-sm font-semibold text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-white/90 dark:group-hover:text-emerald-300">
           {book.title}
         </p>
-        <p className="mt-1 line-clamp-1 text-xs text-slate-500 dark:text-slate-400">
+        <p className="mt-1 line-clamp-1 text-xs text-slate-500 dark:text-white/60">
           {book.author}
         </p>
-        <p className="mt-2 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-slate-400 dark:text-slate-500">
+        <p className="mt-2 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-slate-400 dark:text-white/40">
           {book.genre}
         </p>
       </div>
@@ -88,15 +88,15 @@ function SearchResultRow({ book }: { book: Book }) {
         <span className="line-clamp-4">{book.title}</span>
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-lg font-semibold text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-slate-100 dark:group-hover:text-indigo-400">
+        <p className="text-lg font-semibold text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-white/90 dark:group-hover:text-emerald-300">
           {book.title}
         </p>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{book.author}</p>
-        <p className="mt-2 line-clamp-2 text-sm text-slate-400 dark:text-slate-500">
+        <p className="mt-1 text-sm text-slate-500 dark:text-white/60">{book.author}</p>
+        <p className="mt-2 line-clamp-2 text-sm text-slate-400 dark:text-white/40">
           {book.description}
         </p>
       </div>
-      <ArrowRight className="size-4 flex-none text-slate-300 transition-colors group-hover:text-slate-500 dark:text-slate-600" />
+      <ArrowRight className="size-4 flex-none text-slate-300 transition-colors group-hover:text-slate-500 dark:text-white/30" />
     </Link>
   );
 }
@@ -179,7 +179,7 @@ export function SearchPage() {
             <button
               type="button"
               onClick={() => setSearchInput("")}
-              className="absolute right-4 top-1/2 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-white/8 dark:hover:text-slate-200"
+              className="absolute right-4 top-1/2 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-white/8 dark:hover:text-white/85"
               aria-label="Clear search"
             >
               <X className="size-4" />
@@ -192,8 +192,8 @@ export function SearchPage() {
         <div className="space-y-8">
           <section>
             <div className="mb-3 flex items-center gap-2">
-              <Sparkles className="size-4 text-indigo-500" />
-              <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+              <Sparkles className="size-4 text-indigo-500 dark:text-emerald-300" />
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white/90">
                 Suggestions
               </h2>
             </div>
@@ -204,14 +204,14 @@ export function SearchPage() {
                     key={suggestion}
                     type="button"
                     onClick={() => setSearchInput(suggestion)}
-                    className="flex w-full items-center gap-3 border-b border-slate-200/80 px-4 py-4 text-left text-lg text-slate-600 transition-colors last:border-b-0 hover:bg-slate-50 hover:text-slate-900 dark:border-white/8 dark:text-slate-300 dark:hover:bg-white/8 dark:hover:text-slate-100"
+                    className="flex w-full items-center gap-3 border-b border-slate-200/80 px-4 py-4 text-left text-lg text-slate-600 transition-colors last:border-b-0 hover:bg-slate-50 hover:text-slate-900 dark:border-white/8 dark:text-white/75 dark:hover:bg-white/8 dark:hover:text-white/90"
                   >
                     <Search className="size-5 flex-none text-slate-400" />
                     <span>{suggestion}</span>
                   </button>
                 ))
               ) : (
-                <div className="px-4 py-5 text-sm text-slate-500 dark:text-slate-400">
+                <div className="px-4 py-5 text-sm text-slate-500 dark:text-white/60">
                   No suggestions found for "{searchInput}".
                 </div>
               )}
@@ -220,8 +220,8 @@ export function SearchPage() {
 
           <section>
             <div className="mb-3 flex items-center gap-2">
-              <BookOpenText className="size-4 text-indigo-500" />
-              <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+              <BookOpenText className="size-4 text-indigo-500 dark:text-emerald-300" />
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white/90">
                 In Your Library
               </h2>
             </div>
@@ -232,7 +232,7 @@ export function SearchPage() {
                 ))}
               </div>
             ) : (
-              <div className="rounded-3xl border border-dashed border-slate-300 px-5 py-8 text-sm text-slate-500 dark:border-white/10 dark:text-slate-400">
+              <div className="rounded-3xl border border-dashed border-slate-300 px-5 py-8 text-sm text-slate-500 dark:border-white/10 dark:text-white/60">
                 No books in your library match "{searchInput}" yet.
               </div>
             )}
@@ -240,8 +240,8 @@ export function SearchPage() {
 
           <section>
             <div className="mb-3 flex items-center gap-2">
-              <TrendingUp className="size-4 text-indigo-500" />
-              <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+              <TrendingUp className="size-4 text-indigo-500 dark:text-emerald-300" />
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white/90">
                 Top Results
               </h2>
             </div>
@@ -249,7 +249,7 @@ export function SearchPage() {
               {topResults.length ? (
                 topResults.map((book) => <SearchResultRow key={book.id} book={book} />)
               ) : (
-                <div className="rounded-3xl border border-dashed border-slate-300 px-5 py-8 text-sm text-slate-500 dark:border-white/10 dark:text-slate-400">
+                <div className="rounded-3xl border border-dashed border-slate-300 px-5 py-8 text-sm text-slate-500 dark:border-white/10 dark:text-white/60">
                   No top results yet. Try a broader keyword.
                 </div>
               )}
@@ -260,12 +260,12 @@ export function SearchPage() {
         <div className="space-y-10">
           <section>
             <div className="mb-4 flex items-center justify-between gap-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white/90">
                 Recently Added
               </h2>
               <Link
                 to="/books"
-                className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-500"
+                className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-500 dark:text-emerald-300"
               >
                 Browse all
               </Link>
@@ -275,7 +275,7 @@ export function SearchPage() {
                 <BookStripCard key={book.id} book={book} />
               ))}
               {!recentBooks.length && !isLoading ? (
-                <div className="rounded-3xl border border-dashed border-slate-300 px-5 py-8 text-sm text-slate-500 dark:border-white/10 dark:text-slate-400">
+                <div className="rounded-3xl border border-dashed border-slate-300 px-5 py-8 text-sm text-slate-500 dark:border-white/10 dark:text-white/60">
                   No books available to explore yet.
                 </div>
               ) : null}
@@ -284,10 +284,10 @@ export function SearchPage() {
 
           <section>
             <div className="mb-4 flex items-center justify-between gap-4">
-              <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white/90">
                 Trending
               </h2>
-              <span className="text-sm text-slate-400 dark:text-slate-500">
+              <span className="text-sm text-slate-400 dark:text-white/40">
                 Quick ideas to start searching
               </span>
             </div>
@@ -297,7 +297,7 @@ export function SearchPage() {
                   key={term}
                   type="button"
                   onClick={() => setSearchInput(term)}
-                  className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white/70 px-4 py-4 text-left text-lg text-slate-700 transition-colors hover:border-slate-300 hover:bg-white dark:border-white/8 dark:bg-[#232324]/70 dark:text-slate-300 dark:hover:border-white/14"
+                  className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white/70 px-4 py-4 text-left text-lg text-slate-700 transition-colors hover:border-slate-300 hover:bg-white dark:border-white/8 dark:bg-[#232324]/70 dark:text-white/75 dark:hover:border-white/14"
                 >
                   <Search className="size-5 flex-none text-slate-400" />
                   <span>{term}</span>

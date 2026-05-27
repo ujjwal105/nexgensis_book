@@ -61,7 +61,7 @@ export function SearchAndFilter({
           <Button
             variant="ghost"
             size="sm"
-            className="h-9 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-white/8 hover:text-slate-700 dark:hover:text-slate-300 lg:justify-self-end"
+            className="h-9 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-white/8 hover:text-slate-700 dark:hover:text-white/75 lg:justify-self-end"
             onClick={onClearFilters}
           >
             <X className="size-3.5" />
@@ -70,10 +70,10 @@ export function SearchAndFilter({
         ) : null}
       </div>
 
-      <div className="mt-2.5 px-0.5 text-[0.72rem] text-slate-400 dark:text-slate-500">
+      <div className="mt-2.5 px-0.5 text-[0.72rem] text-slate-400 dark:text-white/40">
         {resultsCount} {resultsCount === 1 ? "book" : "books"} found
         {hasActiveFilters ? (
-          <span className="ml-1.5 text-indigo-500">· filtered</span>
+          <span className="ml-1.5 text-indigo-500 dark:text-emerald-300">· filtered</span>
         ) : null}
       </div>
     </div>
