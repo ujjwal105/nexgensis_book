@@ -587,7 +587,7 @@ export function BooksPage() {
        * Light: white / near-white sections
        * Dark : Apple Books charcoal palette
        */}
-      <div className="-mx-5 -mt-5 overflow-hidden bg-white dark:bg-[#1c1c1d] md:-mx-6 md:-mt-6 md:rounded-[28px] md:border md:border-slate-200/60 dark:md:border-white/6 shadow-sm">
+      <div className="-mx-5 -mt-5 overflow-hidden bg-white dark:bg-[#1c1c1d] md:-mx-6 md:-mt-6 md:rounded-b-[28px] md:border md:border-slate-200/60 dark:md:border-white/6 shadow-sm">
         {/* ── Hero / Featured ── */}
         <div className="relative overflow-hidden bg-slate-50 dark:bg-[#232324]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.06),transparent_40%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.07),transparent_26%)]" />

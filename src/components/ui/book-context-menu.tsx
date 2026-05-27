@@ -33,13 +33,13 @@ const listActions: Record<
     key: "want-to-read",
     icon: BookMarked,
     label: "Add to Want to Read",
-    activeLabel: "Remove from Want to Read",
+    activeLabel: "Remove",
   },
   finished: {
     key: "finished",
     icon: CheckCircle2,
     label: "Mark as Finished",
-    activeLabel: "Remove from Finished",
+    activeLabel: "Remove",
   },
 };
 

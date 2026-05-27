@@ -1,5 +1,5 @@
 import { Suspense, type ReactNode } from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 
 import { AppLayout } from "@/components/layout/app-layout";
 import { RouteFallback } from "@/components/ui/route-fallback";
@@ -21,6 +21,10 @@ export const appRouter = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <Navigate to="/books" replace />,
+      },
+      {
+        path: "overview",
         element: withSuspense(<LazyDashboardPage />),
         handle: {
           title: "Overview",
