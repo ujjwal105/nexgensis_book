@@ -1,7 +1,6 @@
 import React from "react";
-import { Link, NavLink, Outlet, useLocation, useMatches, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  Bell,
   BookMarked,
   BookOpenText,
   ChartColumnBig,
@@ -83,16 +82,10 @@ const mobileNavigationItems = [
 ];
 
 export function AppLayout() {
-  const matches = useMatches();
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, toggle } = useTheme();
   const { counts } = useBookLists();
-  const activeMatch = [...matches]
-    .reverse()
-    .find((match) => Boolean((match.handle as { title?: string } | undefined)?.title));
-  const currentTitle =
-    (activeMatch?.handle as { title?: string } | undefined)?.title ?? "Book System";
   const isSearchRoute = location.pathname === "/search";
 
   return (
@@ -206,30 +199,14 @@ export function AppLayout() {
               listParam="finished"
               count={counts.finished}
             />
-          </div>
-
-          {/* My Collections */}
-          <div>
-            <div className="mb-1.5 flex items-center justify-between px-2">
-              <p className="text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-slate-400 dark:text-white/30">
-                My Collections
-              </p>
-              <button
-                type="button"
-                aria-label="New collection"
-                className="rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-white/8 dark:hover:text-white/75 transition-colors"
-              >
-                <Plus className="size-3" />
-              </button>
-            </div>
             <LibraryNavItem
               icon={FolderPlus}
-              label="Collection"
+              label="My Samples"
               to="/books"
-              listParam="collection"
-              count={counts.collection}
+              listParam="my-samples"
             />
           </div>
+
         </nav>
 
         {/* Theme toggle + User */}
@@ -292,38 +269,14 @@ export function AppLayout() {
 
       {/* Content — offset by sidebar width on desktop */}
       <div className="md:pl-[220px] flex flex-col min-h-screen bg-slate-50 dark:bg-[#1c1c1d]">
-        {/* Top header */}
-        <header className="sticky top-0 z-20 flex h-[54px] flex-none items-center justify-between gap-4 border-b border-slate-200 bg-white px-5 dark:bg-[#1c1c1d] dark:border-white/8 md:px-6">
-          <h1 className="text-[0.9rem] font-semibold text-slate-800 tracking-tight dark:text-white/85">
-            {String(currentTitle)}
-          </h1>
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              aria-label="Open notifications"
-              className="inline-flex size-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-white/6 dark:hover:text-white/75"
-            >
-              <Bell className="size-3.5" />
-            </button>
-            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 hover:bg-slate-100 cursor-pointer transition-colors dark:border-white/10 dark:bg-white/6 dark:hover:bg-white/8">
-              <div className="flex size-6 flex-none items-center justify-center rounded-full bg-gradient-to-br from-emerald-300 to-sky-400 text-[0.6rem] font-bold text-zinc-950">
-                NT
-              </div>
-              <p className="hidden text-[0.78rem] font-medium text-slate-700 dark:text-white/75 md:block">
-                Nexgensis
-              </p>
-            </div>
-          </div>
-        </header>
-
         {/* Page content */}
         <main className="flex-1 bg-slate-50 dark:bg-[#1c1c1d]">
           <motion.div
-            key={String(currentTitle)}
+            key={location.pathname + location.search}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
-            className="p-5 pb-24 md:p-6 md:pb-6"
+            className="p-5 pt-6 pb-24 md:p-6 md:pt-6 md:pb-6"
           >
             <Outlet />
           </motion.div>

@@ -120,7 +120,7 @@ export function DashboardPage() {
             asChild
             variant="ghost"
             size="sm"
-            className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 dark:text-emerald-300 dark:hover:bg-emerald-400/10 dark:hover:text-emerald-200 rounded-lg h-7 text-xs"
+            className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 dark:text-emerald-300 dark:hover:bg-emerald-400/10 dark:hover:text-emerald-200 rounded-lg text-xs"
           >
             <Link to="/books">
               View all

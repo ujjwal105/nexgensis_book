@@ -28,8 +28,10 @@ import type { Book, BookDraft } from "@/types/book";
 
 /* ─── List-view config ───────────────────────────────────────────── */
 
+type BookListViewKey = BookListKey | "my-samples";
+
 const LIST_CONFIG: Record<
-  BookListKey,
+  BookListViewKey,
   { label: string; icon: typeof BookMarked; emptyHint: string }
 > = {
   "want-to-read": {
@@ -41,6 +43,11 @@ const LIST_CONFIG: Record<
     label: "Finished",
     icon: CheckCircle2,
     emptyHint: "Mark books as finished from the ⋮ menu on any book.",
+  },
+  "my-samples": {
+    label: "My Samples",
+    icon: FolderPlus,
+    emptyHint: "Books you add locally will appear here automatically.",
   },
   collection: {
     label: "Collection",
@@ -214,9 +221,13 @@ export function BooksPage() {
 
   // List filter — activated by ?list= search param
   const rawList = params.get("list") ?? "";
-  const listFilter = (rawList in LIST_CONFIG ? rawList : null) as BookListKey | null;
+  const listFilter = (rawList in LIST_CONFIG ? rawList : null) as BookListViewKey | null;
   const isListView = Boolean(listFilter);
-  const listFilteredBooks = listFilter ? books.filter((b) => isIn(listFilter, b.id)) : books;
+  const listFilteredBooks = listFilter
+    ? listFilter === "my-samples"
+      ? books.filter((b) => b.id.startsWith("local-"))
+      : books.filter((b) => isIn(listFilter, b.id))
+    : books;
 
   const featuredBooks = books.slice(0, 3);
   const rankedBooks = books.slice(0, 6);
@@ -295,7 +306,7 @@ export function BooksPage() {
     return (
       <>
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <ListIcon className="size-5 text-indigo-500 dark:text-emerald-300" />
             <h1 className="text-[1.4rem] font-bold tracking-tight text-slate-900 dark:text-white">
@@ -305,8 +316,19 @@ export function BooksPage() {
               {listFilteredBooks.length}
             </span>
           </div>
-          <p className="mt-1 text-xs text-slate-400 dark:text-white/40">{emptyHint}</p>
+          {listFilter === "my-samples" ? (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={openCreateModal}
+              className="rounded-full px-4"
+            >
+              <Plus className="size-3.5" />
+              Add Book
+            </Button>
+          ) : null}
         </div>
+        <p className="mt-1 text-xs text-slate-400 dark:text-white/40">{emptyHint}</p>
 
         {listFilteredBooks.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 dark:border-white/10 bg-white dark:bg-white/4 py-20 text-center">
@@ -398,7 +420,8 @@ export function BooksPage() {
                 ) : null}
                 <Button
                   size="sm"
-                  className="rounded-full border border-slate-200 bg-white px-3.5 text-sm text-slate-700 shadow-sm hover:bg-slate-50 dark:border-white/10 dark:bg-white/8 dark:text-white dark:hover:bg-white/14"
+                  variant="outline"
+                  className="rounded-full px-4"
                   onClick={openCreateModal}
                 >
                   <Plus className="size-3.5" />
