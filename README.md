@@ -18,28 +18,6 @@ Add your UI screenshots in this section later.
 
 Suggested structure:
 
-```md
-## Screenshots
-
-### Overview
-![Overview](./docs/screenshots/overview.png)
-
-### All Books
-![All Books](./docs/screenshots/all-books.png)
-
-### Want to Read
-![Want to Read](./docs/screenshots/want-to-read.png)
-
-### Finished
-![Finished](./docs/screenshots/finished.png)
-
-### My Samples
-![My Samples](./docs/screenshots/my-samples.png)
-
-### Book Detail
-![Book Detail](./docs/screenshots/book-detail.png)
-```
-
 You can create a folder like `docs/screenshots/` and add the images there later.
 
 ## Features
