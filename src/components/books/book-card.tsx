@@ -74,7 +74,7 @@ export function BookCard({ book, onDelete, onEdit }: BookCardProps) {
                 {book.publicationYear}
               </span>
               <span
-                className="inline-flex rounded-md px-2 py-0.5 text-[0.68rem] font-semibold text-white"
+                className="inline-flex rounded-md px-2 py-0.5 text-[0.68rem] font-bold text-white shadow-sm"
                 style={{ backgroundColor: book.coverColor }}
               >
                 {book.genre}

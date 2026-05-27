@@ -281,7 +281,7 @@ function LibraryCoverCard({
           onEdit={onEdit}
           onDelete={onDelete}
           variant={menuVariant}
-          triggerClassName="mt-0.5 flex-none opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+          triggerClassName="mt-0.5 flex-none opacity-100"
         />
       </div>
     </div>
@@ -570,7 +570,7 @@ export function BooksPage() {
                     <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/45">
                       {book.author}
                     </p>
-                    <span className="mt-2 inline-block rounded-full bg-slate-100 px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-slate-400 dark:bg-white/8 dark:text-white/30">
+                    <span className="mt-2 inline-block rounded-full border border-slate-200 bg-slate-100 px-2.5 py-0.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-slate-700 dark:border-white/10 dark:bg-white/10 dark:text-white/72">
                       {book.genre}
                     </span>
                   </div>
@@ -789,7 +789,7 @@ export function BooksPage() {
                   <p className="mt-0.5 truncate text-xs text-slate-400 dark:text-white/50">
                     {book.author}
                   </p>
-                  <p className="mt-1.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-slate-300 dark:text-white/35">
+                  <p className="mt-1.5 text-[0.64rem] font-extrabold uppercase tracking-[0.16em] text-slate-600 dark:text-white/68">
                     {book.genre}
                   </p>
                 </div>
