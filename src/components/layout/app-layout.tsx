@@ -66,7 +66,7 @@ function LibraryNavItem({
     >
       <Icon
         className={cn(
-          "size-3.5 flex-none",
+          collapsed ? "size-[18px] flex-none" : "size-3.5 flex-none",
           isActive ? "text-emerald-500 dark:text-emerald-300" : "text-slate-400 dark:text-white/40",
         )}
       />
@@ -183,35 +183,37 @@ export function AppLayout() {
                 Menu
               </p>
             )}
-            {navigationItems.map(({ label, icon: Icon, to }) => {
-              const isActive =
-                label === "Books"
-                  ? isBooksTabActive
-                  : location.pathname === to;
-              return (
-                <Link
-                  key={label}
-                  to={to}
-                  className={cn(
-                    "mb-0.5 flex items-center rounded-lg py-2 text-[0.82rem] font-medium transition-colors",
-                    isSidebarCollapsed ? "justify-center px-0" : "gap-2.5 px-2.5",
-                    isActive
-                      ? "bg-slate-100 text-slate-900 dark:bg-white/8 dark:text-white"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-white/60 dark:hover:bg-white/6 dark:hover:text-white/85",
-                  )}
-                >
-                  <Icon
+            <div>
+              {navigationItems.map(({ label, icon: Icon, to }) => {
+                const isActive =
+                  label === "Books"
+                    ? isBooksTabActive
+                    : location.pathname === to;
+                return (
+                  <Link
+                    key={label}
+                    to={to}
                     className={cn(
-                      "size-3.5 flex-none",
+                      "mb-0.5 flex items-center py-2 text-[0.82rem] font-medium transition-colors",
+                      isSidebarCollapsed ? "justify-center px-0" : "gap-2.5 px-2.5",
                       isActive
-                        ? "text-emerald-500 dark:text-emerald-300"
-                        : "text-slate-400 dark:text-white/40",
+                        ? "bg-slate-100 text-slate-900 dark:bg-white/8 dark:text-white"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-white/60 dark:hover:bg-white/6 dark:hover:text-white/85",
                     )}
-                  />
-                  {!isSidebarCollapsed && <span>{label}</span>}
-                </Link>
-              );
-            })}
+                  >
+                    <Icon
+                      className={cn(
+                        isSidebarCollapsed ? "size-[18px] flex-none" : "size-3.5 flex-none",
+                        isActive
+                          ? "text-emerald-500 dark:text-emerald-300"
+                          : "text-slate-400 dark:text-white/40",
+                      )}
+                    />
+                    {!isSidebarCollapsed && <span>{label}</span>}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
 
           {/* Library */}
@@ -221,36 +223,42 @@ export function AppLayout() {
                 Library
               </p>
             )}
-            <LibraryNavItem
-              icon={LayoutGrid}
-              label="All Books"
-              to="/books"
-              listParam="all"
-              collapsed={isSidebarCollapsed}
-            />
-            <LibraryNavItem
-              icon={BookMarked}
-              label="Want to Read"
-              to="/books"
-              listParam="want-to-read"
-              count={counts["want-to-read"]}
-              collapsed={isSidebarCollapsed}
-            />
-            <LibraryNavItem
-              icon={CheckCircle2}
-              label="Finished"
-              to="/books"
-              listParam="finished"
-              count={counts.finished}
-              collapsed={isSidebarCollapsed}
-            />
-            <LibraryNavItem
-              icon={FolderPlus}
-              label="My Samples"
-              to="/books"
-              listParam="my-samples"
-              collapsed={isSidebarCollapsed}
-            />
+            <div
+              className={cn(
+                isSidebarCollapsed && "mt-3 border-t border-slate-200 pt-3 dark:border-white/8",
+              )}
+            >
+              <LibraryNavItem
+                icon={LayoutGrid}
+                label="All Books"
+                to="/books"
+                listParam="all"
+                collapsed={isSidebarCollapsed}
+              />
+              <LibraryNavItem
+                icon={BookMarked}
+                label="Want to Read"
+                to="/books"
+                listParam="want-to-read"
+                count={counts["want-to-read"]}
+                collapsed={isSidebarCollapsed}
+              />
+              <LibraryNavItem
+                icon={CheckCircle2}
+                label="Finished"
+                to="/books"
+                listParam="finished"
+                count={counts.finished}
+                collapsed={isSidebarCollapsed}
+              />
+              <LibraryNavItem
+                icon={FolderPlus}
+                label="My Samples"
+                to="/books"
+                listParam="my-samples"
+                collapsed={isSidebarCollapsed}
+              />
+            </div>
           </div>
 
         </nav>

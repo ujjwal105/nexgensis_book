@@ -502,10 +502,11 @@ export function BooksPage() {
           {listFilter === "my-samples" && (
             <Button
               size="sm"
+              variant="outline"
               onClick={openCreateModal}
-              className="flex-none rounded-full bg-slate-900 px-4 text-white hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-white/90"
+              className="flex-none rounded-full border-2 border-emerald-300/80 bg-transparent px-4 text-black shadow-none hover:border-emerald-200 hover:bg-white/5 hover:text-white dark:border-emerald-300/80 dark:bg-transparent dark:text-white/85 dark:hover:bg-white/5 dark:hover:text-white"
             >
-              <Plus className="size-3.5" />
+              <Plus className="size-4" />
               Add Book
             </Button>
           )}
