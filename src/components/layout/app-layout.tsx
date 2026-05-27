@@ -9,10 +9,11 @@ import {
   ChevronsRight,
   FolderPlus,
   LayoutGrid,
+  Menu,
   Moon,
-  Plus,
   Search,
   Sun,
+  X,
 } from "lucide-react";
 import nexgensisLogo from "@/assets/Nexgensis.png";
 import nexgensisSidebarLogo from "@/assets/NexgensisSidebar.png";
@@ -75,11 +76,6 @@ function LibraryNavItem({
 
 const mobileNavigationItems = [
   { label: "Home", icon: ChartColumnBig, to: "/home" },
-  {
-    label: "Add",
-    icon: Plus,
-    to: { pathname: "/books", search: "?create=true" },
-  },
   { label: "Books", icon: BookOpenText, to: "/books" },
 ];
 
@@ -89,11 +85,19 @@ export function AppLayout() {
   const { theme, toggle } = useTheme();
   const { counts } = useBookLists();
   const isSearchRoute = location.pathname === "/search";
-  const isBooksTabActive = location.pathname.startsWith("/books");
+  const isBooksTabActive =
+    location.pathname === "/books" ||
+    /^\/books\/[^/]+$/.test(location.pathname);
+  const isLibraryRoute =
+    location.pathname === "/books/all" ||
+    location.pathname === "/books/want-to-read" ||
+    location.pathname === "/books/finished" ||
+    location.pathname === "/books/my-samples";
   const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(() => {
     if (typeof window === "undefined") return false;
     return window.localStorage.getItem("sidebar-collapsed") === "true";
   });
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (typeof window === "undefined") return;
@@ -102,6 +106,10 @@ export function AppLayout() {
       isSidebarCollapsed ? "true" : "false",
     );
   }, [isSidebarCollapsed]);
+
+  React.useEffect(() => {
+    setIsMobileDrawerOpen(false);
+  }, [location.pathname, location.search]);
 
   const sidebarWidth = isSidebarCollapsed ? 72 : 220;
   return (
@@ -394,8 +402,148 @@ export function AppLayout() {
               <span>{label}</span>
             </Link>
           ))}
+          <button
+            type="button"
+            aria-label="Open library menu"
+            onClick={() => setIsMobileDrawerOpen(true)}
+            className={cn(
+              "flex flex-col items-center justify-center gap-1 rounded-xl px-5 py-2 text-[0.68rem] font-semibold transition-colors",
+              isLibraryRoute || isMobileDrawerOpen
+                ? "text-emerald-600 dark:text-emerald-300"
+                : "text-slate-400 hover:text-slate-700 dark:hover:text-white/75",
+            )}
+          >
+            <Menu className="size-4" />
+            <span>Library</span>
+          </button>
         </nav>
       </div>
+
+      {isMobileDrawerOpen ? (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <button
+            type="button"
+            aria-label="Close library menu"
+            className="absolute inset-0 bg-slate-950/55 backdrop-blur-sm"
+            onClick={() => setIsMobileDrawerOpen(false)}
+          />
+
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute inset-x-0 bottom-0 rounded-t-[28px] border-t border-slate-200 bg-white px-5 pb-8 pt-5 shadow-[0_-20px_60px_rgba(15,23,42,0.24)] dark:border-white/10 dark:bg-[#232324]"
+          >
+            <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-slate-200 dark:bg-white/10" />
+
+            <div className="mb-5 flex items-center justify-between">
+              <div>
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-white/35">
+                  Navigate
+                </p>
+                <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-900 dark:text-white">
+                  Library Menu
+                </h2>
+              </div>
+              <button
+                type="button"
+                aria-label="Close library menu"
+                onClick={() => setIsMobileDrawerOpen(false)}
+                className="flex size-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200 dark:bg-white/8 dark:text-white/75 dark:hover:bg-white/12 dark:hover:text-white"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <p className="px-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-slate-400 dark:text-white/30">
+                  Menu
+                </p>
+                {navigationItems.map(({ label, icon: Icon, to }) => {
+                  const isActive =
+                    label === "Books"
+                      ? isBooksTabActive
+                      : location.pathname === to;
+
+                  return (
+                    <Link
+                      key={label}
+                      to={to}
+                      className={cn(
+                        "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors",
+                        isActive
+                          ? "bg-slate-100 text-slate-900 dark:bg-white/8 dark:text-white"
+                          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-white/65 dark:hover:bg-white/6 dark:hover:text-white/85",
+                      )}
+                    >
+                      <Icon
+                        className={cn(
+                          "size-4 flex-none",
+                          isActive
+                            ? "text-emerald-500 dark:text-emerald-300"
+                            : "text-slate-400 dark:text-white/40",
+                        )}
+                      />
+                      <span>{label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+
+              <div className="space-y-2">
+                <p className="px-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-slate-400 dark:text-white/30">
+                  Library
+                </p>
+                <LibraryNavItem icon={LayoutGrid} label="All Books" to="/books/all" />
+                <LibraryNavItem
+                  icon={BookMarked}
+                  label="Want to Read"
+                  to="/books/want-to-read"
+                  count={counts["want-to-read"]}
+                />
+                <LibraryNavItem
+                  icon={CheckCircle2}
+                  label="Finished"
+                  to="/books/finished"
+                  count={counts.finished}
+                />
+                <LibraryNavItem
+                  icon={FolderPlus}
+                  label="My Samples"
+                  to="/books/my-samples"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileDrawerOpen(false);
+                    navigate("/search");
+                  }}
+                  className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-white/10 dark:text-white/78 dark:hover:bg-white/8"
+                >
+                  <Search className="size-4" />
+                  Search
+                </button>
+                <button
+                  type="button"
+                  onClick={toggle}
+                  className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:border-white/10 dark:text-white/78 dark:hover:bg-white/8"
+                >
+                  {theme === "dark" ? (
+                    <Sun className="size-4 text-amber-400" />
+                  ) : (
+                    <Moon className="size-4" />
+                  )}
+                  {theme === "dark" ? "Light" : "Dark"}
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { ArrowRight, BookCopy, Boxes, TrendingUp } from "lucide-react";
+import { ArrowRight, BookCopy, Boxes, Plus, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { useBooks } from "@/hooks/use-books";
@@ -89,6 +89,16 @@ export function DashboardPage() {
             Your book catalog at a glance.
           </p>
         </div>
+        <Button
+          asChild
+          size="sm"
+          className="rounded-full bg-emerald-600 px-3.5 text-white shadow-sm hover:bg-emerald-700 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300 md:hidden"
+        >
+          <Link to="/books?create=true">
+            <Plus className="size-3.5" />
+            Add
+          </Link>
+        </Button>
       </div>
 
       {/* Stats */}
