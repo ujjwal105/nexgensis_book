@@ -23,7 +23,7 @@ const bookSchema = z.object({
     .max(currentYear, "Year cannot be in the future"),
   description: z
     .string()
-    .max(500, "Description must stay under 500 characters"),
+    .max(5000, "Description must stay under 500 characters"),
   coverColor: z.string().default("#6366F1"),
   coverImage: z
     .string()
