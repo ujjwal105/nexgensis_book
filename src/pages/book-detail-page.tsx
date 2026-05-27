@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Calendar, Hash, Layers3, Palette, UserRound } from "lucide-react";
 
 import { BookFormModal } from "@/components/books/book-form-modal";
@@ -12,12 +12,15 @@ import type { BookDraft } from "@/types/book";
 
 export function BookDetailPage() {
   const { id = "" } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const { data: book, error, isError, isLoading } = useBook(id);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const deleteBookMutation = useDeleteBook();
   const updateBookMutation = useUpdateBook();
   const { toast } = useToast();
+  const backHref =
+    typeof location.state?.from === "string" ? location.state.from : "/books";
 
   if (isLoading) {
     return (
@@ -70,7 +73,7 @@ export function BookDetailPage() {
       {/* Back nav + actions */}
       <div className="flex items-center justify-between">
         <Button asChild variant="ghost" size="sm" className="rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 -ml-1 h-8 dark:text-white/60 dark:hover:text-white dark:hover:bg-white/8">
-          <Link to="/books">
+          <Link to={backHref}>
             <ArrowLeft className="size-3.5" />
             Back to Books
           </Link>

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import {
   BookMarked,
   CheckCircle2,
@@ -138,10 +138,17 @@ function BookCover({
 
 /* ─── ShelfBook (horizontal scroll card) ───────────────────────── */
 
-function ShelfBook({ book }: { book: Book }) {
+function ShelfBook({
+  book,
+  detailLinkState,
+}: {
+  book: Book;
+  detailLinkState: { from: string };
+}) {
   return (
     <Link
       to={`/books/${book.id}`}
+      state={detailLinkState}
       className="group block min-w-[150px] snap-start transition-transform duration-200 hover:-translate-y-1"
     >
       <BookCover book={book} className="h-[228px] w-[150px]" />
@@ -157,12 +164,14 @@ function RankedBookRow({
   onDelete,
   onEdit,
   menuVariant = "default",
+  detailLinkState,
 }: {
   book: Book;
   index: number;
   onDelete: (id: string) => void;
   onEdit: (book: Book) => void;
   menuVariant?: BookContextMenuVariant;
+  detailLinkState: { from: string };
 }) {
   return (
     <div className="group flex items-center gap-4 border-b border-slate-100 dark:border-white/6 py-3.5 last:border-b-0">
@@ -173,6 +182,7 @@ function RankedBookRow({
 
       <Link
         to={`/books/${book.id}`}
+        state={detailLinkState}
         className="flex flex-1 items-center gap-3 min-w-0"
       >
         <BookCover
@@ -234,15 +244,17 @@ function LibraryCoverCard({
   onEdit,
   onDelete,
   menuVariant = "default",
+  detailLinkState,
 }: {
   book: Book;
   onEdit: () => void;
   onDelete: () => void;
   menuVariant?: BookContextMenuVariant;
+  detailLinkState: { from: string };
 }) {
   return (
     <div className="group relative">
-      <Link to={`/books/${book.id}`} className="block">
+      <Link to={`/books/${book.id}`} state={detailLinkState} className="block">
         <BookCover
           book={book}
           className="aspect-[2/3] w-full rounded-[14px]"
@@ -275,6 +287,7 @@ function LibraryCoverCard({
 /* ─── BooksPage ─────────────────────────────────────────────────── */
 
 export function BooksPage() {
+  const location = useLocation();
   const [params, setParams] = useSearchParams();
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const { toast } = useToast();
@@ -315,6 +328,9 @@ export function BooksPage() {
         : listFilter === "my-samples"
           ? "samples"
           : "default";
+  const detailLinkState = {
+    from: `${location.pathname}${location.search}`,
+  };
 
   const featuredBooks = books.slice(0, 3);
   const rankedBooks = books.slice(0, 6);
@@ -453,6 +469,7 @@ export function BooksPage() {
                 onEdit={() => openEditModal(book)}
                 onDelete={() => void handleDelete(book.id)}
                 menuVariant={menuVariant}
+                detailLinkState={detailLinkState}
               />
             ))}
           </div>
@@ -537,6 +554,7 @@ export function BooksPage() {
               >
                 <Link
                   to={`/books/${book.id}`}
+                  state={detailLinkState}
                   className="flex min-w-0 flex-1 items-center gap-4"
                 >
                   <BookCover
@@ -654,7 +672,11 @@ export function BooksPage() {
                         {book.genre}
                       </h2>
                     </div>
-                    <Link to={`/books/${book.id}`} className="block">
+                    <Link
+                      to={`/books/${book.id}`}
+                      state={detailLinkState}
+                      className="block"
+                    >
                       <BookCover
                         book={book}
                         className="h-[360px] w-full"
@@ -677,7 +699,11 @@ export function BooksPage() {
           />
           <div className="flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {libraryShelf.map((book) => (
-              <ShelfBook key={book.id} book={book} />
+              <ShelfBook
+                key={book.id}
+                book={book}
+                detailLinkState={detailLinkState}
+              />
             ))}
           </div>
         </div>
@@ -694,6 +720,7 @@ export function BooksPage() {
                 onDelete={(id) => void handleDelete(id)}
                 onEdit={openEditModal}
                 menuVariant={menuVariant}
+                detailLinkState={detailLinkState}
               />
             ))}
           </div>
@@ -714,7 +741,10 @@ export function BooksPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.18, delay: si * 0.02 }}
                 >
-                  <ShelfBook book={book} />
+                  <ShelfBook
+                    book={book}
+                    detailLinkState={detailLinkState}
+                  />
                 </motion.div>
               ))}
             </div>
@@ -750,7 +780,7 @@ export function BooksPage() {
                   showText={false}
                 />
                 <div className="min-w-0 flex-1">
-                  <Link to={`/books/${book.id}`}>
+                  <Link to={`/books/${book.id}`} state={detailLinkState}>
                     <p className="line-clamp-2 text-[0.88rem] font-semibold leading-snug tracking-tight text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-300 transition-colors">
                       {book.title}
                     </p>
