@@ -58,7 +58,9 @@ function LibraryNavItem({
       <Icon
         className={cn(
           collapsed ? "size-[18px] flex-none" : "size-3.5 flex-none",
-          isActive ? "text-emerald-500 dark:text-emerald-300" : "text-slate-400 dark:text-white/40",
+          isActive
+            ? "text-emerald-500 dark:text-emerald-300"
+            : "text-slate-400 dark:text-white/40",
         )}
       />
       <span className={cn("flex-1", collapsed && "hidden")}>{label}</span>
@@ -73,7 +75,11 @@ function LibraryNavItem({
 
 const mobileNavigationItems = [
   { label: "Overview", icon: ChartColumnBig, to: "/overview" },
-  { label: "Add", icon: Plus, to: { pathname: "/books", search: "?create=true" } },
+  {
+    label: "Add",
+    icon: Plus,
+    to: { pathname: "/books", search: "?create=true" },
+  },
   { label: "Books", icon: BookOpenText, to: "/books" },
 ];
 
@@ -125,8 +131,8 @@ export function AppLayout() {
                 alt="Nexgensis"
                 className="h-6 w-auto object-contain invert dark:invert-0"
               />
-              <p className="mt-px pl-[5.8rem] truncate text-[0.82rem] font-semibold leading-none text-slate-900 dark:text-white">
-                Book System
+              <p className="mt-px pl-[0.2rem] truncate text-[0.82rem] font-semibold leading-none text-slate-900 dark:text-white">
+                Book Management System
               </p>
             </div>
           )}
@@ -192,7 +198,9 @@ export function AppLayout() {
                     to={to}
                     className={cn(
                       "mb-0.5 flex items-center py-2 text-[0.82rem] font-medium transition-colors",
-                      isSidebarCollapsed ? "justify-center px-0" : "gap-2.5 px-2.5",
+                      isSidebarCollapsed
+                        ? "justify-center px-0"
+                        : "gap-2.5 px-2.5",
                       isActive
                         ? "bg-slate-100 text-slate-900 dark:bg-white/8 dark:text-white"
                         : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-white/60 dark:hover:bg-white/6 dark:hover:text-white/85",
@@ -200,7 +208,9 @@ export function AppLayout() {
                   >
                     <Icon
                       className={cn(
-                        isSidebarCollapsed ? "size-[18px] flex-none" : "size-3.5 flex-none",
+                        isSidebarCollapsed
+                          ? "size-[18px] flex-none"
+                          : "size-3.5 flex-none",
                         isActive
                           ? "text-emerald-500 dark:text-emerald-300"
                           : "text-slate-400 dark:text-white/40",
@@ -222,7 +232,8 @@ export function AppLayout() {
             )}
             <div
               className={cn(
-                isSidebarCollapsed && "mt-3 border-t border-slate-200 pt-3 dark:border-white/8",
+                isSidebarCollapsed &&
+                  "mt-3 border-t border-slate-200 pt-3 dark:border-white/8",
               )}
             >
               <LibraryNavItem
@@ -253,7 +264,6 @@ export function AppLayout() {
               />
             </div>
           </div>
-
         </nav>
 
         {/* Theme toggle + User */}
@@ -263,7 +273,11 @@ export function AppLayout() {
             <button
               type="button"
               onClick={toggle}
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              aria-label={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
               className={cn(
                 "flex w-full items-center rounded-lg py-2 text-[0.82rem] font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-white/60 dark:hover:bg-white/6 dark:hover:text-white/85",
                 isSidebarCollapsed ? "justify-center px-0" : "gap-2.5 px-2.5",
@@ -278,12 +292,16 @@ export function AppLayout() {
               ) : theme === "dark" ? (
                 <>
                   <Sun className="size-4 flex-none text-amber-400" />
-                  <span className={cn(isSidebarCollapsed && "hidden")}>Light mode</span>
+                  <span className={cn(isSidebarCollapsed && "hidden")}>
+                    Light mode
+                  </span>
                 </>
               ) : (
                 <>
                   <Moon className="size-4 flex-none text-slate-400" />
-                  <span className={cn(isSidebarCollapsed && "hidden")}>Dark mode</span>
+                  <span className={cn(isSidebarCollapsed && "hidden")}>
+                    Dark mode
+                  </span>
                 </>
               )}
               {isSidebarCollapsed ? null : (
@@ -298,7 +316,9 @@ export function AppLayout() {
                   <div
                     className={cn(
                       "size-3.5 rounded-full bg-white shadow-sm transition-transform dark:bg-white",
-                      theme === "dark" ? "translate-x-[18px]" : "translate-x-0.5",
+                      theme === "dark"
+                        ? "translate-x-[18px]"
+                        : "translate-x-0.5",
                     )}
                   />
                 </div>
