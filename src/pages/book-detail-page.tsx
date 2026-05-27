@@ -97,7 +97,7 @@ export function BookDetailPage() {
         <Button asChild variant="ghost" size="sm" className="rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 -ml-1 h-8 dark:text-white/60 dark:hover:text-white dark:hover:bg-white/8">
           <Link to={backHref}>
             <ArrowLeft className="size-3.5" />
-            Back to Books
+            Back
           </Link>
         </Button>
 

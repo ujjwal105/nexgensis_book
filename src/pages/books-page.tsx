@@ -217,9 +217,6 @@ function RankedBookRow({
   );
 }
 
-/* ─── SectionHeading ────────────────────────────────────────────── */
-// Apple Books: ~20–22 px semibold/bold — NOT 37 px
-
 function SectionHeading({
   eyebrow,
   title,

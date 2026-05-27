@@ -1,15 +1,54 @@
-import {
-  ArrowRight,
-  BookCopy,
-  Boxes,
-  ChevronRight,
-  TrendingUp
-} from "lucide-react";
+import { ArrowRight, BookCopy, Boxes, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { useBooks } from "@/hooks/use-books";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { Book } from "@/types/book";
+
+function RecentBookCard({ book }: { book: Book }) {
+  return (
+    <Link
+      to={`/books/${book.id}`}
+      state={{ from: "/home" }}
+      className="group block min-w-[180px] max-w-[180px] snap-start transition-transform duration-200 hover:-translate-y-1"
+    >
+      <div
+        className="relative h-[270px] overflow-hidden rounded-[26px] border shadow-[0_18px_40px_rgba(15,23,42,0.18)]"
+        style={{
+          backgroundColor: book.coverColor,
+          borderColor: `${book.coverColor}66`,
+        }}
+      >
+        {book.coverImage ? (
+          <>
+            <img
+              src={book.coverImage}
+              alt={book.title}
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/82 via-black/18 to-transparent" />
+          </>
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.04)_26%,rgba(0,0,0,0.24)_100%)]" />
+            <div className="absolute inset-y-4 left-3 w-px bg-white/28" />
+          </>
+        )}
+
+        <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+          <p className="line-clamp-2 text-[0.98rem] font-semibold leading-tight tracking-tight drop-shadow">
+            {book.title}
+          </p>
+          <p className="mt-2 line-clamp-1 text-sm text-white/72">
+            {book.author}
+          </p>
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export function DashboardPage() {
   const { data, isLoading, isError, error } = useBooks({ page: 1, limit: 6 });
@@ -50,49 +89,48 @@ export function DashboardPage() {
             Your book catalog at a glance.
           </p>
         </div>
-        <Button
-          asChild
-          size="sm"
-          className="rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300 shadow-sm"
-        >
-          <Link to="/books">
-            Browse catalog
-            <ArrowRight className="size-3.5" />
-          </Link>
-        </Button>
       </div>
 
       {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-2">
-        {stats.map(({ label, value, sub, icon: Icon, iconColor, iconBg, trend }) => (
-          <div
-            key={label}
-            className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:bg-[#232324] dark:border-white/8"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <p className="text-xs font-medium text-slate-500 dark:text-white/60 uppercase tracking-wide">
-                  {label}
-                </p>
-                {value === null ? (
-                  <div className="mt-2 h-7 w-16 animate-pulse rounded-md bg-slate-200 dark:bg-slate-700" />
-                ) : (
-                  <p className="mt-1.5 text-2xl font-bold text-slate-900 dark:text-white/90 tracking-tight">
-                    {value}
+        {stats.map(
+          ({ label, value, sub, icon: Icon, iconColor, iconBg, trend }) => (
+            <div
+              key={label}
+              className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:bg-[#232324] dark:border-white/8"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-slate-500 dark:text-white/60 uppercase tracking-wide">
+                    {label}
                   </p>
-                )}
-                <p className="mt-1 text-xs text-slate-400 dark:text-white/40">{sub}</p>
+                  {value === null ? (
+                    <div className="mt-2 h-7 w-16 animate-pulse rounded-md bg-slate-200 dark:bg-slate-700" />
+                  ) : (
+                    <p className="mt-1.5 text-2xl font-bold text-slate-900 dark:text-white/90 tracking-tight">
+                      {value}
+                    </p>
+                  )}
+                  <p className="mt-1 text-xs text-slate-400 dark:text-white/40">
+                    {sub}
+                  </p>
+                </div>
+                <div
+                  className={cn(
+                    "flex size-9 flex-none items-center justify-center rounded-lg",
+                    iconBg,
+                  )}
+                >
+                  <Icon className={cn("size-4", iconColor)} />
+                </div>
               </div>
-              <div className={cn("flex size-9 flex-none items-center justify-center rounded-lg", iconBg)}>
-                <Icon className={cn("size-4", iconColor)} />
+              <div className="mt-4 flex items-center gap-1.5 text-xs text-slate-500 dark:text-white/60">
+                <TrendingUp className="size-3 text-emerald-500" />
+                <span>{trend}</span>
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-1.5 text-xs text-slate-500 dark:text-white/60">
-              <TrendingUp className="size-3 text-emerald-500" />
-              <span>{trend}</span>
-            </div>
-          </div>
-        ))}
+          ),
+        )}
       </div>
 
       {/* Recent books */}
@@ -119,27 +157,33 @@ export function DashboardPage() {
           </Button>
         </div>
 
-        <div className="divide-y divide-slate-100 dark:divide-white/8">
+        <div className="px-5 py-5">
           {isLoading ? (
-            Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4 px-5 py-3.5">
-                <div className="size-9 rounded-lg bg-slate-100 dark:bg-white/8 animate-pulse flex-none" />
-                <div className="flex-1 space-y-1.5 min-w-0">
-                  <div className="h-3 bg-slate-100 dark:bg-white/8 rounded animate-pulse w-2/5" />
-                  <div className="h-3 bg-slate-100 dark:bg-white/8 rounded animate-pulse w-1/4" />
+            <div className="flex gap-4 overflow-hidden">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="min-w-[180px] max-w-[180px] animate-pulse"
+                >
+                  <div className="h-[270px] rounded-[26px] bg-slate-100 dark:bg-white/8" />
+                  <div className="mt-3 h-3 w-4/5 rounded bg-slate-100 dark:bg-white/8" />
+                  <div className="mt-2 h-3 w-3/5 rounded bg-slate-100 dark:bg-white/6" />
                 </div>
-                <div className="h-5 w-16 bg-slate-100 dark:bg-white/8 rounded-full animate-pulse hidden sm:block" />
-              </div>
-            ))
+              ))}
+            </div>
           ) : isError ? (
-            <div className="px-5 py-10 text-center">
+            <div className="py-10 text-center">
               <p className="text-sm text-rose-500">
-                {error instanceof Error ? error.message : "Unable to load books."}
+                {error instanceof Error
+                  ? error.message
+                  : "Unable to load books."}
               </p>
             </div>
           ) : books.length === 0 ? (
-            <div className="px-5 py-10 text-center">
-              <p className="text-sm text-slate-400">No books in the catalog yet.</p>
+            <div className="py-10 text-center">
+              <p className="text-sm text-slate-400">
+                No books in the catalog yet.
+              </p>
               <Button
                 asChild
                 size="sm"
@@ -149,35 +193,11 @@ export function DashboardPage() {
               </Button>
             </div>
           ) : (
-            books.map((book) => (
-              <Link
-                key={book.id}
-                to={`/books/${book.id}`}
-                className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-white/6 transition-colors group"
-              >
-                <div
-                  className="flex size-9 flex-none items-center justify-center rounded-lg text-sm font-bold text-white"
-                  style={{ backgroundColor: book.coverColor }}
-                >
-                  {book.title.charAt(0).toUpperCase()}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-slate-900 dark:text-white/90 truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">
-                    {book.title}
-                  </p>
-                  <p className="text-xs text-slate-400 dark:text-white/40 truncate mt-0.5">
-                    {book.author} · {book.publicationYear}
-                  </p>
-                </div>
-                <span
-                  className="hidden sm:inline-flex flex-none rounded-full px-2.5 py-0.5 text-[0.7rem] font-semibold text-white"
-                  style={{ backgroundColor: book.coverColor }}
-                >
-                  {book.genre}
-                </span>
-                <ChevronRight className="size-3.5 text-slate-300 dark:text-white/30 group-hover:text-slate-400 dark:group-hover:text-white/45 flex-none transition-colors" />
-              </Link>
-            ))
+            <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              {books.map((book) => (
+                <RecentBookCard key={book.id} book={book} />
+              ))}
+            </div>
           )}
         </div>
 
@@ -188,40 +208,6 @@ export function DashboardPage() {
             </p>
           </div>
         ) : null}
-      </div>
-
-      {/* Quick actions */}
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Link
-          to="/books?create=true"
-          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 dark:border-white/10 bg-white dark:bg-[#232324] p-4 text-sm transition-all hover:border-emerald-300 dark:hover:border-emerald-300/30 hover:bg-emerald-50/30 dark:hover:bg-emerald-400/8"
-        >
-          <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-400/10 text-emerald-600 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-400/18 transition-colors">
-            <BookCopy className="size-4" />
-          </div>
-          <div>
-            <p className="font-medium text-slate-900 dark:text-white/90">Add a book</p>
-            <p className="text-xs text-slate-400 dark:text-white/40 mt-0.5">
-              Create a new catalog entry
-            </p>
-          </div>
-          <ArrowRight className="size-4 text-slate-300 dark:text-white/30 group-hover:text-emerald-400 dark:group-hover:text-emerald-300 ml-auto flex-none transition-colors" />
-        </Link>
-        <Link
-          to="/books"
-          className="group flex items-center gap-4 rounded-xl border border-dashed border-slate-300 dark:border-white/10 bg-white dark:bg-[#232324] p-4 text-sm transition-all hover:border-slate-400 dark:hover:border-white/16 hover:bg-slate-50 dark:hover:bg-white/8"
-        >
-          <div className="flex size-9 flex-none items-center justify-center rounded-lg bg-slate-100 dark:bg-white/8 text-slate-600 dark:text-white/60 group-hover:bg-slate-200 dark:group-hover:bg-white/12 transition-colors">
-            <Boxes className="size-4" />
-          </div>
-          <div>
-            <p className="font-medium text-slate-900 dark:text-white/90">Browse catalog</p>
-            <p className="text-xs text-slate-400 dark:text-white/40 mt-0.5">
-              Search and filter all books
-            </p>
-          </div>
-          <ArrowRight className="size-4 text-slate-300 dark:text-white/30 group-hover:text-slate-500 ml-auto flex-none transition-colors" />
-        </Link>
       </div>
     </div>
   );
