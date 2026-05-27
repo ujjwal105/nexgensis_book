@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 
 import { BookFormModal } from "@/components/books/book-form-modal";
 import { EmptyState } from "@/components/books/empty-state";
-import { BookContextMenu } from "@/components/ui/book-context-menu";
+import { BookContextMenu, type BookContextMenuVariant } from "@/components/ui/book-context-menu";
 import { Button } from "@/components/ui/button";
 import { ErrorBanner } from "@/components/ui/error-banner";
 import { useToast } from "@/components/ui/toast-context";
@@ -156,11 +156,13 @@ function RankedBookRow({
   index,
   onDelete,
   onEdit,
+  menuVariant = "default",
 }: {
   book: Book;
   index: number;
   onDelete: (id: string) => void;
   onEdit: (book: Book) => void;
+  menuVariant?: BookContextMenuVariant;
 }) {
   return (
     <div className="group flex items-center gap-4 border-b border-slate-100 dark:border-white/6 py-3.5 last:border-b-0">
@@ -192,6 +194,7 @@ function RankedBookRow({
         bookId={book.id}
         onEdit={() => onEdit(book)}
         onDelete={() => onDelete(book.id)}
+        variant={menuVariant}
       />
     </div>
   );
@@ -230,10 +233,12 @@ function LibraryCoverCard({
   book,
   onEdit,
   onDelete,
+  menuVariant = "default",
 }: {
   book: Book;
   onEdit: () => void;
   onDelete: () => void;
+  menuVariant?: BookContextMenuVariant;
 }) {
   return (
     <div className="group relative">
@@ -259,6 +264,7 @@ function LibraryCoverCard({
           bookId={book.id}
           onEdit={onEdit}
           onDelete={onDelete}
+          variant={menuVariant}
           triggerClassName="mt-0.5 flex-none opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
         />
       </div>
@@ -300,6 +306,15 @@ export function BooksPage() {
       : listFilter && listFilter !== "all"
         ? books.filter((b) => isIn(listFilter as BookListKey, b.id))
         : books;
+
+  const menuVariant: BookContextMenuVariant =
+    listFilter === "want-to-read"
+      ? "want-to-read"
+      : listFilter === "finished"
+        ? "finished"
+        : listFilter === "my-samples"
+          ? "samples"
+          : "default";
 
   const featuredBooks = books.slice(0, 3);
   const rankedBooks = books.slice(0, 6);
@@ -437,6 +452,7 @@ export function BooksPage() {
                 book={book}
                 onEdit={() => openEditModal(book)}
                 onDelete={() => void handleDelete(book.id)}
+                menuVariant={menuVariant}
               />
             ))}
           </div>
@@ -540,6 +556,7 @@ export function BooksPage() {
                   bookId={book.id}
                   onEdit={() => openEditModal(book)}
                   onDelete={() => void handleDelete(book.id)}
+                  variant={menuVariant}
                 />
               </div>
             ))}
@@ -672,6 +689,7 @@ export function BooksPage() {
                 index={index}
                 onDelete={(id) => void handleDelete(id)}
                 onEdit={openEditModal}
+                menuVariant={menuVariant}
               />
             ))}
           </div>
@@ -744,6 +762,7 @@ export function BooksPage() {
                   bookId={book.id}
                   onEdit={() => openEditModal(book)}
                   onDelete={() => void handleDelete(book.id)}
+                  variant={menuVariant}
                 />
               </div>
             ))}

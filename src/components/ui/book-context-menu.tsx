@@ -4,13 +4,15 @@ import {
   BookMarked,
   CheckCircle2,
   EllipsisVertical,
-  FolderPlus,
   Pencil,
   Trash2,
 } from "lucide-react";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 import { useBookLists, type BookListKey } from "@/hooks/use-book-lists";
+
+export type BookContextMenuVariant = "default" | "want-to-read" | "finished" | "samples";
 
 type BookContextMenuProps = {
   bookId: string;
@@ -18,36 +20,57 @@ type BookContextMenuProps = {
   onDelete: () => void;
   /** Optional extra class on the trigger button */
   triggerClassName?: string;
+  variant?: BookContextMenuVariant;
 };
 
-const listActions: { key: BookListKey; icon: typeof BookMarked; label: string; activeLabel: string }[] = [
-  {
+type BookContextMenuActionKey = Exclude<BookListKey, "collection">;
+
+const listActions: Record<
+  BookContextMenuActionKey,
+  { key: BookContextMenuActionKey; icon: typeof BookMarked; label: string; activeLabel: string }
+> = {
+  "want-to-read": {
     key: "want-to-read",
     icon: BookMarked,
     label: "Add to Want to Read",
     activeLabel: "Remove from Want to Read",
   },
-  {
-    key: "collection",
-    icon: FolderPlus,
-    label: "Add to Collection",
-    activeLabel: "Remove from Collection",
-  },
-  {
+  finished: {
     key: "finished",
     icon: CheckCircle2,
     label: "Mark as Finished",
-    activeLabel: "Unmark as Finished",
+    activeLabel: "Remove from Finished",
   },
-];
+};
+
+const menuVariants: Record<BookContextMenuVariant, { actions: BookContextMenuActionKey[]; showEditDelete: boolean }> = {
+  default: {
+    actions: ["want-to-read", "finished"],
+    showEditDelete: true,
+  },
+  "want-to-read": {
+    actions: ["want-to-read", "finished"],
+    showEditDelete: false,
+  },
+  finished: {
+    actions: ["finished", "want-to-read"],
+    showEditDelete: false,
+  },
+  samples: {
+    actions: [],
+    showEditDelete: true,
+  },
+};
 
 export function BookContextMenu({
   bookId,
   onEdit,
   onDelete,
   triggerClassName,
+  variant = "default",
 }: BookContextMenuProps) {
   const { toggle, isIn } = useBookLists();
+  const { actions, showEditDelete } = menuVariants[variant];
   const [open, setOpen] = useState(false);
   const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -128,67 +151,90 @@ export function BookContextMenu({
             className="fixed z-[200] w-[216px] overflow-hidden rounded-[14px] border border-slate-200/80 bg-white/95 shadow-[0_8px_32px_rgba(0,0,0,0.14),0_2px_8px_rgba(0,0,0,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-[#232324]/95 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
           >
             {/* List actions */}
-            <div className="px-1 py-1">
-              {listActions.map(({ key, icon: Icon, label, activeLabel }) => {
-                const active = isIn(key, bookId);
-                return (
-                  <button
-                    key={key}
-                    role="menuitem"
-                    type="button"
-                    onClick={() => {
-                      toggle(key, bookId);
-                      setOpen(false);
-                    }}
-                    className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-white/85 dark:hover:bg-white/8"
-                  >
-                    <Icon
-                      className={cn(
-                        "size-4 flex-none",
-                        active
-                          ? "text-emerald-500 dark:text-emerald-300"
-                          : "text-slate-400 dark:text-white/40",
+            {actions.length > 0 && (
+              <div className="px-1 py-1">
+                {actions.map((key) => {
+                  const { icon: Icon, label, activeLabel } = listActions[key];
+                  const active = isIn(key, bookId);
+                  return (
+                    <button
+                      key={key}
+                      role="menuitem"
+                      type="button"
+                      onClick={() => {
+                        const result = toggle(key, bookId);
+                        if (result.ok) {
+                          const title =
+                            result.action === "moved"
+                              ? key === "want-to-read"
+                                ? "Moved to Want to Read"
+                                : "Moved to Finished"
+                              : result.action === "added"
+                                ? key === "want-to-read"
+                                  ? "Added to Want to Read"
+                                  : "Added to Finished"
+                                : key === "want-to-read"
+                                  ? "Removed from Want to Read"
+                                  : "Removed from Finished";
+
+                          toast.success(title);
+                        }
+                        setOpen(false);
+                      }}
+                      className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-white/85 dark:hover:bg-white/8"
+                    >
+                      <Icon
+                        className={cn(
+                          "size-4 flex-none",
+                          active
+                            ? "text-emerald-500 dark:text-emerald-300"
+                            : "text-slate-400 dark:text-white/40",
+                        )}
+                      />
+                      {active ? activeLabel : label}
+                      {active && (
+                        <span className="ml-auto size-1.5 rounded-full bg-emerald-500 dark:bg-emerald-300" />
                       )}
-                    />
-                    {active ? activeLabel : label}
-                    {active && (
-                      <span className="ml-auto size-1.5 rounded-full bg-emerald-500 dark:bg-emerald-300" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Divider */}
-            <div className="mx-3 border-t border-slate-100 dark:border-white/8" />
+            {actions.length > 0 && showEditDelete && (
+              <div className="mx-3 border-t border-slate-100 dark:border-white/8" />
+            )}
 
             {/* Edit / Delete */}
-            <div className="px-1 py-1">
-              <button
-                role="menuitem"
-                type="button"
-                onClick={() => {
-                  onEdit();
-                  setOpen(false);
-                }}
-                className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-white/85 dark:hover:bg-white/8"
-              >
-                <Pencil className="size-4 flex-none text-slate-400 dark:text-white/40" />
-                Edit
-              </button>
-              <button
-                role="menuitem"
-                type="button"
-                onClick={() => {
-                  onDelete();
-                  setOpen(false);
-                }}
-                className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-500/10"
-              >
-                <Trash2 className="size-4 flex-none" />
-                Delete
-              </button>
-            </div>
+            {showEditDelete && (
+              <div className="px-1 py-1">
+                <button
+                  role="menuitem"
+                  type="button"
+                  onClick={() => {
+                    onEdit();
+                    setOpen(false);
+                  }}
+                  className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-white/85 dark:hover:bg-white/8"
+                >
+                  <Pencil className="size-4 flex-none text-slate-400 dark:text-white/40" />
+                  Edit
+                </button>
+                <button
+                  role="menuitem"
+                  type="button"
+                  onClick={() => {
+                    onDelete();
+                    setOpen(false);
+                  }}
+                  className="flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-[0.82rem] font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-500/10"
+                >
+                  <Trash2 className="size-4 flex-none" />
+                  Delete
+                </button>
+              </div>
+            )}
           </div>,
           document.body,
         )}
