@@ -293,7 +293,7 @@ export function BooksPage() {
   const { toast } = useToast();
   const { data, error, isError, isFetching, isLoading, refetch } = useBooks({
     page: 1,
-    limit: 100,
+    limit: 1000,
   });
   const createBookMutation = useCreateBook();
   const updateBookMutation = useUpdateBook();
@@ -306,6 +306,7 @@ export function BooksPage() {
     () => sortBooksByRecency(data?.data ?? []),
     [data?.data],
   );
+  const totalBookCount = data?.totalItems ?? 0;
 
   // List filter — activated by ?list= search param
   const rawList = params.get("list") ?? "";
@@ -426,9 +427,9 @@ export function BooksPage() {
               <h1 className="text-[2rem] font-bold tracking-tight text-slate-900 dark:text-white">
                 All
               </h1>
-              {!isLoading && books.length > 0 && (
+              {!isLoading && totalBookCount > 0 && (
                 <span className="flex h-6 min-w-[1.5rem] items-center justify-center rounded-full bg-slate-100 px-2 text-[0.7rem] font-semibold text-slate-500 dark:bg-white/10 dark:text-white/50">
-                  {books.length}
+                  {totalBookCount}
                 </span>
               )}
             </div>
